@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
-import {Icon,Menu, Segment, Sidebar } from 'semantic-ui-react';
+import {Icon,Menu, Segment, Sidebar,Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
 import UserLanding from '../../Landing/UserLanding/UserLanding';
-import DeviceUI from '../../DeviceUI/DeviceUI';
+import DeviceUI from '../../DeviceUI/SingleDevice/DeviceUI';
+import MultipleDeviceUI from '../../DeviceUI/BulkDevices/BulkDevices';
 import './UserDashboard.css';
 
 
 class UserDashboard extends Component{
+    state = { activeIndex: 1 }
 
+    handleClick = (e, titleProps) => {
+        const { index } = titleProps
+        const { activeIndex } = this.state
+        const newIndex = activeIndex === index ? -1 : index
+    
+        this.setState({ activeIndex: newIndex })
+    }
     render() {
       
         return (
@@ -26,9 +35,23 @@ class UserDashboard extends Component{
                         <Icon name='user' />
                        View Devices
                     </Menu.Item>
-                    <Menu.Item as={Link} to="/dashboard/newdevice">
-                        <Icon name='plus circle' />
-                       Add new Device
+                    <Menu.Item as={Accordion} >
+                        <Accordion.Title style={{color:'white'}} active={this.state.activeIndex === 0} index={0} onClick={this.handleClick}>
+                             <Icon name='dropdown' />
+                                Add  Devices
+                        </Accordion.Title>
+
+                        <Accordion.Content active={this.state.activeIndex === 0}>
+                            <Menu.Item as={Link} to="/dashboard/newdevice">
+                                <Icon name='plus circle' />
+                                Add Single Device
+                            </Menu.Item>
+                            <Menu.Item as={Link} to="/dashboard/bulkdevices">
+                                <Icon name='plus circle' />
+                                Add Multiple Devices
+                            </Menu.Item>
+
+                        </Accordion.Content>
                     </Menu.Item>
                     <Menu.Item as={Link} to="/" onClick={this.props.logoutHandler}>
                         <Icon name='external' />
@@ -41,6 +64,7 @@ class UserDashboard extends Component{
                         <Switch>
                             <Route exact path="/dashboard/landing" component={UserLanding} />
                             <Route exact path="/dashboard/newdevice" component={DeviceUI} />
+                            <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
                         </Switch>
                     </Segment>
                 </Sidebar.Pusher>

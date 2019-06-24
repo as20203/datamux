@@ -76,7 +76,7 @@ class AdminLanding extends Component{
     
         return(
             <React.Fragment>  
-              <Container>                  
+              <Container style={{marginLeft:'0px'}}>                  
                   <ReactTable
                   data={this.state.data}
                   columns={this.columns}

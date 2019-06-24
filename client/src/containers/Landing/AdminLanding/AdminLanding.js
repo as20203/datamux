@@ -11,7 +11,7 @@ class AdminLanding extends Component{
         Header: 'Deviceeui',
         accessor: 'Deviceeui',
         sortable:true,
-        width:250,
+        width:200,
         filterable: true,
         style:{
             textAlign:"center"
@@ -28,7 +28,7 @@ class AdminLanding extends Component{
         {
         Header: "Endpointdest",
         accessor: 'Endpointdest',
-        width:250,
+        width:200,
         style:{
             
             textAlign:"center"
@@ -60,14 +60,7 @@ class AdminLanding extends Component{
               textAlign:"center"
           },
         },
-        // { 
-        //   sortable:false,
-        //   Cell: props =>  <Button color="warning" >Edit</Button>,
-        //   style:{
-        //       textAlign:"center"
-        //   },
-      
-        //},
+       
         { 
           sortable:false,
           Cell: row =>  <Button color="danger" onClick={()=>{this.handleDelete(row.original.Deviceeui)}}>Delete</Button>,
@@ -126,7 +119,7 @@ class AdminLanding extends Component{
     
         return(
             <React.Fragment>  
-              <Container>
+             <Container style={{marginLeft:'0px'}}>
                   {/* <Button color="primary" onClick={this.logoutHandler} style={{ margin: '10px auto',display:'block'}}>Logout</Button> */}
                   
                   <ReactTable

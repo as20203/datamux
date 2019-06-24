@@ -9,6 +9,7 @@ import Dashboard from './containers/Dashboard/Dashboard';
 
 
 
+
 class App extends Component{
   state = {
     user:null
@@ -41,6 +42,8 @@ class App extends Component{
         <Switch>
           <Route exact path="/" component={() => <Login setUser={this.setUser} />}  />
           <Route path="/dashboard" component={() => <Dashboard user={this.state.user} setUser={this.setUser} />}/>
+          
+                          
         </Switch>
       </Router>
     );

@@ -1,4 +1,4 @@
-import { Container , Collapse, Button, Form, FormGroup, Label, Input} from 'reactstrap';
+import { Container , Collapse, Button, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 import axios from 'axios';
 import React,{Component} from 'react';
 
@@ -10,7 +10,8 @@ class DeviceUI extends Component{
         endpointType:'',
         endPointDest:'',
         InclRadio:false,
-        RawData:false
+        RawData:false,
+        message:''
     
     }
 
@@ -19,7 +20,7 @@ class DeviceUI extends Component{
     }
 
     onChange = (event) =>{
-        this.setState({[event.target.name]:event.target.value });
+        this.setState({[event.target.name]:event.target.value,message:'' });
       }
     
       checkBoxHandler = (event)=>{
@@ -32,30 +33,32 @@ class DeviceUI extends Component{
         const newDevice = {Deviceeui:deviceUI,deviceType,endPointDest,endpointType,InclRadio,RawData}
         axios.post('https://cors-anywhere.herokuapp.com/http://63.34.220.189:8081/devices/add',newDevice)
         .then(res=>{
-          axios.get('https://cors-anywhere.herokuapp.com/http://63.34.220.189:8081/devices/show')
-          .then(commData=>{
-            if(commData){
-              this.setState({
-                data:commData.data,
-                deviceUI:'',
-                deviceType:'',
-                endpointType:'',
-                endPointDest:'',
-                InclRadio:false,
-                RawData:false
-              })
-            }
+          this.setState({
+            deviceUI:'',
+            deviceType:'',
+            endpointType:'',
+            endPointDest:'',
+            InclRadio:false,
+            RawData:false,
+            message:'Device Created Successfully'
           })
-         
         })
       }
 
     render(){
+      let message = null;
+      if(this.state.message){
+        message = <Alert color="success">
+                  {this.state.message}
+                </Alert>
+      }
         return(
             <Container>
             <Button  color="primary" onClick={this.toggle} style={{ margin: '10px auto',display:'block'}}>Add</Button>
                 <Collapse isOpen={this.state.collapse}>
+                   
                     <Form style={{margin: '5px auto',width:'70%'}} onSubmit={this.onSubmit}>
+                    {message}
                     <FormGroup>
                         <Label for="exampleEmail">Device UI</Label>
                         <Input

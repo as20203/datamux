@@ -112,7 +112,7 @@ class UserLanding extends Component{
     
         return(
             <React.Fragment>  
-              <Container>
+              <Container style={{marginLeft:'0px'}}>
                 {/* <Button color="primary" onClick={this.logoutHandler} style={{ margin: '10px auto',display:'block'}}>Logout</Button> */}
                   <ReactTable
                   data={this.state.data}

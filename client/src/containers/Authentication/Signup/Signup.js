@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Button,Form,Container,FormGroup, Label, Input} from 'reactstrap'
+import { Button,Form,Container,FormGroup, Label, Input, Alert} from 'reactstrap'
 import './Signup.css'
 import axios from 'axios';
 class Signup extends Component{
@@ -7,11 +7,13 @@ class Signup extends Component{
     username:'',
     password:'',
     email:'',
-    userType:'user'
+    userType:'user',
+    message:''
   };
   onChange = (e) =>{
     this.setState({
-      [e.target.name]:e.target.value
+      [e.target.name]:e.target.value,
+      message:''
     })
   };
   onSubmit = (e) =>{
@@ -24,6 +26,7 @@ class Signup extends Component{
           username:'',
           password:'',
           email:'',
+          message:'User Created Successfully'
         })
       }
     })
@@ -32,11 +35,18 @@ class Signup extends Component{
     })
   };
   render(){
+    let message = null;
+    if(this.state.message){
+      message = <Alert color="success">
+                {this.state.message}
+              </Alert>
+    }
       return(
         // <div style={{margin:'200px auto'}}>
           <Container style={{margin:'200px auto'}}>
           <h1 align="center" as="h1">Signup</h1>
             <Form style={{margin: '5px auto',width:'50%'}} onSubmit={this.onSubmit}>
+              {message}
               <FormGroup>
                   <Label for='username'>Username:</Label>
                   <Input  value={this.state.username}  required={true} onChange={this.onChange} type="text" name="username" id="username" placeholder="Enter your username" />
