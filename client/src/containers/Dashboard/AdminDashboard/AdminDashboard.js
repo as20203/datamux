@@ -1,0 +1,111 @@
+import React, { Component } from 'react';
+import {Icon,Menu, Segment, Sidebar, Accordion } from 'semantic-ui-react';
+import {Link,Switch,Route} from 'react-router-dom';
+import AdminLanding from '../../Landing/AdminLanding/AdminLanding';
+import DeviceUI from '../../DeviceUI/SingleDevice/DeviceUI';
+import MultipleDeviceUI from '../../DeviceUI/BulkDevices/BulkDevices';
+import Signup from '../../Authentication/Signup/Signup';
+import ResetPassword from '../../ResetPassword/ResetPassword';
+import RemoveUser from '../../RemoveUser/RemoveUser';
+import './AdminDashboard.css';
+
+
+class AdminDashboard extends Component{
+    state = { activeIndex: 2 }
+
+    handleClick = (e, titleProps) => {
+        const { index } = titleProps
+        const { activeIndex } = this.state
+        const newIndex = activeIndex === index ? -1 : index
+    
+        this.setState({ activeIndex: newIndex })
+      }
+    
+
+    render() {
+      
+        return (
+            <div>
+                <Sidebar.Pushable as={Segment} style={{minHeight:'160vh',margin:'0px'}}>
+                <Sidebar
+                    as={Menu}
+                    animation='uncover'
+                    icon='labeled'
+                    inverted
+                    vertical
+                    visible={true}
+                    width='thin'
+                >
+                    <Menu.Item as={Link} to="/dashboard/landing">
+                        <Icon name='user' />
+                       View Devices
+                    </Menu.Item>
+                    
+                    <Menu.Item as={Accordion} >
+                        <Accordion.Title style={{color:'white',textAlign:'justify'}} active={this.state.activeIndex === 0} index={0} onClick={this.handleClick}>
+                             <Icon name='dropdown' />
+                                Add  Devices
+                        </Accordion.Title>
+
+                        <Accordion.Content active={this.state.activeIndex === 0}>
+                            <Menu.Item as={Link} to="/dashboard/newdevice">
+                                <Icon name='plus circle' />
+                                Add Single Device
+                            </Menu.Item>
+                            <Menu.Item as={Link} to="/dashboard/bulkdevices">
+                                <Icon name='plus circle' />
+                                Add Multiple Devices
+                            </Menu.Item>
+
+                        </Accordion.Content>
+                        
+                        <Accordion.Title style={{color:'white',textAlign:'justify'}} active={this.state.activeIndex === 1} index={1} onClick={this.handleClick}>
+                             <Icon name='dropdown' />
+                                Set Users
+                        </Accordion.Title>
+
+                        <Accordion.Content active={this.state.activeIndex === 1}>
+                            <Menu.Item as={Link} to="/dashboard/newuser">
+                                <Icon name='user plus' />
+                                Add new User
+                            </Menu.Item>
+                            <Menu.Item as={Link} to="/dashboard/deleteuser">
+                                <Icon name='remove user' />
+                                Remove User
+                            </Menu.Item>
+                            <Menu.Item as={Link} to="/dashboard/resetpassword">
+                                <Icon name='redo' />
+                            Reset Admin Password
+                            </Menu.Item>
+
+                        </Accordion.Content>
+
+                       
+                    </Menu.Item>
+                   
+                    <Menu.Item as={Link} to="/" onClick={this.props.logoutHandler}>
+                        <Icon name='external' />
+                        Logout
+                    </Menu.Item>
+                </Sidebar>
+
+                <Sidebar.Pusher >
+                    <Segment basic>
+                        <Switch>
+                            <Route exact path="/dashboard/landing" component={AdminLanding} />
+                            <Route exact path="/dashboard/newdevice" component={DeviceUI} />
+                            <Route exact path="/dashboard/newuser" component={Signup} />
+                            <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
+                            <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
+                            <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
+                        </Switch>
+                    </Segment>
+                </Sidebar.Pusher>
+                </Sidebar.Pushable>
+            </div>
+        )
+    
+    }
+}
+
+export default AdminDashboard;
