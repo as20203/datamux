@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import axios from 'axios';
 import ReactTable from 'react-table';
 import { Container , Button,} from 'reactstrap';
-//import history from '../../../history';
 class AdminLanding extends Component{
     constructor(props){
       super(props);
@@ -78,19 +77,8 @@ class AdminLanding extends Component{
      
     }
 
-    // logoutHandler = () =>{
-    //     localStorage.clear();
-    //     console.log(localStorage.getItem("Token"));
-    //     this.props.setUser(null);
-    //     history.push("/");
-    // };
-  
-    componentDidMount =() =>{
-<<<<<<< HEAD
+   componentDidMount =() =>{
       axios.get('/devices/show')
-=======
-      axios.get('https://cors-anywhere.herokuapp.com/http://63.34.220.189:8081/devices/show')
->>>>>>> 6346989bf40cc3f6f36826ea18354a275a555ed9
       .then(commData=>{
         this.setState({
           data:commData.data
@@ -124,7 +112,6 @@ class AdminLanding extends Component{
         return(
             <React.Fragment>  
              <Container style={{marginLeft:'0px'}}>
-                  {/* <Button color="primary" onClick={this.logoutHandler} style={{ margin: '10px auto',display:'block'}}>Logout</Button> */}
                   
                   <ReactTable
                   data={this.state.data}

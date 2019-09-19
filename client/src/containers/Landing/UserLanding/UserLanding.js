@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import axios from 'axios';
 import ReactTable from 'react-table';
 import { Container} from 'reactstrap';
-// import history from '../../../history';
 
 class UserLanding extends Component{
     constructor(props){
@@ -71,13 +70,6 @@ class UserLanding extends Component{
      
     }
 
-    // logoutHandler = () =>{
-    //     localStorage.clear();
-    //     console.log(localStorage.getItem("Token"));
-    //     this.props.setUser(null);
-    //     history.push("/");
-    // };
-  
     componentDidMount =() =>{
       axios.get('/devices/show')
       .then(commData=>{
@@ -113,7 +105,6 @@ class UserLanding extends Component{
         return(
             <React.Fragment>  
               <Container style={{marginLeft:'0px'}}>
-                {/* <Button color="primary" onClick={this.logoutHandler} style={{ margin: '10px auto',display:'block'}}>Logout</Button> */}
                   <ReactTable
                   data={this.state.data}
                   columns={this.columns}
