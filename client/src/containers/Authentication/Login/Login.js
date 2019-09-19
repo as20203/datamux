@@ -36,7 +36,6 @@ class Login extends Component{
   };
   render(){
       return(
-        // <div style={{margin:'200px auto'}}>
           <Container style={{margin:'200px auto'}}>
           <h1 align="center" as="h1">Login</h1>
             <Form style={{margin: '5px auto',width:'50%'}} onSubmit={this.onSubmit}>
@@ -51,7 +50,6 @@ class Login extends Component{
               <Button type='submit' style={{ margin: '5px auto',display:'block' }}>Submit</Button>
             </Form>
           </Container> 
-        // </div>
       )
   }
 }

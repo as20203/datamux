@@ -86,7 +86,11 @@ class AdminLanding extends Component{
     // };
   
     componentDidMount =() =>{
+<<<<<<< HEAD
       axios.get('/devices/show')
+=======
+      axios.get('https://cors-anywhere.herokuapp.com/http://63.34.220.189:8081/devices/show')
+>>>>>>> 6346989bf40cc3f6f36826ea18354a275a555ed9
       .then(commData=>{
         this.setState({
           data:commData.data
