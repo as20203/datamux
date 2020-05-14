@@ -24,10 +24,12 @@ router.post('/api/register',checkAuth,(req,res)=>{
             message:"Unauthorized"
         });
     }
+
+  
     User.find({email:req.body.email})
     .exec()
     .then(user=>{
-        
+        console.log(user);
         if(user.length>=1){
             return res.status(420).json({
                 message:"Email Exists"
@@ -76,7 +78,7 @@ router.post('/api/login',(req,res)=>{
     .then(user=>{
         if(user.length<1){
            return res.status(401).json({
-                message:"Auth Failed."
+                message:"Email does not exist"
             });
         }else{
             bcrypt.compare(req.body.password,user[0].password,(err,result)=>{
@@ -105,7 +107,7 @@ router.post('/api/login',(req,res)=>{
                     },)
                 }
                 return res.status(401).json({
-                    message:"Auth Failed"
+                    message:"Invalid Password"
                 });
             })
         }

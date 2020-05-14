@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import axios from 'axios';
+import axios from '../../../instance';
 import ReactTable from 'react-table';
 import { Container} from 'reactstrap';
 
@@ -29,6 +29,7 @@ class UserLanding extends Component{
         Header: "Endpointdest",
         accessor: 'Endpointdest',
         width:250,
+        filterable: true,
         style:{
             
             textAlign:"center"
@@ -83,21 +84,6 @@ class UserLanding extends Component{
 
     }
     
-    handleDelete = (row) =>{
-      const endpoint = '/devices/delete/'+row;
-      axios.delete(endpoint)
-      .then(res=>{  
-        axios.get('/devices/show')
-        .then(commData=>{
-          this.setState({
-            data:commData.data
-          })
-        })
-        .catch(err=>{
-          console.log(err);
-        })
-      })
-    }
   
   
     render(){

@@ -6,7 +6,7 @@ module.exports = function(app) {
     changeOrigin: true,
   }));
   app.use('/devices', proxy({
-    target: 'http://63.34.220.189:8081',
+    target: 'http://datamux.talkpool.io:8081',
     changeOrigin: true,
   }));
 };

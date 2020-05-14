@@ -1,0 +1,45 @@
+.single-device-main .container{
+    margin:0px;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.single-device-main .single-device-form{
+    margin:5px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width:600px;
+   
+}
+
+.single-device-main .btn{
+    margin:10px auto;
+    display: block;
+    
+}
+
+.single-device-main .single-device-form .form-group{
+    width:80%;
+    margin:5px auto;
+
+}
+
+.single-device-main .single-device-form .form-check{
+    width:80%;
+    margin:5px auto;
+
+}
+
+
+@media (max-width:550px) {
+    .single-device-main .single-device-form{
+       width:300px
+    }
+
+
+    
+
+}

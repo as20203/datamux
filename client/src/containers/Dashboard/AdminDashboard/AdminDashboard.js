@@ -23,10 +23,9 @@ class AdminDashboard extends Component{
     
 
     render() {
-      
         return (
-            <div>
-                <Sidebar.Pushable as={Segment} style={{minHeight:'160vh',margin:'0px'}}>
+            <div className='admin-dashboard-main'>
+                <Sidebar.Pushable style={{overflow:'visible'}} as={Segment} className='admin-sidebar-pushable' >
                 <Sidebar
                     as={Menu}
                     animation='uncover'
@@ -34,9 +33,8 @@ class AdminDashboard extends Component{
                     inverted
                     vertical
                     visible={true}
-                    width='thin'
-                >
-                    <Menu.Item as={Link} to="/dashboard/landing">
+                    width='thin'>
+                    <Menu.Item as={Link} to="/dashboard/landingpage">
                         <Icon name='user' />
                        View Devices
                     </Menu.Item>
@@ -90,16 +88,16 @@ class AdminDashboard extends Component{
                 </Sidebar>
 
                 <Sidebar.Pusher >
-                    <Segment basic>
+                    
                         <Switch>
-                            <Route exact path="/dashboard/landing" component={AdminLanding} />
+                            <Route exact path="/dashboard/landingpage" component={AdminLanding} />
                             <Route exact path="/dashboard/newdevice" component={DeviceUI} />
                             <Route exact path="/dashboard/newuser" component={Signup} />
                             <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
                             <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
                             <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
                         </Switch>
-                    </Segment>
+                   
                 </Sidebar.Pusher>
                 </Sidebar.Pushable>
             </div>

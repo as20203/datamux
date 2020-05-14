@@ -20,8 +20,8 @@ class UserDashboard extends Component{
     render() {
       
         return (
-            <div>
-                <Sidebar.Pushable as={Segment} style={{minHeight:'160vh',margin:'0px'}}>
+            <div className='user-dashboard-main'>
+                <Sidebar.Pushable as={Segment} className='user-sidebar-pushable'>
                 <Sidebar
                     as={Menu}
                     animation='push'
@@ -31,7 +31,7 @@ class UserDashboard extends Component{
                     visible={true}
                     width='thin'
                 >
-                    <Menu.Item as={Link} to="/dashboard/landing">
+                    <Menu.Item as={Link} to="/dashboard/landingpage">
                         <Icon name='user' />
                        View Devices
                     </Menu.Item>
@@ -62,7 +62,7 @@ class UserDashboard extends Component{
                 <Sidebar.Pusher >
                     <Segment basic>
                         <Switch>
-                            <Route exact path="/dashboard/landing" component={UserLanding} />
+                            <Route exact path="/dashboard/landingpage" component={UserLanding} />
                             <Route exact path="/dashboard/newdevice" component={DeviceUI} />
                             <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
                         </Switch>

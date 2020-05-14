@@ -1,7 +1,7 @@
 import { Container ,  Button, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 import React,{Component} from 'react';
 import Papa from 'papaparse';
-import axios from 'axios';
+import axios from '../../../instance';
 
 class MultipleDevices extends Component{
     state={
@@ -9,7 +9,7 @@ class MultipleDevices extends Component{
         csvData:[],
         message:'',
         completedMessage:'',
-        uploadSuccessMessage:''
+        uploadSuccessMessage:'',
     }
 
     toggle = ()=> {
@@ -22,10 +22,10 @@ class MultipleDevices extends Component{
 
     handleFileChange = event => {
         this.setState({
-          csvfile: event.target.files[0],
+          csvFile: event.target.files[0],
           message:'',
           completedMessage:'',
-          uploadSuccessMessage:''
+          uploadSuccessMessage:'',
           
         });
     };
@@ -43,25 +43,26 @@ class MultipleDevices extends Component{
                 Endpointtype:csvData[i].Endpointtype,
                 Endpointdest:csvData[i].Endpointdest,
                 InclRadio:csvData[i].InclRadio==="true"?true:false,
-                RawData:csvData[i].RawData==="true"?true:false
+                RawData:csvData[i].RawData==="true"?true:false,
+                AccessToken:(csvData[i].AccessToken!==""&&csvData[i].AccessToken.length===10)?csvData[i].AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()
             }
             const response = await axios.post('/devices/add',data)
            if(response){
             added=added+1;
             if(added===csvData.length){
                this.setState({
-                   completedMessage:"All Devices Added"
+                   completedMessage:"All Devices Added",
                })
             }
            }      
         } 
     }
     importCSV = () => {
-        const { csvfile } = this.state;
-        if(!csvfile){
+        const { csvFile } = this.state;
+        if(!csvFile){
             return;
         }
-        Papa.parse(csvfile, {
+        Papa.parse(csvFile, {
           complete: this.updateData,
           header: true
         });
@@ -71,12 +72,14 @@ class MultipleDevices extends Component{
         let data = result.data;
         const validCSV = data.every(item=> item.hasOwnProperty("Deviceeui") && item.hasOwnProperty('Devicetype')
         && item.hasOwnProperty("Endpointtype") && item.hasOwnProperty("Endpointdest") && item.hasOwnProperty("InclRadio") && item.hasOwnProperty("RawData")
+        && item.hasOwnProperty("AccessToken")
         );
         if(!validCSV){
             const message = 'Invalid CSV format Follow Instructions';
             this.setState({
                 message:message,
-                success:true
+                success:true,
+                csvFile:null,
             })
         }else{
             
@@ -117,10 +120,10 @@ class MultipleDevices extends Component{
                         {completedMessage}
                         <Label for="exampleDevice">Select CSV File</Label>
                         <Alert color="primary">
-                                Header Format:Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData
+                                Header Format:Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken
                          </Alert>
                         <div style={{display:'inline'}}>
-                            <Input required={true} style={{display:'inline',width:'25%'}}  type='file' accept={".csv"} onChange={this.handleFileChange} placeholder={null} />
+                            <Input required={true} style={{display:'inline',width:'25%'}}  type='file' accept={".csv"}  onChange={this.handleFileChange} onClick={(e)=>e.target.value=null}  placeholder={this.state.csvName} />
                             {message}
 
                             <Button onClick={this.importCSV}> Upload now!</Button>
@@ -129,7 +132,7 @@ class MultipleDevices extends Component{
                     </FormGroup> 
                        
                         
-                        <Button color='primary' type='submit' style={{ margin: '70px auto',display:'block' }}>Submit</Button>
+                        <Button  color='primary' type='submit' style={{ margin: '70px auto',display:'block' }}>Submit</Button>
                     </Form>
             </Container>
         )

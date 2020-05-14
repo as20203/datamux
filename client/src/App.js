@@ -23,7 +23,12 @@ class App extends Component{
           history.push("/");
         } else {
             this.setState({user: result.data.user});
-            history.push("/dashboard");
+            const currentPath = history.location.pathname;
+           if(currentPath==='/'){
+             history.push("/dashboard")
+           }else{
+            history.push(currentPath);
+           }    
         }
       })
     }
