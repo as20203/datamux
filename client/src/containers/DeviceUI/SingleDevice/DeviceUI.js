@@ -63,10 +63,11 @@ class DeviceUI extends Component{
           disable:true
         })
         const {deviceUI,deviceType,endpoint,InclRadio,RawData,AccessToken} = this.state;
+
           if(endpoint.length>0){
-            if(this.state.AccessToken.length===10){
-              const endPointDest = endpoint.map(endpoint=> endpoint.endPointDest).join("|").trim();
-              const endpointType = endpoint.map(endpoint=> endpoint.endpointType).join("|").trim();
+            if(this.state.AccessToken.length===10 &&  /((([A-Z]|\d){2}-){7})([A-Z]|\d){2}/.test(deviceUI)){
+              const endPointDest = endpoint.map(endpoint=> endpoint.endPointDest.trim()).join("|").trim();
+              const endpointType = endpoint.map(endpoint=> endpoint.endpointType.trim()).join("|").trim();
               const newDevice = {Deviceeui:deviceUI,deviceType,endPointDest,endpointType,InclRadio,RawData,AccessToken}
               axios.post('/devices/add',newDevice)
               .then(res=>{
@@ -84,7 +85,8 @@ class DeviceUI extends Component{
             }
           }else{
             this.setState({
-              message:'Set Atleast One Endpoint'
+              message:'Set Atleast One Endpoint',
+              disable:null,
             })
           }
          
@@ -106,8 +108,9 @@ class DeviceUI extends Component{
                       
                         <Form className='single-device-form'  onSubmit={this.onSubmit}>
                           {message}
-                          <InputFormGroup  Label="Device UI" pattern="((([A-Z]|[0-9])([A-Z]|[0-9])-){7})([A-Z]|[0-9])([A-Z]|[0-9])"
-                          required={true}  value={this.state.deviceUI}  onChange={this.onChange}  title="Format:70-B3-D5-D7-20-04-03-9A"  type="text" name="deviceUI"
+                          <InputFormGroup  Label="Device UI" pattern="((([A-Z]|\d){2}-){7})([A-Z]|\d){2}"
+                          required={true}  value={this.state.deviceUI}  onChange={this.onChange}  
+                          title="Format:70-B3-D5-D7-20-04-03-9A"  type="text" name="deviceUI"
                           placeholder="Enter your Device UI"   />
 
                           <InputFormGroup Label="Access Token"

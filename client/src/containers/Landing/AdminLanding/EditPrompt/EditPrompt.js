@@ -61,8 +61,8 @@ const ModalExampleScrollingContent = (props) => {
         if(endpoint.length>0){
             if(accessToken.length===10){
                 setDisable(true);
-                const endPointDest = endpoint.map(endpoint=> endpoint.endPointDest).join("|").trim();
-                const endpointType = endpoint.map(endpoint=> endpoint.endpointType).join("|").trim();
+                const endPointDest = endpoint.map(endpoint=> endpoint.endPointDest.trim()).join("|").trim();
+                const endpointType = endpoint.map(endpoint=> endpoint.endpointType.trim()).join("|").trim();
                 const updatedDevice = {Deviceeui:deviceUI,deviceType,endPointDest,endpointType,InclRadio,RawData,AccessToken:accessToken}
                 const deleteEndpoint = '/devices/delete/'+deviceUI;
                 axios.delete(deleteEndpoint)
@@ -78,16 +78,19 @@ const ModalExampleScrollingContent = (props) => {
                         .catch(err=>{
                             console.log(err);
                             setOpen(open=>!open);
+                            setDisable(false);
                         })
                 })
                 .catch(err=>{
                     console.log(err);
                     setMessage("Cannot Create Device")
+                    setDisable(false);
                 })
                 })
                 .catch(err=>{
                     console.log(err);
                     setMessage("Cannot Delete Device")
+                    setDisable(false);
                 }) 
             }
         }else{
