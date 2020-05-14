@@ -25,7 +25,7 @@ class AdminDashboard extends Component{
     render() {
         return (
             <div className='admin-dashboard-main'>
-                <Sidebar.Pushable style={{overflow:'visible'}} as={Segment} className='admin-sidebar-pushable' >
+                <Sidebar.Pushable style={{overflowX:window.matchMedia("(max-width: 500px)").matches?'scroll':'visible'}} as={Segment} className='admin-sidebar-pushable' >
                 <Sidebar
                     as={Menu}
                     animation='uncover'

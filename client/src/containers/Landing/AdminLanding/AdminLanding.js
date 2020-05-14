@@ -131,7 +131,7 @@ class AdminLanding extends Component{
     render(){
         return(
             <React.Fragment>  
-             <Container style={{marginLeft:'0px'}}>
+             <Container style={{marginLeft:'0px',maxWidth:'fit-content'}}>
                   
              <ReactTable
                 data={this.state.data}
