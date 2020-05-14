@@ -1,8 +1,12 @@
 import './DeviceUI.css'
-import { Container , Collapse, Button, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
+import { Container , Collapse, Button, Form, Alert} from 'reactstrap';
 import axios from '../../../instance';
 import React,{Component} from 'react';
-
+import InputFormGroup from '../../Generic/Form/InputFormGroup/InputFormGroup';
+import OptionFormGroup from '../../Generic/Form/OptionFormGroup/OptionFormGroup';
+import {deviceTypes} from '../../../utils/Devices';
+import Endpoint from '../../Generic/Endpoint/Endpoint';
+import CheckBoxFormGroup from '../../Generic/Form/CheckBoxFormGroup/CheckBoxFormGroup';
 class DeviceUI extends Component{
     state={
         collapse:false,
@@ -14,7 +18,6 @@ class DeviceUI extends Component{
         message:'',
         AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),
         disable:false
-    
     }
 
     toggle = ()=> {
@@ -23,38 +26,36 @@ class DeviceUI extends Component{
 
     onChange = (event) =>{
         this.setState({[event.target.name]:event.target.value,message:'' });
-        
-
-      }
+    }
     
-      checkBoxHandler = (event)=>{
-        this.setState({[event.target.name]:event.target.checked });
-      }
+    checkBoxHandler = (event)=>{
+      this.setState({[event.target.name]:event.target.checked });
+    }
 
-      handleChange = (e,index)=>{
-        const [name] = [e.target.name];
-        const updatedEndpoint = this.state.endpoint;
-        updatedEndpoint[index][name]= e.target.value;
-        this.setState({
-          endpoint:updatedEndpoint
-        }) 
-      }
+    handleChange = (e,index)=>{
+      const [name] = [e.target.name];
+      const updatedEndpoint = this.state.endpoint;
+      updatedEndpoint[index][name]= e.target.value;
+      this.setState({
+        endpoint:updatedEndpoint
+      }) 
+    }
 
-      addEndpoint = () =>{
-        this.setState(prevState => ({
-          endpoint:[...prevState.endpoint,{endpointType:'',endPointDest:''}],
-          message:''
-        }));
-      }
+    addEndpoint = () =>{
+      this.setState(prevState => ({
+        endpoint:[...prevState.endpoint,{endpointType:'',endPointDest:''}],
+        message:''
+      }));
+    }
 
-      removeEndpoint = () =>{
-        const updatedEndpoints = this.state.endpoint;
-        updatedEndpoints.pop();
-        this.setState({
-          endpoint:updatedEndpoints,
-          message:''
-        }) 
-      }
+    removeEndpoint = () =>{
+      const updatedEndpoints = this.state.endpoint;
+      updatedEndpoints.pop();
+      this.setState({
+        endpoint:updatedEndpoints,
+        message:''
+      }) 
+    }
     
       onSubmit = async(e) =>{
         e.preventDefault();
@@ -104,99 +105,31 @@ class DeviceUI extends Component{
                     <Collapse isOpen={this.state.collapse}>
                       
                         <Form className='single-device-form'  onSubmit={this.onSubmit}>
-                        {message}
-                        <FormGroup>
-                            <Label for="exampleEmail">Device UI</Label>
-                            <Input
-                            pattern="([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])" 
-                            required={true} 
-                            value={this.state.deviceUI}
-                            onChange={this.onChange} 
-                            title="Format:70-B3-D5-D7-20-04-03-9A"
-                            type="text" name="deviceUI" id="exampleEmail" placeholder="Enter your Device UI" />
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="exampleToken">Access Token</Label>
-                            <Input
-                            pattern="(?=.*\d)((?=.*[a-z])|(?=.*[A-Z])).{10}"
-                            required={true} 
-                            value={this.state.AccessToken}
-                            onChange={this.onChange} 
-                            title="Length should be 10 characters with atleast one digit and 
-                                  upper or lowercase letter"
-                            type="text" name="AccessToken" id="exampleToken" placeholder="Enter your Device UI" />
-                        </FormGroup>
+                          {message}
+                          <InputFormGroup  Label="Device UI" 
+                          pattern="([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])"
+                          required={true}  value={this.state.deviceUI}  onChange={this.onChange}  title="Format:70-B3-D5-D7-20-04-03-9A"  type="text" name="deviceUI"
+                          placeholder="Enter your Device UI"   />
 
-                      
-                        <FormGroup>
-                            <Label for="exampleDevice">Select Device Type</Label>
-                            <Input  value={this.state.deviceType} required={true} onChange={this.onChange} type="select" name="deviceType" id="exampleDevice">
-                            <option> </option>
-                            <option>OY1100</option>
-                            <option>OY1110</option>
-                            <option>OY1210</option>
-                            <option>OY1310</option>
-                            <option>OY1320</option> 
-                            <option>OY1700</option>
-                            <option>UNKNOWN</option>
-                            <option>OY1400</option>
-                            <option>OY1410</option>
-                            <option>SmartValve</option>
-                            <option>LR210</option>
-                            <option>OY1600V1</option>
-                            <option>WaterIWMLR3</option>
-                            <option>DigimondoMeter</option>
-                            <option>OY1320V1</option>
-                            <option>LandisGyr</option>
-                            <option>OY1200</option>
-                            <option>TetraedreMBUS</option>
-                            </Input>
-                        </FormGroup>
-                        
-                        <div style={{display:'flex',justifyContent:'flex-start',width:'80%',margin:'5px auto'}}>
-                        <Button style={{margin:'auto 0'}}  onClick={this.addEndpoint} type='button' outline color="primary">Add Endpoint</Button>{' '}
-                        {this.state.endpoint.length>1?<Button style={{margin:'auto 0 auto 5px'}}  onClick={this.removeEndpoint} type='button' outline color="danger">Remove Endpoint</Button>:null}
-                        </div>
+                          <InputFormGroup Label="Access Token"
+                          pattern="(?=.*\d)((?=.*[a-z])|(?=.*[A-Z])).{10}" required={true}
+                          value={this.state.AccessToken}  onChange={this.onChange} 
+                          title="Length should be 10 characters with atleast one digit and upper or lowercase letter"
+                          type="text" name="AccessToken"  placeholder="Enter Access Token" />
 
-                        {
-                          this.state.endpoint.map((endpoint,index)=>{
-                            return(
-                              <div  key={index}>
-                              <FormGroup>
-                                <Label for="examplePoint">Select Endpoint Type</Label>
-                                <Input  value={endpoint.endpointType} required={true} onChange={(e)=>this.handleChange(e,index)} type="select" name="endpointType" >
-                                <option> </option>
-                                <option>CORLYSIS</option>
-                                <option>HTTP</option>
-                                <option>FIWARE</option>
-                                <option>THINGSBOARD</option>
-                                <option>MQTT</option>
-                                </Input>
-                              </FormGroup>
-                                <FormGroup>
-                                <Label for='endPointDest'>End Point Destination</Label>
-                                <Input  value={endpoint.endPointDest}  required={true} onChange={(e)=>this.handleChange(e,index)} type="text" name="endPointDest"  placeholder="Enter your Device UI" />
-                              </FormGroup>
-                              </div>
-                            )
-                          })
-                        }
+                          <OptionFormGroup Label={"Select Device Type"} value={this.state.deviceType} required={true} onChange={this.onChange} type="select" name="deviceType" options={deviceTypes} />
                        
-                            <FormGroup check>
-                            <Label check>
-                                <Input   onChange={this.checkBoxHandler} name='InclRadio' type="checkbox" />{' '}
-                                InclRadio 
-                            </Label>
-                            </FormGroup>
-                            <FormGroup check>
-                            <Label check>
-                                <Input   onChange={this.checkBoxHandler} name='RawData' type="checkbox" />{' '}
-                                Raw Data 
-                            </Label>
-                            </FormGroup>
-                            <Button disabled={this.state.disable} type='submit' style={{ margin: '5px auto',display:'block' }}>
-                              {this.state.disable?"Submitting":"Submit"}</Button>
-                        </Form>
+                          <Endpoint addEndpoint={this.addEndpoint}  removeEndpoint={this.removeEndpoint} endpoint={this.state.endpoint} OptionsLabel="Select Endpoint Type" InputLabel="Select Endpoint Destination" 
+                          required={true} handleChange={this.handleChange} inputType='text' optionType='select'
+                          InputPlaceholer="Select Endpoint Destination" OptionsPlaceholder="Select Endpoint Type"
+                          OptionsName = "endpointType" InputName="endPointDest"
+                          />
+                          <CheckBoxFormGroup Label="InclRadio" checkBoxHandler={this.checkBoxHandler} name='InclRadio' type="checkbox"  />
+                          <CheckBoxFormGroup Label="RawData" checkBoxHandler={this.checkBoxHandler} name='RawData' type="checkbox"  />
+
+                          <Button disabled={this.state.disable} type='submit' style={{ margin: '5px auto',display:'block' }}>
+                            {this.state.disable?"Submitting":"Submit"}</Button>
+                        </Form> 
                     </Collapse>
               </Container>
             </div>

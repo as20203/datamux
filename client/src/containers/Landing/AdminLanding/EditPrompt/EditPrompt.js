@@ -1,11 +1,15 @@
 import React,{useState,useEffect} from 'react';
 import './EditPrompt.css';
-import { Container , Alert, Form, FormGroup, Label, Input,Button as ReactStrapButton} from 'reactstrap';
+import { Container , Alert, Form} from 'reactstrap';
 import { Button,  Modal, Header } from 'semantic-ui-react';
 import axios from '../../../../instance';
+import {deviceTypes} from '../../../../utils/Devices';
+import Endpoint from '../../../Generic/Endpoint/Endpoint';
+import InputFormGroup from '../../../Generic/Form/InputFormGroup/InputFormGroup';
+import OptionFormGroup from '../../../Generic/Form/OptionFormGroup/OptionFormGroup';
+import CheckBoxFormGroup from '../../../Generic/Form/CheckBoxFormGroup/CheckBoxFormGroup';
 
 const ModalExampleScrollingContent = (props) => {
-
     const [open,setOpen]               = useState(false);
     const [deviceUI,setDeviceUi]       = useState('');
     const [deviceType,setDeviceType]   = useState('');
@@ -22,8 +26,7 @@ const ModalExampleScrollingContent = (props) => {
         setEndpoint(updatedEndpoint)
     }
 
-    useEffect(()=>{
-       
+    useEffect(()=>{ 
         setDeviceUi(props.rowData.Deviceeui);
         setDeviceType(props.rowData.Devicetype);
         setAccessToken(props.rowData.AccessToken);
@@ -38,9 +41,7 @@ const ModalExampleScrollingContent = (props) => {
         })
         setInclRadio(props.rowData.InclRadio);
         setRawData(props.rowData.RawData);
-    },[props.rowData.AccessToken,props.rowData.Deviceeui,props.rowData.Devicetype,
-        props.rowData.Endpointtype,props.rowData.Endpointdest,props.rowData.InclRadio,props.rowData.RawData])
-
+    },[props])
 
     const  addEndpoint = () =>{
         setEndpoint(endpoint=>[...endpoint,{endpointType:'',endPointDest:''}])
@@ -55,7 +56,7 @@ const ModalExampleScrollingContent = (props) => {
         });
     }
     
-    const  onSubmit = async(e) =>{
+    const onSubmit = async(e) =>{
         e.preventDefault();
         if(endpoint.length>0){
             if(accessToken.length===10){
@@ -99,108 +100,25 @@ return(
     <Modal.Content style={{display:'flex',justifyContent:'center'}} image scrolling>
         <div className='single-device-main'>
             <Container>  
-
                 <Form className='single-device-form'  onSubmit={onSubmit}>
-                <Header textAlign={"center"} as='h1'>Edit Device:- {deviceUI}</Header>
-                {message?<Alert color="success">{message}</Alert>:null}
-                <FormGroup>
-                    <Label for="exampleToken">Access Token</Label>
-                    <Input
-                    pattern="(?=.*\d)((?=.*[a-z])|(?=.*[A-Z])).{10}"
-                    required={true} 
-                    value={accessToken.toString()}
-                    onChange={(e)=>setAccessToken(e.target.value)} 
-                    title="Length should be 10 characters with atleast one digit and 
-                            upper or lowercase letter"
-                    type="text" name="AccessToken" id="exampleToken" placeholder="Enter your Access Token" />
-                </FormGroup>
+                    <Header textAlign={"center"} as='h1'>Edit Device:- {deviceUI}</Header>
+                    {message?<Alert color="success">{message}</Alert>:null}
+                    <InputFormGroup Label="Access Token"
+                            pattern="(?=.*\d)((?=.*[a-z])|(?=.*[A-Z])).{10}" required={true}
+                            value={accessToken.toString()}  onChange={(e)=>setAccessToken(e.target.value)} 
+                            title="Length should be 10 characters with atleast one digit and upper or lowercase letter"
+                            type="text" name="AccessToken"  placeholder="Enter Access Token" />
 
-                
-                <FormGroup>
-                    <Label for="exampleDevice">Select Device Type</Label>
-                    <Input  
-                    value={deviceType} 
-                    required={true} 
-                    onChange={(e)=>setDeviceType(e.target.value)} 
-                    type="select" name="deviceType" id="exampleDevice">
-                    <option> </option>
-                    <option>OY1100</option>
-                    <option>OY1110</option>
-                    <option>OY1210</option>
-                    <option>OY1310</option>
-                    <option>OY1320</option> 
-                    <option>OY1700</option>
-                    <option>UNKNOWN</option>
-                    <option>OY1400</option>
-                    <option>OY1410</option>
-                    <option>SmartValve</option>
-                    <option>LR210</option>
-                    <option>OY1600V1</option>
-                    <option>WaterIWMLR3</option>
-                    <option>DigimondoMeter</option>
-                    <option>OY1320V1</option>
-                    <option>LandisGyr</option>
-                    <option>OY1200</option>
-                    <option>TetraedreMBUS</option>
-                    
-                    
-                    </Input>
-                </FormGroup>
-                
-                <div style={{display:'flex',justifyContent:'flex-start',width:'80%',margin:'5px auto'}}>
-                <ReactStrapButton style={{margin:'auto 0'}}  onClick={addEndpoint} type='button' outline color="primary">Add Endpoint</ReactStrapButton>{' '}
-                {endpoint.length>1?<ReactStrapButton style={{margin:'auto 0 auto 5px'}}  onClick={removeEndpoint} type='button' outline color="danger">Remove Endpoint</ReactStrapButton>:null}
-                </div>
+                    <OptionFormGroup Label="Select Device Type" value={deviceType} required={true}    onChange={(e)=>setDeviceType(e.target.value)}  type="select" name="deviceType" options={deviceTypes} />
 
-                {
-                    endpoint.map((endpoint,index)=>{
-                    return(
-                        <div  key={index}>
-                            <FormGroup>
-                            <Label for="examplePoint">Select Endpoint Type</Label>
-                            <Input  
-                            value={endpoint.endpointType} 
-                            required={true}
-                                onChange={(e)=>handleChange(e,index)} 
-                                type="select" name="endpointType">
-                            <option> </option>
-                            <option>CORLYSIS</option>
-                            <option>HTTP</option>
-                            <option>FIWARE</option>
-                            <option>THINGSBOARD</option>
-                            <option>MQTT</option>
-                            </Input>
-                            </FormGroup>
-                            <FormGroup>
-                            <Label for='endPointDest'>End Point Destination</Label>
-                            <Input  
-                            value={endpoint.endPointDest} 
-                                required={true} 
-                                onChange={(e)=>handleChange(e,index)} 
-                                type="text" name="endPointDest" placeholder="Enter your Device UI" />
-                            </FormGroup>
-                        </div>
-                    )
-                    })
-                }
-                
-                    <FormGroup check>
-                    <Label check>
-                        <Input   
-                        onChange={(e)=>setInclRadio(e.target.checked)} 
-                        name='InclRadio' type="checkbox" checked={InclRadio} />{' '}
-                        InclRadio 
-                    </Label>
-                    </FormGroup>
-                    <FormGroup check>
-                    <Label check>
-                        <Input   
-                        onChange={(e)=>setRawData(e.target.checked)} 
-                        name='RawData' type="checkbox" checked={RawData} />{' '}
-                        Raw Data 
-                    </Label>
-                    </FormGroup>
-                    <Button disabled={disable} color={'blue'} type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?"Submitting":"Submit"}</Button>
+                    <Endpoint addEndpoint={addEndpoint}  removeEndpoint={removeEndpoint} endpoint={endpoint} OptionsLabel="Select Endpoint Type" InputLabel="Select Endpoint Destination" 
+                            required={true} handleChange={handleChange} inputType='text' optionType='select'
+                            InputPlaceholer="Select Endpoint Destination" OptionsPlaceholder="Select Endpoint Type"
+                            OptionsName = "endpointType" InputName="endPointDest"/>
+                    
+                    <CheckBoxFormGroup checked={InclRadio} Label="InclRadio" checkBoxHandler={(e)=>setInclRadio(e.target.checked)} name='InclRadio' type="checkbox"  />
+                    <CheckBoxFormGroup checked={RawData} Label="RawData" checkBoxHandler={(e)=>setRawData(e.target.checked)} name='RawData' type="checkbox"  />
+                        <Button disabled={disable} color={'blue'} type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?"Submitting":"Submit"}</Button>
                 </Form>
                    
             </Container>
