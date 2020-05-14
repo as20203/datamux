@@ -136,6 +136,7 @@ class AdminLanding extends Component{
              <ReactTable
                 data={this.state.data}
                 columns={this.columns}
+                showPaginationTop={true}
                 minRows={8} 
                 className="-striped -highlight"
                 defaultFilterMethod= {(filter, row) =>row[filter.id].toLowerCase().includes(filter.value.toLowerCase())}   

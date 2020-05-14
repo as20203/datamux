@@ -106,8 +106,7 @@ class DeviceUI extends Component{
                       
                         <Form className='single-device-form'  onSubmit={this.onSubmit}>
                           {message}
-                          <InputFormGroup  Label="Device UI" 
-                          pattern="([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])-([A-Z]|[0-9])([A-Z]|[0-9])"
+                          <InputFormGroup  Label="Device UI" pattern="((([A-Z]|[0-9])([A-Z]|[0-9])-){7})([A-Z]|[0-9])([A-Z]|[0-9])"
                           required={true}  value={this.state.deviceUI}  onChange={this.onChange}  title="Format:70-B3-D5-D7-20-04-03-9A"  type="text" name="deviceUI"
                           placeholder="Enter your Device UI"   />
 

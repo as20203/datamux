@@ -54,7 +54,6 @@ class AdminDashboard extends Component{
                                 <Icon name='plus circle' />
                                 Add Multiple Devices
                             </Menu.Item>
-
                         </Accordion.Content>
                         
                         <Accordion.Title style={{color:'white',textAlign:'justify'}} active={this.state.activeIndex === 1} index={1} onClick={this.handleClick}>
