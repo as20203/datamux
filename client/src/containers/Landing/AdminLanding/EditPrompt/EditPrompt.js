@@ -63,29 +63,25 @@ const ModalExampleScrollingContent = (props) => {
                 setDisable(true);
                 const endPointDest = endpoint.map(endpoint=> endpoint.endPointDest.trim()).join("|").trim();
                 const endpointType = endpoint.map(endpoint=> endpoint.endpointType.trim()).join("|").trim();
-                const updatedDevice = {Deviceeui:deviceUI,deviceType,endPointDest,endpointType,InclRadio,RawData,AccessToken:accessToken}
+                const updatedDevice = {Deviceeui:deviceUI,Devicetype:deviceType,Endpointdest:endPointDest,Endpointtype:endpointType,InclRadio,RawData,AccessToken:accessToken}
                 const deleteEndpoint = '/devices/delete/'+deviceUI;
                 axios.delete(deleteEndpoint)
                 .then(()=>{  
+                    const index = props.data.findIndex(d=>d.Deviceeui===deviceUI);
+                    const updatedDevices = [...props.data]
+                    updatedDevices.splice(index,1);
                     axios.post('/devices/add',updatedDevice)
-                .then(res=>{
-                        axios.get('/devices/show')
-                        .then(commData=>{
-                            props.setData(commData.data)
+                    .then(res=>{
+                            updatedDevices.push(updatedDevice);
+                            props.setData(updatedDevices)
                             setOpen(open=>!open);
                             setDisable(false);
-                        })
-                        .catch(err=>{
-                            console.log(err);
-                            setOpen(open=>!open);
-                            setDisable(false);
-                        })
-                })
-                .catch(err=>{
-                    console.log(err);
-                    setMessage("Cannot Create Device")
-                    setDisable(false);
-                })
+                    })
+                    .catch(err=>{
+                        console.log(err);
+                        setMessage("Cannot Create Device")
+                        setDisable(false);
+                    })
                 })
                 .catch(err=>{
                     console.log(err);
@@ -95,6 +91,7 @@ const ModalExampleScrollingContent = (props) => {
             }
         }else{
             setMessage("Select Atleast One Endpoint")
+            setDisable(false);
         }
     }
 

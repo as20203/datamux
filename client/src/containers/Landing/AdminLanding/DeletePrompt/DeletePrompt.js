@@ -11,23 +11,19 @@ const ModalExampleCloseIcon = (props) => {
       setDisable(true);
         const endpoint = '/devices/delete/'+row;
         axios.delete(endpoint)
-        .then(()=>{  
-          axios.get('/devices/show')
-          .then(commData=>{
-            props.setData(commData.data)
-            setOpen(open=>!open);
-            setDeleteMessage("");
-            setDisable(false);
-          })
-          .catch(err=>{
-            console.log(err);
-            setOpen(open=>!open);
-          })
+        .then(()=>{ 
+          const index = props.data.findIndex(d=>d.Deviceeui===props.rowData.Deviceeui);
+          const updatedDevices = [...props.data]
+          updatedDevices.splice(index,1);
+          props.setData(updatedDevices);
+          setOpen(open=>!open);
+          setDeleteMessage("");
+          setDisable(false); 
         })
         .catch(err=>{
             console.log(err);
             setDeleteMessage("Cannot Delete Device")
-
+            setDisable(false); 
         })
       }
   

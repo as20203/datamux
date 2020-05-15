@@ -78,7 +78,7 @@ class AdminLanding extends Component{
       { 
         Header:'Delete',
         sortable:false,
-        Cell: row =>  <DeletePrompt setData={this.setData}  rowData={row.original} />,
+        Cell: row =>  <DeletePrompt data={this.state.data} setData={this.setData}  rowData={row.original} />,
         width:100,
         style:{
             textAlign:"center",
@@ -89,7 +89,7 @@ class AdminLanding extends Component{
       { 
         Header:'Edit',
         sortable:false,
-        Cell: row =>  <EditPrompt setData={this.setData}  rowData={row.original} />,
+        Cell: row =>  <EditPrompt data={this.state.data} setData={this.setData}  rowData={row.original} />,
         width:100,
         style:{
             textAlign:"center",
