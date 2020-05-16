@@ -3,7 +3,7 @@ const port = process.env.PORT || 5000;
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const seedDB = require('./backend/seedData/SeedData');
-
+const path = require('path');
 const app = express();
 
 //Connect to a database
@@ -27,5 +27,5 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
-
+// "NODE_PATH":"src"
 app.listen(port, () => console.log(`Listening on port ${port}`));

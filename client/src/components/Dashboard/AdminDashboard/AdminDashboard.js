@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Icon,Menu, Segment, Sidebar, Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
-import AdminLanding from 'components/Landing/AdminLanding/AdminLanding';
+import Landing from 'components/Landing/Landing';
 import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
 import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
 import Signup from 'components/Authentication/Signup/Signup';
@@ -89,7 +89,7 @@ class AdminDashboard extends Component{
                 <Sidebar.Pusher >
                     
                         <Switch>
-                            <Route exact path="/dashboard/landingpage" component={AdminLanding} />
+                            <Route exact path="/dashboard/landingpage" render={(props)=><Landing {...props} user={this.props.user} />} />
                             <Route exact path="/dashboard/newdevice" component={DeviceUI} />
                             <Route exact path="/dashboard/newuser" component={Signup} />
                             <Route exact path="/dashboard/resetpassword" component={ResetPassword} />

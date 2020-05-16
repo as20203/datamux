@@ -12,10 +12,10 @@ class Dashboard extends Component{
   render(){
     const {user} = this.props;
     if(user && user.userType === "admin") {
-      return <Admin logoutHandler={this.logoutHandler} />
+      return <Admin user={user} logoutHandler={this.logoutHandler} />
     } 
     else if(user && user.userType === "user") {
-      return <User logoutHandler={this.logoutHandler}/>
+      return <User user={user} logoutHandler={this.logoutHandler}/>
     }
     return null;
   }

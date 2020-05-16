@@ -1,141 +1,86 @@
 import { Container ,  Button, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
-import React,{Component} from 'react';
+import React,{useState} from 'react';
 import Papa from 'papaparse';
 import axios from 'instance';
 
-class MultipleDevices extends Component{
-    state={
-        csvFile:null,
-        csvData:[],
-        message:'',
-        completedMessage:'',
-        uploadSuccessMessage:'',
-    }
+const MultipleDevices= ()=>{
+    const [message,setMessage] = useState('');
+    const [completedMessage,setCompletedMessage] = useState('');
+    const [uploadMessage,setUploadMessage] = useState('');
+    const [csvFile,setcsvFile] = useState(null);
+    const [csvData,setcsvData] = useState([]);
+    const [disable,setDisable] = useState(false);
 
-    toggle = ()=> {
-        this.setState((prevState, props) => ({collapse:!prevState.collapse}))
-    }
-
-    onChange = (event) =>{
-        this.setState({[event.target.name]:parseInt(event.target.value) });
-    }
-
-    handleFileChange = event => {
-        this.setState({
-          csvFile: event.target.files[0],
-          message:'',
-          completedMessage:'',
-          uploadSuccessMessage:'',
-          
-        });
+    const handleFileChange = event => {
+        setMessage('');
+        setCompletedMessage('')
+        setUploadMessage('')
+        setcsvFile(event.target.files[0]);
     };
     
-    onSubmit = async(e) =>{
+    const onSubmit = async(e) =>{
         e.preventDefault();
-        const {csvData} = this.state;
-       
-        
-        let i,added=0;
-        for (i = 0; i < csvData.length; i++) {
-            const data = {
-                Deviceeui:csvData[i].Deviceeui,
-                Devicetype:csvData[i].Devicetype,
-                Endpointtype:csvData[i].Endpointtype,
-                Endpointdest:csvData[i].Endpointdest,
-                InclRadio:csvData[i].InclRadio==="true"?true:false,
-                RawData:csvData[i].RawData==="true"?true:false,
-                AccessToken:(csvData[i].AccessToken!==""&&csvData[i].AccessToken.length===10)?csvData[i].AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()
-            }
-            const response = await axios.post('/devices/add',data)
-           if(response){
-            added=added+1;
-            if(added===csvData.length){
-               this.setState({
-                   completedMessage:"All Devices Added",
-               })
-            }
-           }      
-        } 
+        setDisable(true);
+        await Promise.all(
+            csvData.map(async record=>{
+                const updatedRecord= {
+                   ...record,
+                    InclRadio:record.InclRadio==="true"?true:false,
+                    RawData:record.RawData==="true"?true:false,
+                    AccessToken:(record.AccessToken!==""&&record.AccessToken.length===10)?record.AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()
+                }
+                await axios.post('/devices/add',updatedRecord)
+            })
+        )
+        .then(()=>{
+            setCompletedMessage("All Devices Added")
+            setDisable(false);
+        })
     }
-    importCSV = () => {
-        const { csvFile } = this.state;
+    const importCSV = () => {
         if(!csvFile){
             return;
         }
         Papa.parse(csvFile, {
-          complete: this.updateData,
+          complete: updateData,
           header: true
         });
     };
 
-    updateData = (result) => {
+    const updateData = (result) => {
         let data = result.data;
         const validCSV = data.every(item=> item.hasOwnProperty("Deviceeui") && item.hasOwnProperty('Devicetype')
         && item.hasOwnProperty("Endpointtype") && item.hasOwnProperty("Endpointdest") && item.hasOwnProperty("InclRadio") && item.hasOwnProperty("RawData")
         && item.hasOwnProperty("AccessToken")
         );
         if(!validCSV){
-            const message = 'Invalid CSV format Follow Instructions';
-            this.setState({
-                message:message,
-                success:true,
-                csvFile:null,
-            })
+            setMessage('Invalid CSV format Follow Instructions')
+            setcsvFile(null);
         }else{
-            
-           this.setState({
-               csvData:data,
-               uploadSuccessMessage:'File upload successful',
-               success:false
-           })
-                       
+           setcsvData(data);
+           setUploadMessage('File upload successful')       
         }
     }
+    return(
+        <Container>
+            <Form style={{margin: '15px auto',width:'70%'}} onSubmit={onSubmit}>    
+                <FormGroup inline={true}>
+                    {completedMessage?<Alert color="success">{completedMessage}</Alert>:null}
+                    <Label for="exampleDevice">Select CSV File</Label>
+                    <Alert color="primary">
+                            Header Format:Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken
+                        </Alert>
+                    <div style={{display:'inline'}}>
+                        <Input required={true} style={{display:'inline',width:'25%'}}  type='file' accept={".csv"}  onChange={handleFileChange} onClick={(e)=>e.target.value=null}  placeholder={null} />
+                        {message?<Alert color="danger">{message}</Alert>:null}
 
-    render(){
-        let message = null,completedMessage=null,uploadMessage=null;
-        if(this.state.message){
-            message = <Alert color="danger">
-                            {this.state.message}
-                      </Alert>
-        }
-        if(this.state.uploadSuccessMessage){
-            uploadMessage = <Alert color="success">
-                            {this.state.uploadSuccessMessage}
-                      </Alert>
-        }
-
-        if(this.state.completedMessage){
-            completedMessage = <Alert color="success">
-                            {this.state.completedMessage}
-                      </Alert>
-        }
-
-        return(
-            <Container>
-                <Form style={{margin: '15px auto',width:'70%'}} onSubmit={this.onSubmit}>    
-                   
-
-                    <FormGroup inline={true}>
-                        {completedMessage}
-                        <Label for="exampleDevice">Select CSV File</Label>
-                        <Alert color="primary">
-                                Header Format:Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken
-                         </Alert>
-                        <div style={{display:'inline'}}>
-                            <Input required={true} style={{display:'inline',width:'25%'}}  type='file' accept={".csv"}  onChange={this.handleFileChange} onClick={(e)=>e.target.value=null}  placeholder={this.state.csvName} />
-                            {message}
-
-                            <Button onClick={this.importCSV}> Upload now!</Button>
-                            {uploadMessage}
-                        </div>
-                    </FormGroup> 
-                       
-                        
-                        <Button  color='primary' type='submit' style={{ margin: '70px auto',display:'block' }}>Submit</Button>
-                    </Form>
-            </Container>
-        )
-    }
+                        <Button onClick={importCSV}> Upload now!</Button>
+                        {uploadMessage? <Alert color="success">{uploadMessage}</Alert>:null}
+                    </div>
+                </FormGroup> 
+                    <Button disabled={disable}  color='primary' type='submit' style={{ margin: '70px auto',display:'block' }}>{disable?'Submitting':'Submit'}</Button>
+                </Form>
+        </Container>
+    )
 }
 export default MultipleDevices;

@@ -14,7 +14,7 @@ import useForm from 'CustomHooks/useForm';
 const DeviceUI = ()=>{
   const [newDevice,updateDevice,newDeviceHandler,checkBoxHandler,
     handleEndpointChange,addEndpoint,removeEndpoint] = useForm({deviceUI:'',deviceType:'',
-    AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),endpoint:[{endpointType:'',endPointDest:''}],InclRadio:null,RawData:''})
+    AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),endpoint:[{endpointType:'',endPointDest:''}],InclRadio:'',RawData:''})
   const [collapse,setCollapse] = useState(false);
   const [disable,setDisable]   = useState(false);
   const [message,setMessage]   = useState("");
@@ -30,7 +30,7 @@ const DeviceUI = ()=>{
           axios.post('/devices/add',device)
           .then(res=>{
             const device = {deviceUI:'',deviceType:'',endpoint:[{endpointType:'',endPointDest:''}],
-                          InclRadio:false,RawData:null,disable:null,AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),message:'Device Created Successfully'}
+                          InclRadio:'',RawData:'',AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()}
             updateDevice(device); 
             setMessage("Successfully Added Device");
             setDisable(false);           
@@ -53,17 +53,17 @@ const DeviceUI = ()=>{
                 <Form className='single-device-form'  onSubmit={onSubmit}>
                   {message?<Alert color="success">{message}</Alert>:null}
                   <InputFormGroup  Label="Device UI" pattern="((([A-Z]|\d){2}-){7})([A-Z]|\d){2}"
-                  required={true}  value={newDevice.deviceUI}  onChange={newDeviceHandler}  
+                  required={true}  value={newDevice.deviceUI}  onChange={(e)=>{setMessage("");newDeviceHandler(e)}} 
                   title="Format:70-B3-D5-D7-20-04-03-9A"  type="text" name="deviceUI"
                   placeholder="Enter your Device UI"   />
 
                   <InputFormGroup Label="Access Token"
                                 pattern="(?=.*\d)((?=.*[a-z])|(?=.*[A-Z])).{10}" required={true}
-                                value={newDevice.AccessToken}  onChange={newDeviceHandler} 
+                                value={newDevice.AccessToken}  onChange={(e)=>{setMessage("");newDeviceHandler(e)}} 
                                 title="Length should be 10 characters with atleast one digit and upper or lowercase letter"
                                 type="text" name="AccessToken"  placeholder="Enter Access Token" />
 
-                  <OptionFormGroup Label="Select Device Type" value={newDevice.deviceType} required={true}    onChange={newDeviceHandler}  type="select" name="deviceType" options={deviceTypes} />
+                  <OptionFormGroup Label="Select Device Type" value={newDevice.deviceType} required={true}    onChange={(e)=>{setMessage("");newDeviceHandler(e)}}   type="select" name="deviceType" options={deviceTypes} />
 
                   <Endpoint addEndpoint={(e)=>addEndpoint(newDevice.endpoint)}  
                   removeEndpoint={(e)=>removeEndpoint(newDevice.endpoint)} 

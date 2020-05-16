@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect} from 'react';
 import { Router,Route, Switch} from 'react-router-dom';
 import history from "MyHistory"; 
 import axios from 'axios';
@@ -6,15 +6,10 @@ import Login from 'components/Authentication/Login/Login';
 import 'App.css';
 import Dashboard from 'components/Dashboard/Dashboard';
 
-class App extends Component{
-  state = {
-    user:null
-  };
-  setUser = (user) => {
-    this.setState({user});
-  };
-
-  componentDidMount = ()=>{
+const App=()=>{
+  const [user,setUser] =useState(null);
+ 
+  useEffect(()=>{
     const token = localStorage.getItem("Token");
     if(token){
       axios.post("/api/verify-token")
@@ -22,7 +17,7 @@ class App extends Component{
         if(result.status!==200){
           history.push("/");
         } else {
-            this.setState({user: result.data.user});
+            setUser(result.data.user);
             const currentPath = history.location.pathname;
            if(currentPath==='/'){
              history.push("/dashboard")
@@ -35,18 +30,17 @@ class App extends Component{
     else{
         history.push("/");
     }
-  };
+  },[])
 
-  render(){
-    return (
-      <Router history={history}>
-        <Switch>
-          <Route exact path="/" component={() => <Login setUser={this.setUser} />}  />
-          <Route path="/dashboard" component={() => <Dashboard user={this.state.user} setUser={this.setUser} />}/>            
-        </Switch>
-      </Router>
-    );
-  }
+  return (
+    <Router history={history}>
+      <Switch>
+        <Route exact path="/" component={() => <Login setUser={setUser} />}  />
+        <Route path="/dashboard" component={() => <Dashboard user={user} setUser={setUser} />}/>            
+      </Switch>
+    </Router>
+  );
+
 
 }
 export default App;

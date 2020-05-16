@@ -15,10 +15,10 @@ const ModalExampleCloseIcon = (props) => {
           const index = props.data.findIndex(d=>d.Deviceeui===props.rowData.Deviceeui);
           const updatedDevices = [...props.data]
           updatedDevices.splice(index,1);
-          props.setData(updatedDevices);
           setOpen(open=>!open);
           setDeleteMessage("");
           setDisable(false); 
+          props.setData(updatedDevices);
         })
         .catch(err=>{
             console.log(err);
@@ -29,7 +29,7 @@ const ModalExampleCloseIcon = (props) => {
   
 
     return(
-        <Modal onClose={()=>setOpen(open=>!open)} closeOnDimmerClick={true} open={open}  centered style={{height:'auto',top:'auto',left:'auto'}} trigger={<Button onClick={()=>setOpen(open=>!open)} color="red" >Delete</Button>} closeIcon>
+        <Modal onClose={!disable?()=>setOpen(open=>!open):()=>{return}} closeOnDimmerClick={true} open={open}  centered style={{height:'auto',top:'auto',left:'auto'}} trigger={<Button onClick={()=>setOpen(open=>!open)} color="red" >Delete</Button>} closeIcon>
             <Header icon='archive' content='Delete Device' />
             <Modal.Content>
             <div>

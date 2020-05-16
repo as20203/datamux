@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.d3958919.chunk.css",
+    "main.js": "/static/js/main.f05a62d6.chunk.js",
+    "main.js.map": "/static/js/main.f05a62d6.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/css/2.d3d8e4c6.chunk.css": "/static/css/2.d3d8e4c6.chunk.css",
+    "static/js/2.890a9b8a.chunk.js": "/static/js/2.890a9b8a.chunk.js",
+    "static/js/2.890a9b8a.chunk.js.map": "/static/js/2.890a9b8a.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.2845a15a7a9ad6317a05a04f9d202090.js": "/precache-manifest.2845a15a7a9ad6317a05a04f9d202090.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.d3d8e4c6.chunk.css.map": "/static/css/2.d3d8e4c6.chunk.css.map",
+    "static/css/main.d3958919.chunk.css.map": "/static/css/main.d3958919.chunk.css.map",
+    "static/media/semantic.min.css": "/static/media/outline-icons.ef60a4f6.woff"
+  }
+}

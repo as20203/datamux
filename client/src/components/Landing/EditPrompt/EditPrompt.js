@@ -16,7 +16,7 @@ const EditPrompt = (props) => {
     const [message,setMessage] = useState("")
     const [editDevice,updateDevice,editDeviceHandler,checkBoxHandler,
         handleEndpointChange,addEndpoint,removeEndpoint] = useForm({deviceUI:'',deviceType:'',
-        AccessToken:'',endpoint:[],InclRadio:null,RawData:''})
+        AccessToken:'',endpoint:[],InclRadio:'',RawData:''})
 
     useEffect(()=>{ 
         const setEndpoint = ()=>{
@@ -51,30 +51,34 @@ const EditPrompt = (props) => {
                     axios.post('/devices/add',updatedDevice)
                     .then(res=>{
                             updatedDevices.push(updatedDevice);
-                            props.setData(updatedDevices)
                             setOpen(open=>!open);
                             setDisable(false);
+                            props.setData(updatedDevices)
+                          
                     })
                     .catch(err=>{
                         console.log(err);
                         setMessage("Cannot Create Device")
+                        setOpen(open=>!open);
                         setDisable(false);
                     })
                 })
                 .catch(err=>{
                     console.log(err);
                     setMessage("Cannot Delete Device")
+                    setOpen(open=>!open);
                     setDisable(false);
                 }) 
             }
         }else{
             setMessage("Select Atleast One Endpoint")
+            setOpen(open=>!open);
             setDisable(false);
         }
     }
 
     return(
-        <Modal onClose={()=>setOpen(open=>!open)} closeOnDimmerClick={true} open={open} 
+        <Modal onClose={!disable?()=>setOpen(open=>!open):()=>{return}} closeOnDimmerClick={true}  open={open} 
          centered style={{height:'auto',top:'auto',left:'auto'}} 
          trigger={<Button onClick={()=>setOpen(open=>!open)} color="green" >Edit</Button>} 
          closeIcon>
