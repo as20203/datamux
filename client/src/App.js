@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import { Router,Route, Switch} from 'react-router-dom';
-import history from "./history"; 
+import history from "MyHistory"; 
 import axios from 'axios';
-import Login from './containers/Authentication/Login/Login';
-import './App.css';
-import Dashboard from './containers/Dashboard/Dashboard';
+import Login from 'components/Authentication/Login/Login';
+import 'App.css';
+import Dashboard from 'components/Dashboard/Dashboard';
 
 class App extends Component{
   state = {

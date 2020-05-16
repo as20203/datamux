@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {Icon,Menu, Segment, Sidebar,Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
-import UserLanding from '../../Landing/UserLanding/UserLanding';
-import DeviceUI from '../../DeviceUI/SingleDevice/DeviceUI';
-import MultipleDeviceUI from '../../DeviceUI/BulkDevices/BulkDevices';
+import UserLanding from 'components/Landing/UserLanding/UserLanding';
+import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
+import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
 import './UserDashboard.css';
 
 

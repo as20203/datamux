@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import axios from '../../../instance';
+import axios from 'instance';
 import ReactTable from 'react-table';
 import { Container} from 'reactstrap';
 

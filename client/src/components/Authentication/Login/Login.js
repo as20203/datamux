@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import { Button,Form,Container,FormGroup, Label, Input,Alert} from 'reactstrap'
 import './Login.css'
 import axios from 'axios';
-import history from '../../../history';
+import history from 'MyHistory';
 class Login extends Component{
   state = {
     email:'',

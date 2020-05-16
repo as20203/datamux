@@ -8,8 +8,8 @@ const Endpoint = (props) =>{
    const endpoints =  props.endpoint.map((endpoint,index)=>{
         return(
           <div  key={index}>
-            <OptionFormGroup Label={props.OptionsLabel}  value={endpoint.endpointType} required={props.required} onChange={(e)=>props.handleChange(e,index)} type={props.optionType} name={props.OptionsName} placeholder={props.OptionsPlaceholder} options={endpointTypes} />
-            <InputFormGroup Label={props.InputLabel}  value={endpoint.endPointDest}  required={props.required} onChange={(e)=>props.handleChange(e,index)} type={props.InputType} name={props.InputName}  placeholder={props.InputPlaceholder} />
+            <OptionFormGroup Label={props.OptionsLabel}  value={endpoint.endpointType} required={props.required} onChange={(e)=>props.handleChange(e,index,props.endpoint)} type={props.optionType} name={props.OptionsName} placeholder={props.OptionsPlaceholder} options={endpointTypes} />
+            <InputFormGroup Label={props.InputLabel}  value={endpoint.endPointDest}  required={props.required} onChange={(e)=>props.handleChange(e,index,props.endpoint)} type={props.InputType} name={props.InputName}  placeholder={props.InputPlaceholder} />
           </div>
         )
     })

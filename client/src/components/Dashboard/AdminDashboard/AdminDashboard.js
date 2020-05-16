@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {Icon,Menu, Segment, Sidebar, Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
-import AdminLanding from '../../Landing/AdminLanding/AdminLanding';
-import DeviceUI from '../../DeviceUI/SingleDevice/DeviceUI';
-import MultipleDeviceUI from '../../DeviceUI/BulkDevices/BulkDevices';
-import Signup from '../../Authentication/Signup/Signup';
-import ResetPassword from '../../ResetPassword/ResetPassword';
-import RemoveUser from '../../RemoveUser/RemoveUser';
+import AdminLanding from 'components/Landing/AdminLanding/AdminLanding';
+import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
+import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
+import Signup from 'components/Authentication/Signup/Signup';
+import ResetPassword from 'components/ResetPassword/ResetPassword';
+import RemoveUser from 'components/RemoveUser/RemoveUser';
 import './AdminDashboard.css';
 
 

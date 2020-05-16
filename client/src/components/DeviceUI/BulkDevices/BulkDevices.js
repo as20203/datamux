@@ -1,7 +1,7 @@
 import { Container ,  Button, Form, FormGroup, Label, Input, Alert} from 'reactstrap';
 import React,{Component} from 'react';
 import Papa from 'papaparse';
-import axios from '../../../instance';
+import axios from 'instance';
 
 class MultipleDevices extends Component{
     state={

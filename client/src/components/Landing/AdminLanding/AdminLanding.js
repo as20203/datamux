@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import ReactTable from 'react-table';
 import { Container} from 'reactstrap';
-import axios from '../../../instance';
+import axios from 'instance';
 import DeletePrompt from './DeletePrompt/DeletePrompt';
 import EditPrompt from './EditPrompt/EditPrompt';
 
