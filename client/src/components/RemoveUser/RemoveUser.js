@@ -1,11 +1,14 @@
 import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import ReactTable from 'react-table';
-import { Container} from 'reactstrap';
 import DeleteUser from './DeleteUser/DeleteUser';
+import Loading from 'components/Generic/Loader/Loader';
 
 const AdminLanding =()=>{
   const [data,setData] = useState([]);
+  const [loading,setLoading] = useState(true);
+  const userStyle={padding:'8px 16px',maxWidth:'100%',minHeight:'100vh',display:loading?'flex':'',justifyContent:'center',alignItems:'center'}
+
   const columns =  [
     {
     Header: 'username',
@@ -38,6 +41,7 @@ const AdminLanding =()=>{
     axios.get('/api/users')
     .then(users=>{
       setData(users.data.allUsers)
+      setLoading(false);
     })
     .catch(err=>{
       console.log(err);
@@ -47,7 +51,8 @@ const AdminLanding =()=>{
  
   return(
       <React.Fragment>  
-        <Container style={{marginLeft:'0px'}}>                  
+        <div style={userStyle}>
+          {loading?<Loading />:                  
             <ReactTable
             data={data}
             columns={columns}
@@ -59,8 +64,8 @@ const AdminLanding =()=>{
                 id: "username",
               }
             ]}      
-            /> 
-        </Container>
+          /> }
+        </div>
     </React.Fragment>    
   )
 }

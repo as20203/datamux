@@ -26,9 +26,16 @@ const App=()=>{
            }    
         }
       })
+      .catch(_=>{
+        history.push("/");
+        localStorage.clear();
+        sessionStorage.clear(); 
+      })
     }
     else{
         history.push("/");
+        localStorage.clear();
+        sessionStorage.clear(); 
     }
   },[])
 

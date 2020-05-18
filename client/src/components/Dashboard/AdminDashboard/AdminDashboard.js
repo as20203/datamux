@@ -7,19 +7,24 @@ import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
 import Signup from 'components/Authentication/Signup/Signup';
 import ResetPassword from 'components/ResetPassword/ResetPassword';
 import RemoveUser from 'components/RemoveUser/RemoveUser';
+import NestedLinks from '../NestedLinks/NestedLinks';
 import './AdminDashboard.css';
 
 
 const AdminDashboard=(props)=>{
-    const [activeIndex,setActiveindex] = useState(1);
-    const handleClick = (e,titleProps) => {
-        setActiveindex(activeIndex=>{
-            const { index } = titleProps
-            const newIndex = activeIndex === index ? -1 : index
-            return newIndex;
+    const [activeIndex,setActiveindex] = useState(parseInt(sessionStorage.getItem('activeIndex')));
+    const [nestedActiveIndex, setNestedActiveIndex] = useState(parseInt(sessionStorage.getItem('nestedActiveIndex')));
+
+    const handleClick = (_,titleProps) => {
+        setActiveindex(_=>{
+            const { index } = titleProps;
+            if(sessionStorage.getItem('nestedActiveIndex')){
+                sessionStorage.clear()
+            }
+            sessionStorage.setItem("activeIndex",index)
+            return index;
         });
     }
-    
     return (
         <div className='admin-dashboard-main'>
             <Sidebar.Pushable style={{overflowX:window.matchMedia("(max-width: 500px)").matches?'scroll':'visible'}} as={Segment} className='admin-sidebar-pushable' >
@@ -31,50 +36,43 @@ const AdminDashboard=(props)=>{
                 vertical
                 visible={true}
                 width='thin'>
-                <Menu.Item as={Link} to="/dashboard/landingpage">
+                <Menu.Item as={Link} to="/dashboard/landingpage" active={activeIndex === 0} index={0} onClick={handleClick}>
                     <Icon name='user' />
                     View Devices
                 </Menu.Item>
                 
                 <Menu.Item as={Accordion} >
-                    <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 0} index={0} onClick={handleClick}>
+                    <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 1} index={1} onClick={handleClick}>
                             <Icon name='dropdown' />
                             Add  Devices
                     </Accordion.Title>
 
-                    <Accordion.Content active={activeIndex === 0}>
-                        <Menu.Item as={Link} to="/dashboard/newdevice">
-                            <Icon name='plus circle' />
-                            Add Single Device
-                        </Menu.Item>
-                        <Menu.Item as={Link} to="/dashboard/bulkdevices">
-                            <Icon name='plus circle' />
-                            Add Multiple Devices
-                        </Menu.Item>
+                    <Accordion.Content active={activeIndex === 1}>
+                        <NestedLinks 
+                              setNestedActiveIndex={setNestedActiveIndex}
+                              nestedActiveIndex={nestedActiveIndex}
+                            links={[
+                                {index:0,to:'/dashboard/newdevice',name:'plus circle',title:'Add Single Device'},
+                                {index:1,to:'/dashboard/bulkdevices',name:'plus circle',title:'Add Multiple Device'}]} 
+                        />
+
                     </Accordion.Content>
                     
-                    <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 1} index={1} onClick={handleClick}>
+                    <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 2} index={2} onClick={handleClick}>
                             <Icon name='dropdown' />
                             Set Users
                     </Accordion.Title>
 
-                    <Accordion.Content active={activeIndex === 1}>
-                        <Menu.Item as={Link} to="/dashboard/newuser">
-                            <Icon name='user plus' />
-                            Add new User
-                        </Menu.Item>
-                        <Menu.Item as={Link} to="/dashboard/deleteuser">
-                            <Icon name='remove user' />
-                            Remove User
-                        </Menu.Item>
-                        <Menu.Item as={Link} to="/dashboard/resetpassword">
-                            <Icon name='redo' />
-                        Reset Admin Password
-                        </Menu.Item>
-
+                    <Accordion.Content active={activeIndex === 2}>
+                    <NestedLinks 
+                    setNestedActiveIndex={setNestedActiveIndex}
+                    nestedActiveIndex={nestedActiveIndex}
+                            links={[
+                                {index:2,to:'/dashboard/newuser',name:'user plus',title:'Add New User'},
+                                {index:3,to:'/dashboard/deleteuser',name:'remove user',title:'Remove User'},
+                                {index:4,to:'/dashboard/resetpassword',name:'redo',title:'Reset Admin Passsword'}]} 
+                        />
                     </Accordion.Content>
-
-                    
                 </Menu.Item>
                 
                 <Menu.Item as={Link} to="/" onClick={props.logoutHandler}>

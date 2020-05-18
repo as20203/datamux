@@ -6,6 +6,7 @@ import User from './UserDashboard/UserDashboard';
 const Dashboard = (props)=>{ 
   const logoutHandler = () =>{
     localStorage.clear();
+    sessionStorage.clear(); 
     props.setUser(null);
   };
 

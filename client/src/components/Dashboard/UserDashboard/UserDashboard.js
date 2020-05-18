@@ -4,19 +4,25 @@ import {Link,Switch,Route} from 'react-router-dom';
 import Landing from 'components/Landing/Landing';
 import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
 import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
+import NestedLinks from '../NestedLinks/NestedLinks';
 import './UserDashboard.css';
 
 
 const UserDashboard=(props)=>{
-    const [activeIndex,setActiveIndex] = useState(1);
+    const [activeIndex,setActiveindex] = useState(parseInt(sessionStorage.getItem('activeIndex')));
+    const [nestedActiveIndex, setNestedActiveIndex] = useState(parseInt(sessionStorage.getItem('nestedActiveIndex')));
 
-    const handleClick = (e,titleProps) => {
-        setActiveIndex(activeIndex=>{
-            const { index } = titleProps
-            const newIndex = activeIndex === index ? -1 : index
-            return newIndex;
+    const handleClick = (_,titleProps) => {
+        setActiveindex(_=>{
+            const { index } = titleProps;
+            if(sessionStorage.getItem('nestedActiveIndex')){
+                sessionStorage.clear()
+            }
+            sessionStorage.setItem("activeIndex",index)
+            return index;
         });
     }
+    
 
     return (
         <div className='user-dashboard-main'>
@@ -29,25 +35,25 @@ const UserDashboard=(props)=>{
                 vertical
                 visible={true}
                 width='thin'>
-                <Menu.Item as={Link} to="/dashboard/landingpage">
+                <Menu.Item as={Link} to="/dashboard/landingpage" active={activeIndex === 0} index={0} onClick={handleClick}>
                     <Icon name='user' />
                     View Devices
                 </Menu.Item>
+                
                 <Menu.Item as={Accordion} >
-                    <Accordion.Title style={{color:'white'}} active={activeIndex === 1} index={0} onClick={handleClick}>
+                    <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 1} index={1} onClick={handleClick}>
                             <Icon name='dropdown' />
                             Add  Devices
                     </Accordion.Title>
 
-                    <Accordion.Content active={activeIndex === 0}>
-                        <Menu.Item as={Link} to="/dashboard/newdevice">
-                            <Icon name='plus circle' />
-                            Add Single Device
-                        </Menu.Item>
-                        <Menu.Item as={Link} to="/dashboard/bulkdevices">
-                            <Icon name='plus circle' />
-                            Add Multiple Devices
-                        </Menu.Item>
+                    <Accordion.Content active={activeIndex === 1}>
+                        <NestedLinks
+                         setNestedActiveIndex={setNestedActiveIndex}
+                         nestedActiveIndex={nestedActiveIndex} 
+                            links={[
+                                {index:0,to:'/dashboard/newdevice',name:'plus circle',title:'Add Single Device'},
+                                {index:1,to:'/dashboard/bulkdevices',name:'plus circle',title:'Add Multiple Device'}]} 
+                        />
 
                     </Accordion.Content>
                 </Menu.Item>

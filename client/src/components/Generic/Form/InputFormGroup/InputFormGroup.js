@@ -7,6 +7,7 @@ const InputFormGroup = (props) =>{
         <FormGroup>
             <Label>{props.Label}</Label>
             <Input
+            style={props.style}
             pattern={props.pattern} 
             required={props.required} 
             value={props.value}

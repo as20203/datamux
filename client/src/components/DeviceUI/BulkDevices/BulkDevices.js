@@ -10,12 +10,14 @@ const MultipleDevices= ()=>{
     const [csvFile,setcsvFile] = useState(null);
     const [csvData,setcsvData] = useState([]);
     const [disable,setDisable] = useState(false);
+    const [uploadDisplay,setUploadDisplay] = useState(false);
 
     const handleFileChange = event => {
         setMessage('');
         setCompletedMessage('')
         setUploadMessage('')
         setcsvFile(event.target.files[0]);
+        setUploadDisplay(true);
     };
     
     const onSubmit = async(e) =>{
@@ -34,6 +36,7 @@ const MultipleDevices= ()=>{
         )
         .then(()=>{
             setCompletedMessage("All Devices Added")
+            setUploadMessage('')
             setDisable(false);
         })
     }
@@ -67,15 +70,15 @@ const MultipleDevices= ()=>{
                 <FormGroup inline={true}>
                     {completedMessage?<Alert color="success">{completedMessage}</Alert>:null}
                     <Label for="exampleDevice">Select CSV File</Label>
-                    <Alert color="primary">
-                            Header Format:Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken
-                        </Alert>
+                    <Alert style={{display:'flex',flexWrap:'wrap',wordBreak:'break-all'}} color="primary">
+                            Header Format:- Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken
+                    </Alert>
                     <div style={{display:'inline'}}>
                         <Input required={true} style={{display:'inline',width:'25%'}}  type='file' accept={".csv"}  onChange={handleFileChange} onClick={(e)=>e.target.value=null}  placeholder={null} />
                         {message?<Alert color="danger">{message}</Alert>:null}
 
-                        <Button onClick={importCSV}> Upload now!</Button>
-                        {uploadMessage? <Alert color="success">{uploadMessage}</Alert>:null}
+                        {uploadDisplay?<Button onClick={importCSV}> Upload now!</Button>:null} 
+                        {uploadMessage? <Alert style={{marginBottom:'0'}} color="success">{uploadMessage}</Alert>:null}
                     </div>
                 </FormGroup> 
                     <Button disabled={disable}  color='primary' type='submit' style={{ margin: '70px auto',display:'block' }}>{disable?'Submitting':'Submit'}</Button>
