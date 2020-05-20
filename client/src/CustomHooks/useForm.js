@@ -13,7 +13,6 @@ const useForm = (formValues) =>{
 
     const checkBoxHandler = (e)=>{
         e.persist();
-        console.log(e.target.checked);
         setState(state=>({...state,[e.target.name]:e.target.checked}));
       }
 

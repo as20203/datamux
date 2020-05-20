@@ -13,7 +13,7 @@ import useForm from 'CustomHooks/useForm';
 
 const DeviceUI = ()=>{
   const [newDevice,updateDevice,newDeviceHandler,checkBoxHandler,
-    handleEndpointChange,addEndpoint,removeEndpoint] = useForm({deviceUI:'',deviceType:'',
+    handleEndpointChange,addEndpoint,removeEndpoint] = useForm({deviceUI:'',deviceType:'',customer:'',
     AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),endpoint:[{endpointType:'',endPointDest:''}],InclRadio:'',RawData:''})
   const [collapse,setCollapse] = useState(false);
   const [disable,setDisable]   = useState(false);
@@ -26,7 +26,10 @@ const DeviceUI = ()=>{
           setDisable(true);
           const endPointDest = newDevice.endpoint.map(endpoint=> endpoint.endPointDest.trim()).join("|").trim();
           const endpointType = newDevice.endpoint.map(endpoint=> endpoint.endpointType.trim()).join("|").trim();
-          const device = {Deviceeui:newDevice.deviceUI,Devicetype:newDevice.deviceType,Endpointdest:endPointDest,Endpointtype:endpointType,InclRadio:newDevice.InclRadio,RawData:newDevice.RawData,AccessToken:newDevice.AccessToken}
+          const device = {Deviceeui:newDevice.deviceUI,Devicetype:newDevice.deviceType,Endpointdest:endPointDest,
+                          Endpointtype:endpointType,InclRadio:newDevice.InclRadio,
+                          RawData:newDevice.RawData,AccessToken:newDevice.AccessToken,
+                          Customer:newDevice.customer}
           axios.post('/devices/add',device)
           .then(res=>{
             const device = {deviceUI:'',deviceType:'',endpoint:[{endpointType:'',endPointDest:''}],
@@ -34,6 +37,10 @@ const DeviceUI = ()=>{
             updateDevice(device); 
             setMessage("Successfully Added Device");
             setDisable(false);           
+          })
+          .catch(err=>{
+            setMessage("Cannot Add Device");
+            setDisable(false);    
           })
         }else{
           setMessage('Correct DeviceUI and AccessToken');
@@ -62,6 +69,11 @@ const DeviceUI = ()=>{
                                 value={newDevice.AccessToken}  onChange={(e)=>{setMessage("");newDeviceHandler(e)}} 
                                 title="Length should be 10 characters with atleast one digit and upper or lowercase letter"
                                 type="text" name="AccessToken"  placeholder="Enter Access Token" />
+                  
+                  <InputFormGroup Label="Customer" required={true} value={newDevice.customer} 
+                    onChange={(e)=>{setMessage("");newDeviceHandler(e)}}
+                    type="text" name="customer"  placeholder="Enter Customer Name"
+                  />
 
                   <OptionFormGroup Label="Select Device Type" value={newDevice.deviceType} required={true}    onChange={(e)=>{setMessage("");newDeviceHandler(e)}}   type="select" name="deviceType" options={deviceTypes} />
 

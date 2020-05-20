@@ -29,7 +29,7 @@ const MultipleDevices= ()=>{
                    ...record,
                     InclRadio:record.InclRadio==="true"?true:false,
                     RawData:record.RawData==="true"?true:false,
-                    AccessToken:(record.AccessToken!==""&&record.AccessToken.length===10)?record.AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()
+                    AccessToken:(record.AccessToken!==""&&record.AccessToken.length===10)?record.AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),
                 }
                 await axios.post('/devices/add',updatedRecord)
             })
@@ -54,7 +54,7 @@ const MultipleDevices= ()=>{
         let data = result.data;
         const validCSV = data.every(item=> item.hasOwnProperty("Deviceeui") && item.hasOwnProperty('Devicetype')
         && item.hasOwnProperty("Endpointtype") && item.hasOwnProperty("Endpointdest") && item.hasOwnProperty("InclRadio") && item.hasOwnProperty("RawData")
-        && item.hasOwnProperty("AccessToken")
+        && item.hasOwnProperty("AccessToken") && item.hasOwnProperty("Customer")
         );
         if(!validCSV){
             setMessage('Invalid CSV format Follow Instructions')
@@ -71,7 +71,7 @@ const MultipleDevices= ()=>{
                     {completedMessage?<Alert color="success">{completedMessage}</Alert>:null}
                     <Label for="exampleDevice">Select CSV File</Label>
                     <Alert style={{display:'flex',flexWrap:'wrap',wordBreak:'break-all'}} color="primary">
-                            Header Format:- Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken
+                            Header Format:- Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken,Customer
                     </Alert>
                     <div style={{display:'inline'}}>
                         <Input required={true} style={{display:'inline',width:'25%'}}  type='file' accept={".csv"}  onChange={handleFileChange} onClick={(e)=>e.target.value=null}  placeholder={null} />
