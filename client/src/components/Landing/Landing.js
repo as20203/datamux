@@ -27,7 +27,6 @@ const Landing = (props)=>{
           isMounted = false;
         })
       },[])
-
       return( 
         <React.Fragment> 
          

@@ -59,8 +59,8 @@ const Login=(props)=>{
               <h1 align={window.matchMedia("(max-width: 500px)").matches?'center':'left'}   as="h1">Login Now</h1>
              
               {message!==''?<Alert style={{textAlign:"center"}} color="danger">{message}</Alert>:null}
-              <InputFormGroup style={styles.inputStyle} Label="Email:" value={login.email}  required={true} onChange={(e)=>{setMessage("");handleLogin(e)}} type="text" name="email" id="email" placeholder="Enter your email" />
-              <InputFormGroup style={styles.inputStyle} Label="Password:" value={login.password}  required={true} onChange={(e)=>{setMessage("");handleLogin(e)}} type="password" name="password" id="password" placeholder="Enter your password" />
+              <InputFormGroup style={styles.input} Label="Email:" value={login.email}  required={true} onChange={(e)=>{setMessage("");handleLogin(e)}} type="text" name="email" id="email" placeholder="Enter your email" />
+              <InputFormGroup style={styles.input} Label="Password:" value={login.password}  required={true} onChange={(e)=>{setMessage("");handleLogin(e)}} type="password" name="password" id="password" placeholder="Enter your password" />
               <Button disabled={disable} color="primary" type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?'Submitting':'Submit'}</Button>
             </Form>
             :null}

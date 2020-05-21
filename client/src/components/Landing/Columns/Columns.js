@@ -45,6 +45,7 @@ const getColumns = (userType,data,setData) =>{
         {
           Header: "InclRadio",
           accessor: 'InclRadio',
+          width:80,
           Cell: props => <input type='checkbox' readOnly={true} disabled checked={props.original.InclRadio}></input> ,
           style:{ 
               textAlign:"center"
@@ -53,6 +54,7 @@ const getColumns = (userType,data,setData) =>{
         {
           Header: "RawData",
           accessor: 'RawData',
+          width:80,
           Cell: props =>  <input type='checkbox' readOnly={true} disabled checked={props.original.RawData}></input>,
           style:{
               textAlign:"center"
@@ -62,7 +64,17 @@ const getColumns = (userType,data,setData) =>{
         {
           Header: "AccessToken",
           accessor: 'AccessToken',
-          width:150,
+          width:120,
+          style:{
+              
+              textAlign:"center"
+          }
+        },
+        {
+          Header: "Customer",
+          accessor: 'Customer',
+          width:120,
+          filterable: true,
           style:{
               
               textAlign:"center"

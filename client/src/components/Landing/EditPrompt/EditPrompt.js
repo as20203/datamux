@@ -16,7 +16,7 @@ const EditPrompt = (props) => {
     const [message,setMessage] = useState("")
     const [editDevice,updateDevice,editDeviceHandler,checkBoxHandler,
         handleEndpointChange,addEndpoint,removeEndpoint] = useForm({deviceUI:'',deviceType:'',
-        AccessToken:'',endpoint:[],InclRadio:'',RawData:''})
+        AccessToken:'',endpoint:[],InclRadio:'',RawData:'',customer:''})
 
     useEffect(()=>{ 
         const setEndpoint = ()=>{
@@ -29,7 +29,8 @@ const EditPrompt = (props) => {
             return endpoint;
         }
         const newDevice = {deviceUI:props.rowData.Deviceeui,deviceType:props.rowData.Devicetype,
-            AccessToken:props.rowData.AccessToken,endpoint:setEndpoint(),InclRadio:props.rowData.InclRadio,RawData:props.rowData.RawData}
+            AccessToken:props.rowData.AccessToken,endpoint:setEndpoint(),customer:props.rowData.Customer,
+            InclRadio:props.rowData.InclRadio,RawData:props.rowData.RawData}
             updateDevice(newDevice);
     },[props,updateDevice])
 
@@ -41,7 +42,8 @@ const EditPrompt = (props) => {
                 setDisable(true);
                 const endPointDest = editDevice.endpoint.map(endpoint=> endpoint.endPointDest.trim()).join("|").trim();
                 const endpointType = editDevice.endpoint.map(endpoint=> endpoint.endpointType.trim()).join("|").trim();
-                const updatedDevice = {Deviceeui:editDevice.deviceUI,Devicetype:editDevice.deviceType,Endpointdest:endPointDest,Endpointtype:endpointType,InclRadio:editDevice.InclRadio,RawData:editDevice.RawData,AccessToken:editDevice.AccessToken}
+                const updatedDevice = {Deviceeui:editDevice.deviceUI,Devicetype:editDevice.deviceType,Endpointdest:endPointDest,Endpointtype:endpointType,
+                                       InclRadio:editDevice.InclRadio,Customer:editDevice.customer,RawData:editDevice.RawData,AccessToken:editDevice.AccessToken}
                 const deleteEndpoint = '/devices/delete/'+editDevice.deviceUI;
                 axios.delete(deleteEndpoint)
                 .then(()=>{  
@@ -93,6 +95,12 @@ const EditPrompt = (props) => {
                                 value={editDevice.AccessToken}  onChange={editDeviceHandler} 
                                 title="Length should be 10 characters with atleast one digit and upper or lowercase letter"
                                 type="text" name="AccessToken"  placeholder="Enter Access Token" />
+
+                        <InputFormGroup Label="Customer" 
+                            required={true} 
+                            value={editDevice.customer} 
+                            onChange={editDeviceHandler}
+                            type="text" name="customer"  placeholder="Enter Customer Name"/>
 
                         <OptionFormGroup Label="Select Device Type" value={editDevice.deviceType} required={true}    onChange={editDeviceHandler}  type="select" name="deviceType" options={deviceTypes} />
 

@@ -33,7 +33,7 @@ const DeviceUI = ()=>{
           axios.post('/devices/add',device)
           .then(res=>{
             const device = {deviceUI:'',deviceType:'',endpoint:[{endpointType:'',endPointDest:''}],
-                          InclRadio:'',RawData:'',AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()}
+                          InclRadio:'',RawData:'',customer:'',AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()}
             updateDevice(device); 
             setMessage("Successfully Added Device");
             setDisable(false);           
