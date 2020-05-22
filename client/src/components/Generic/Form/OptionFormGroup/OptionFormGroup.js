@@ -6,7 +6,7 @@ const OptionFormGroup = (props)=>{
     return(
         <FormGroup>
             <Label>{props.Label}</Label>
-            <Input  value={props.value} required={props.required} onChange={props.onChange} type={props.type} name={props.name}>
+            <Input id={props.id}  value={props.value} required={props.required} onChange={props.onChange} type={props.type} name={props.name}>
             <option> </option>
             {options}
             </Input>

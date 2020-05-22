@@ -108,7 +108,7 @@ const AdminDashboard=(props)=>{
                         <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
                         <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
                         <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
-                        <Route exact path="/dashboard/thingsboard" component={ThingsBoard} />
+                        <Route exact path="/dashboard/thingsboard" render={(p)=><ThingsBoard {...p} user={props.user} />} />
                     </Switch>
                 
             </Sidebar.Pusher>
