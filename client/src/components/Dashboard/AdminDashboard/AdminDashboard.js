@@ -4,6 +4,7 @@ import {Link,Switch,Route} from 'react-router-dom';
 import Landing from 'components/Landing/Landing';
 import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
 import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
+import ThingsBoard from 'components/Platforms/ThingsBoard/Thingsboard';
 import Signup from 'components/Authentication/Signup/Signup';
 import ResetPassword from 'components/ResetPassword/ResetPassword';
 import RemoveUser from 'components/RemoveUser/RemoveUser';
@@ -73,6 +74,23 @@ const AdminDashboard=(props)=>{
                                 {index:4,to:'/dashboard/resetpassword',name:'redo',title:'Reset Admin Passsword'}]} 
                         />
                     </Accordion.Content>
+
+                    <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 3} index={3} onClick={handleClick}>
+                            <Icon name='dropdown' />
+                            Generate CSV
+                    </Accordion.Title>
+
+                    <Accordion.Content active={activeIndex === 3}>
+                    <NestedLinks 
+                    setNestedActiveIndex={setNestedActiveIndex}
+                    nestedActiveIndex={nestedActiveIndex}
+                            links={[
+                                {index:5,to:'/dashboard/thingsboard',name:'user plus',title:'THINGSBOARD'},
+                            ]}
+                        />
+                    </Accordion.Content>
+
+
                 </Menu.Item>
                 
                 <Menu.Item as={Link} to="/" onClick={props.logoutHandler}>
@@ -90,6 +108,7 @@ const AdminDashboard=(props)=>{
                         <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
                         <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
                         <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
+                        <Route exact path="/dashboard/thingsboard" component={ThingsBoard} />
                     </Switch>
                 
             </Sidebar.Pusher>

@@ -2,7 +2,6 @@ import React from 'react';
 import {FormGroup, Label, Input} from 'reactstrap';
 
 const OptionFormGroup = (props)=>{
-
     const options = props.options.map((option,index)=><option key={index}>{option}</option>)
     return(
         <FormGroup>
