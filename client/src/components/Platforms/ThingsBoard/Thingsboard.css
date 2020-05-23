@@ -1,4 +1,4 @@
-.thingsboard-device-main .container{
+.thingsboard-device-main .thingsboard-device-form{
     margin:0px;
     max-width: none;
     display: flex;
@@ -24,13 +24,11 @@
 .thingsboard-device-main .single-device-form .form-group{
     width:80%;
     margin:5px auto;
-
 }
 
 .thingsboard-device-main .single-device-form .form-check{
     width:80%;
     margin:5px auto;
-
 }
 
 

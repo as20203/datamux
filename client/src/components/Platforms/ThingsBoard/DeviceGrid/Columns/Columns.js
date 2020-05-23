@@ -1,7 +1,7 @@
 import EditPrompt from 'components/Landing/EditPrompt/EditPrompt';
 import React from 'react';
 
-const getColumns = (userType,data,setData,check,toggleCheck) =>{
+const getColumns = (userType,data,setData,check,toggleCheck,setDevicesMessage) =>{
    
     const columns = [
         {
@@ -10,6 +10,7 @@ const getColumns = (userType,data,setData,check,toggleCheck) =>{
         Header: (<input type="checkbox" 
         onChange={(e)=>toggleCheck(check=>{
             const checkAll = !check;
+            setDevicesMessage('');
             setData(data=>{
                 const updatedData = [...data].map(device=>{return({...device,checked:checkAll})});
                 return updatedData;
@@ -21,6 +22,7 @@ const getColumns = (userType,data,setData,check,toggleCheck) =>{
         Cell:props=>{return <input type='checkbox'  
         onChange={(e)=>{
           e.persist()
+          setDevicesMessage('');
           setData(data=>{ 
                
                 const updatedData  = [...data];

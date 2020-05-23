@@ -17,13 +17,17 @@ const AdminDashboard=(props)=>{
     const [nestedActiveIndex, setNestedActiveIndex] = useState(parseInt(sessionStorage.getItem('nestedActiveIndex')));
 
     const handleClick = (_,titleProps) => {
-        setActiveindex(_=>{
-            const { index } = titleProps;
-            if(sessionStorage.getItem('nestedActiveIndex')){
-                sessionStorage.clear()
+        console.log(titleProps);
+        setActiveindex(prevIndex=>{
+            const {index,active} = titleProps
+            if(!active){
+                if(sessionStorage.getItem('nestedActiveIndex')){
+                    sessionStorage.clear()
+                }
+                sessionStorage.setItem("activeIndex",index)
+                return index;
             }
-            sessionStorage.setItem("activeIndex",index)
-            return index;
+            return '';
         });
     }
     return (
@@ -37,7 +41,7 @@ const AdminDashboard=(props)=>{
                 vertical
                 visible={true}
                 width='thin'>
-                <Menu.Item as={Link} to="/dashboard/landingpage" active={activeIndex === 0} index={0} onClick={handleClick}>
+                <Menu.Item as={Link} to="/dashboard/landingpage" active={activeIndex === 0}  index={0} onClick={handleClick}>
                     <Icon name='user' />
                     View Devices
                 </Menu.Item>
