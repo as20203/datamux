@@ -80,7 +80,7 @@ const ThingsBoard = (props) =>{
             let deviceClone = Object.assign({}, {...device,InclRadio:device.InclRadio?"true":"false",RawData:device.InclRadio.RawData?"true":"false"});
             return (delete deviceClone.checked, deviceClone);
         })
-        if(finalDevices.length>2){
+        if(finalDevices.length>=1){
             let csv = Papa.unparse(finalDevices);
             var blob = new Blob([csv]);
             if (window.navigator.msSaveOrOpenBlob)  // IE hack; see http://msdn.microsoft.com/en-us/library/ie/hh779016.aspx

@@ -84,7 +84,7 @@ const EditPrompt = (props) => {
          centered style={{height:'auto',top:'auto',left:'auto'}} 
          trigger={<Button onClick={()=>setOpen(open=>!open)} color="green" >Edit</Button>} 
          closeIcon>
-        <Modal.Content style={{display:'flex',justifyContent:'center'}} image scrolling>
+        <Modal.Content style={{display:'flex',justifyContent:'center',maxHeight:'none'}} image scrolling>
             <div className='single-device-main'>
                 <Container>  
                     <Form className='single-device-form'  onSubmit={onSubmit}>

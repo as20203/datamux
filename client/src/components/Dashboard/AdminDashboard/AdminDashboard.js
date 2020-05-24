@@ -17,7 +17,6 @@ const AdminDashboard=(props)=>{
     const [nestedActiveIndex, setNestedActiveIndex] = useState(parseInt(sessionStorage.getItem('nestedActiveIndex')));
 
     const handleClick = (_,titleProps) => {
-        console.log(titleProps);
         setActiveindex(prevIndex=>{
             const {index,active} = titleProps
             if(!active){

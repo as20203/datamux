@@ -8,7 +8,6 @@ const NestedLinks = (props) =>{
     const handleNestedClick = (_,titleProps)=>{
         props.setNestedActiveIndex(_=>{
             const {index} = titleProps;
-            console.log(titleProps);
             sessionStorage.setItem("nestedActiveIndex",index);
             return index;
         })
