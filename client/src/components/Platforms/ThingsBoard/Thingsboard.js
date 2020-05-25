@@ -53,22 +53,42 @@ const ThingsBoard = (props) =>{
         setDeviceLoader(true);
         setDevicesMessage('');
         const customer = data.filter(customer=>customer.key===e.target.value)[0].value;
-        const token = 'ABCD12EEER'
         axios.get(`customer/${customer}/devices`,{params: {limit: '1000'},headers: {"Content-Type": "application/json"}})
-        .then(devices=>{
-            const customerDevices = devices.data.data.map(device=>{return(
-                {Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',
-                    Endpointdest:`https://data.talkpool.io/api/v1/${token}/telemetry`,
-                    AccessToken:token,
-                    InclRadio:true,RawData:false,Customer:e.target.value,
-                    checked:false
+        .then(async devices=>{
+            // const customerDevices = devices.data.data.map(device=>{return(
+            //     {Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',
+            //         InclRadio:true,RawData:false,Customer:e.target.value,
+            //         checked:false
+            //     })
+            // })
+           
+           let customerDevices = [];
+            await Promise.all(
+                devices.data.data.map(async device=>{
+                    // const updatedRecord= {
+                    // ...record,
+                    // Endpointdest:`https://data.talkpool.io/api/v1/${token}/telemetry`,
+                    // AccessToken:token,
+                    // }
+                    const credentials = await axios.get(`/device/${device.id.id}/credentials`)
+                    if(credentials){
+                        const updatedRecord= {
+                            Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',Customer:e.target.value,
+                            Endpointdest:`https://data.talkpool.io/api/v1/${credentials.data.credentialsId}/telemetry`,
+                            AccessToken:credentials.data.credentialsId, InclRadio:true,RawData:false,checked:false
+                        }
+                        customerDevices.push(updatedRecord);
+                    }
                 })
+            )
+            .then(()=>{
+                if(customerDevices.length<1){
+                    setDevicesMessage('No device found')
+                }
+                setDevices(customerDevices);
+                setDeviceLoader(false);
             })
-           if(customerDevices.length<1){
-               setDevicesMessage('No device found')
-           }
-           setDevices(customerDevices);
-           setDeviceLoader(false);
+          
         }) 
     }
 
@@ -88,7 +108,7 @@ const ThingsBoard = (props) =>{
             else{
                 var a = window.document.createElement("a");
                 a.href = window.URL.createObjectURL(blob, {type: "text/plain"});
-                a.download = "thingsboard.csv";
+                a.download = `${finalDevices[0].Customer}.csv`;
                 document.body.appendChild(a);
                 a.click();  // IE: "Access is denied"; see: https://connect.microsoft.com/IE/feedback/details/797361/ie-10-treats-blob-url-as-cross-origin-and-denies-access
                 document.body.removeChild(a);
