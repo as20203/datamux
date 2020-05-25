@@ -27,8 +27,8 @@ const MultipleDevices= ()=>{
             csvData.map(async record=>{
                 const updatedRecord= {
                    ...record,
-                    InclRadio:record.InclRadio==="true"?true:false,
-                    RawData:record.RawData==="true"?true:false,
+                    InclRadio:record.InclRadio.toLowerCase()==="true"?true:false,
+                    RawData:record.RawData.toLowerCase()==="true"?true:false,
                     AccessToken:(record.AccessToken!==""&&record.AccessToken.length===10)?record.AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),
                 }
                 await axios.post('/devices/add',updatedRecord)

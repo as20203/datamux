@@ -97,9 +97,10 @@ const ThingsBoard = (props) =>{
         setDevicesMessage('');
         const finalDevices = devices.filter(device=>device.checked)
         .map(device=>{
-            let deviceClone = Object.assign({}, {...device,InclRadio:device.InclRadio?"true":"false",RawData:device.InclRadio.RawData?"true":"false"});
+            let deviceClone = Object.assign({}, {...device,InclRadio:device.InclRadio?'true':'false',RawData:device.InclRadio.RawData?"true":"false"})
             return (delete deviceClone.checked, deviceClone);
         })
+
         if(finalDevices.length>=1){
             let csv = Papa.unparse(finalDevices);
             var blob = new Blob([csv]);
