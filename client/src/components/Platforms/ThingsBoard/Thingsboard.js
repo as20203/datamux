@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useState, useRef } from 'react';
 import OptionFormGroup from 'components/Generic/Form/OptionFormGroup/OptionFormGroup';
 import {Button,Form,Collapse,Alert} from 'reactstrap'
 import axios from 'platform-instance/Thingsboard';
@@ -20,10 +20,9 @@ const ThingsBoard = (props) =>{
     const [loading,setLoading] = useState(true);
     const [deviceLoader,setDeviceLoader] = useState(false);
     const [devicesMessage,setDevicesMessage]  = useState('');
-  
+    let isMounted  = useRef(true);
 
     useEffect(()=>{
-        let isMounted  = true;
         const credentials = {
             "username" :"muhammad.adil@talkpool.com",
             "password" : "TrackerWEB12!@#"
@@ -35,7 +34,7 @@ const ThingsBoard = (props) =>{
             axios.get('/customers',{params: {limit: '1000'},headers: {"Content-Type": "application/json"}})
             .then(users=>{
                 const customers = users.data.data.map(user=>{return ({key:user.name,value:user.id.id})});
-                if(isMounted){
+                if(isMounted.current){
                     setData(customers);
                     setLoading(false);
                 }
@@ -45,9 +44,9 @@ const ThingsBoard = (props) =>{
             console.log(err);
         })
         return (()=>{
-            isMounted = false;
+            isMounted.current = false;
           })
-    },[])
+    },[isMounted])
 
     const updateDevices = (e)=>{
         setDeviceLoader(true);
@@ -55,39 +54,36 @@ const ThingsBoard = (props) =>{
         const customer = data.filter(customer=>customer.key===e.target.value)[0].value;
         axios.get(`customer/${customer}/devices`,{params: {limit: '1000'},headers: {"Content-Type": "application/json"}})
         .then(async devices=>{
-            // const customerDevices = devices.data.data.map(device=>{return(
-            //     {Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',
-            //         InclRadio:true,RawData:false,Customer:e.target.value,
-            //         checked:false
-            //     })
-            // })
-           
-           let customerDevices = [];
-            await Promise.all(
-                devices.data.data.map(async device=>{
-                    // const updatedRecord= {
-                    // ...record,
-                    // Endpointdest:`https://data.talkpool.io/api/v1/${token}/telemetry`,
-                    // AccessToken:token,
-                    // }
-                    const credentials = await axios.get(`/device/${device.id.id}/credentials`)
-                    if(credentials){
-                        const updatedRecord= {
-                            Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',Customer:e.target.value,
-                            Endpointdest:`https://data.talkpool.io/api/v1/${credentials.data.credentialsId}/telemetry`,
-                            AccessToken:credentials.data.credentialsId, InclRadio:true,RawData:false,checked:false
+            let customerDevices = [];
+            if(isMounted){
+                await Promise.all(
+                    devices.data.data.map(async device=>{
+                        if(isMounted.current){
+                            try{
+                                const credentials = await axios.get(`/device/${device.id.id}/credentials`)
+                                const updatedRecord= {
+                                    Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',Customer:e.target.value,
+                                    Endpointdest:`https://data.talkpool.io/api/v1/${credentials.data.credentialsId}/telemetry`,
+                                    AccessToken:credentials.data.credentialsId, InclRadio:true,RawData:false,checked:false
+                                }
+                                customerDevices.push(updatedRecord);
+                            }catch(error){
+                                console.log(isMounted.current);
+                            } 
                         }
-                        customerDevices.push(updatedRecord);
+                    })
+                )
+                .then(()=>{
+                    if(isMounted.current){
+                        if(customerDevices.length<1){
+                            setDevicesMessage('No device found')
+                        }
+                        setDevices(customerDevices);
+                        setDeviceLoader(false);
                     }
                 })
-            )
-            .then(()=>{
-                if(customerDevices.length<1){
-                    setDevicesMessage('No device found')
-                }
-                setDevices(customerDevices);
-                setDeviceLoader(false);
-            })
+           }
+            
           
         }) 
     }
