@@ -2,7 +2,7 @@ import './DeviceUI.css'
 import { Container , Collapse, Form, Alert,Button} from 'reactstrap';
 import {Button as SemanticButton} from 'semantic-ui-react';
 import axios from 'instance';
-import React,{useState} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import InputFormGroup from 'components/Generic/Form/InputFormGroup/InputFormGroup';
 import OptionFormGroup from 'components/Generic/Form/OptionFormGroup/OptionFormGroup';
 import {deviceTypes} from 'utils/Devices';
@@ -18,6 +18,14 @@ const DeviceUI = ()=>{
   const [collapse,setCollapse] = useState(false);
   const [disable,setDisable]   = useState(false);
   const [message,setMessage]   = useState("");
+  const [color,setColor]       = useState("");
+  let isMounted  = useRef(true);
+
+  useEffect(()=>{
+    return (()=>{
+        isMounted.current = false;
+    })
+},[isMounted])
 
   const onSubmit = async(e) =>{
     e.preventDefault();
@@ -31,24 +39,37 @@ const DeviceUI = ()=>{
                           RawData:newDevice.RawData,AccessToken:newDevice.AccessToken,
                           Customer:newDevice.customer}
           axios.post('/devices/add',device)
-          .then(res=>{
-            const device = {deviceUI:'',deviceType:'',endpoint:[{endpointType:'',endPointDest:''}],
-                          InclRadio:'',RawData:'',customer:'',AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()}
-            updateDevice(device); 
-            setMessage("Successfully Added Device");
-            setDisable(false);           
+          .then(_=>{
+            if(isMounted.current){
+              const device = {deviceUI:'',deviceType:'',endpoint:[{endpointType:'',endPointDest:''}],
+              InclRadio:'',RawData:'',customer:'',AccessToken:Math.random().toString(32).substr(2,10).toUpperCase()}
+              updateDevice(device); 
+              setMessage("Successfully Added Device");
+              setColor("success")
+              setDisable(false);      
+            }
+               
           })
           .catch(err=>{
-            setMessage("Cannot Add Device");
-            setDisable(false);    
+            if(isMounted.current){
+              setMessage(`Cannot Add Device:-   ${err.response.data?err.response.data:''}`);
+              setColor("danger")
+              setDisable(false);    
+            }
           })
         }else{
-          setMessage('Correct DeviceUI and AccessToken');
-          setDisable(false);
+          if(isMounted.current){
+            setMessage('Correct DeviceUI and AccessToken');
+            setColor("danger")
+            setDisable(false);
+          }
         }
       }else{
-        setMessage('Set Atleast One Endpoint');
-        setDisable(false);
+        if(isMounted.current){
+          setMessage('Set Atleast One Endpoint');
+          setColor("danger")
+          setDisable(false);
+        }
       }
   }
 
@@ -58,7 +79,7 @@ const DeviceUI = ()=>{
         <Button  color="primary" onClick={()=>setCollapse(collapse=>!collapse)}>Add</Button>
             <Collapse isOpen={collapse}>
                 <Form className='single-device-form'  onSubmit={onSubmit}>
-                  {message?<Alert color="success">{message}</Alert>:null}
+                  {message?<Alert color={color}>{message}</Alert>:null}
                   <InputFormGroup  Label="Device UI" pattern="((([A-Z]|\d){2}-){7})([A-Z]|\d){2}"
                   required={true}  value={newDevice.deviceUI}  onChange={(e)=>{setMessage("");newDeviceHandler(e)}} 
                   title="Format:70-B3-D5-D7-20-04-03-9A"  type="text" name="deviceUI"
