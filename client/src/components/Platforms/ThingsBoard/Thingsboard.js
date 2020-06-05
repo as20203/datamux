@@ -1,11 +1,9 @@
 import React, { useEffect,useState, useRef } from 'react';
-import OptionFormGroup from 'components/Generic/Form/OptionFormGroup/OptionFormGroup';
+import { OptionFormGroup, Loader, DeviceGrid} from 'components';
 import {Button,Form,Collapse,Alert} from 'reactstrap'
-import axios from 'platform-instance/Thingsboard';
+import {thingsboardInstance as axios} from 'platform-instance';
 import './Thingsboard.css';
-import useForm from 'CustomHooks/useForm';
-import DeviceGrid from './DeviceGrid/DeviceGrid';
-import Loading from 'components/Generic/Loader/Loader';
+import {useForm} from 'CustomHooks';
 import{Button as SemanticUIButton} from 'semantic-ui-react';
 import Papa from 'papaparse';
 
@@ -120,7 +118,7 @@ const ThingsBoard = (props) =>{
 
     return(
         <div style={{display:loading?'flex':'',justifyContent:'center',alignItems:'center',minHeight:'100vh'}} className="thingsboard-device-main">
-        {loading?<Loading />:
+        {loading?<Loader />:
             <div className='thingsboard-device-form'>
                 <Button  color="primary" onClick={()=>setCollapse(collapse=>!collapse)}>Add</Button>
                     <Collapse isOpen={collapse}>
@@ -133,10 +131,10 @@ const ThingsBoard = (props) =>{
                     {devices.length>1?<SemanticUIButton disabled={disable} color={'blue'} onClick={exportCSV} type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?"Generating....":"Generate CSV"}</SemanticUIButton>:null}
                     <div style={{display:'flex',justifyContent:'center',flexDirection:'column',alignItems:devicesMessage?'center':deviceLoader?'center':'flex-start',minHeight:'100vh'}}>
                         {devicesMessage?<Alert color="info">{devicesMessage}</Alert>:null}
-                        {deviceLoader?<Loading />: <DeviceGrid check={check} setCheck={toggleCheck} user={props.user} data={devices} setData={setDevices} setDevicesMessage={setDevicesMessage} />}
+                        {deviceLoader?<Loader />: <DeviceGrid check={check} setCheck={toggleCheck} user={props.user} data={devices} setData={setDevices} setDevicesMessage={setDevicesMessage} />}
                     </div>
             </div>}
         </div>
     )  
 }
-export default ThingsBoard;
+export {ThingsBoard};

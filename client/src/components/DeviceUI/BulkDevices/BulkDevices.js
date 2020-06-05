@@ -148,4 +148,4 @@ const MultipleDevices= ()=>{
         </Container>
     )
 }
-export default MultipleDevices;
+export { MultipleDevices };

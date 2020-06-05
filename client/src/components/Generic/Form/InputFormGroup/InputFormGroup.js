@@ -19,4 +19,4 @@ const InputFormGroup = (props) =>{
 }
 
 
-export default InputFormGroup;
+export {InputFormGroup };

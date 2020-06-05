@@ -1,17 +1,14 @@
-import './DeviceUI.css'
+import './SingleDeviceUI.css'
 import { Container , Collapse, Form, Alert,Button} from 'reactstrap';
 import {Button as SemanticButton} from 'semantic-ui-react';
 import axios from 'instance';
 import React,{useState,useRef,useEffect} from 'react';
-import InputFormGroup from 'components/Generic/Form/InputFormGroup/InputFormGroup';
-import OptionFormGroup from 'components/Generic/Form/OptionFormGroup/OptionFormGroup';
-import {deviceTypes} from 'utils/Devices';
-import Endpoint from 'components/Generic/Endpoint/Endpoint';
-import CheckBoxFormGroup from 'components/Generic/Form/CheckBoxFormGroup/CheckBoxFormGroup';
-import useForm from 'CustomHooks/useForm';
+import {InputFormGroup,OptionFormGroup,CheckBoxFormGroup,Endpoint} from 'components';
+import {deviceTypes} from 'utils';
+import {useForm} from 'CustomHooks';
 
 
-const DeviceUI = ()=>{
+const SingleDeviceUI = ()=>{
   const [newDevice,updateDevice,newDeviceHandler,checkBoxHandler,
     handleEndpointChange,addEndpoint,removeEndpoint] = useForm({deviceUI:'',deviceType:'',customer:'',
     AccessToken:Math.random().toString(32).substr(2,10).toUpperCase(),endpoint:[{endpointType:'',endPointDest:''}],InclRadio:'',RawData:''})
@@ -114,4 +111,4 @@ const DeviceUI = ()=>{
     </div>
 )}
 
-export default DeviceUI;
+export { SingleDeviceUI };

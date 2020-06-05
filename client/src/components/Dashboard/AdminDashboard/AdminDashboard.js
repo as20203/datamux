@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import {Icon,Menu, Segment, Sidebar, Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
-import Landing from 'components/Landing/Landing';
-import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
-import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
-import ThingsBoard from 'components/Platforms/ThingsBoard/Thingsboard';
-import Signup from 'components/Authentication/Signup/Signup';
-import ResetPassword from 'components/ResetPassword/ResetPassword';
-import RemoveUser from 'components/RemoveUser/RemoveUser';
-import NestedLinks from '../NestedLinks/NestedLinks';
+import { Landing, SingleDeviceUI, MultipleDevices,
+        ThingsBoard, Signup, ResetPassword, RemoveUser,
+        NestedLinks } from 'components';
 import './AdminDashboard.css';
 
 
@@ -106,11 +101,11 @@ const AdminDashboard=(props)=>{
                 
                     <Switch>
                         <Route exact path="/dashboard/landingpage" render={(p)=><Landing {...p} user={props.user} />} />
-                        <Route exact path="/dashboard/newdevice" component={DeviceUI} />
+                        <Route exact path="/dashboard/newdevice" component={SingleDeviceUI} />
                         <Route exact path="/dashboard/newuser" component={Signup} />
                         <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
                         <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
-                        <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
+                        <Route exact path="/dashboard/bulkdevices" component={MultipleDevices} />
                         <Route exact path="/dashboard/thingsboard" render={(p)=><ThingsBoard {...p} user={props.user} />} />
                     </Switch>
                 
@@ -122,4 +117,4 @@ const AdminDashboard=(props)=>{
     
 }
 
-export default AdminDashboard;
+export { AdminDashboard };

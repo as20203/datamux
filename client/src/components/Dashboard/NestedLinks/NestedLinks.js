@@ -25,4 +25,4 @@ const NestedLinks = (props) =>{
     return <React.Fragment> {nestedLinks}</React.Fragment>
 }
 
-export default NestedLinks;
+export { NestedLinks };

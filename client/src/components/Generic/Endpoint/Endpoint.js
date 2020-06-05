@@ -1,8 +1,7 @@
 import React from 'react';
-import OptionFormGroup from '../Form/OptionFormGroup/OptionFormGroup';
 import {Button} from 'reactstrap';
-import {endpointTypes} from '../../../utils/Devices';
-import InputFormGroup from '../Form/InputFormGroup/InputFormGroup';
+import {endpointTypes} from 'utils';
+import {InputFormGroup,OptionFormGroup} from 'components';
 
 const Endpoint = (props) =>{
    const endpoints =  props.endpoint.map((endpoint,index)=>{
@@ -26,4 +25,4 @@ const Endpoint = (props) =>{
 
 }
 
-export default Endpoint;
+export { Endpoint };

@@ -2,9 +2,8 @@ import React, { useState, useEffect} from 'react';
 import { Router,Route, Switch} from 'react-router-dom';
 import history from "MyHistory"; 
 import axios from 'axios';
-import Login from 'components/Authentication/Login/Login';
 import 'App.css';
-import Dashboard from 'components/Dashboard/Dashboard';
+import { Dashboard, Login } from 'components';
 
 const App=()=>{
   const [user,setUser] =useState(null);

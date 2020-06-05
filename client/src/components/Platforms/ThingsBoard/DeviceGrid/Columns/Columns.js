@@ -1,7 +1,7 @@
-import EditPrompt from 'components/Landing/EditPrompt/EditPrompt';
+import {EditPrompt} from 'components';
 import React from 'react';
 
-const getColumns = (userType,data,setData,check,toggleCheck,setDevicesMessage) =>{
+const ThingsBoardColumns = (userType,data,setData,check,toggleCheck,setDevicesMessage) =>{
    
     const columns = [
         {
@@ -124,4 +124,4 @@ const getColumns = (userType,data,setData,check,toggleCheck,setDevicesMessage) =
     return columns;
 }
 
-export default getColumns;
+export {ThingsBoardColumns};

@@ -14,4 +14,4 @@ const OptionFormGroup = (props)=>{
     )
 }
 
-export default OptionFormGroup;
+export { OptionFormGroup };

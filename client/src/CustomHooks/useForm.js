@@ -32,4 +32,4 @@ const useForm = (formValues) =>{
     return [state,setState,handleChange,checkBoxHandler,handleEndpointChange,addEndpoint,removeEndpoint];
 }
 
-export default useForm;
+export { useForm };

@@ -1,8 +1,6 @@
 import React from 'react';
 import './Dashboard.css';
-import Admin from './AdminDashboard/AdminDashboard';
-import User from './UserDashboard/UserDashboard';
-
+import {AdminDashboard,UserDashboard} from 'components';
 const Dashboard = (props)=>{ 
   const logoutHandler = () =>{
     localStorage.clear();
@@ -13,14 +11,14 @@ const Dashboard = (props)=>{
  
   const {user} = props;
   if(user && user.userType === "admin") {
-    return <Admin user={user} logoutHandler={logoutHandler} />
+    return <AdminDashboard user={user} logoutHandler={logoutHandler} />
   } 
   else if(user && user.userType === "user") {
-    return <User user={user} logoutHandler={logoutHandler}/>
+    return <UserDashboard user={user} logoutHandler={logoutHandler}/>
   }
   return null;  
 }
   
-  export default Dashboard;
+export { Dashboard };
 
 

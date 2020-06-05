@@ -21,4 +21,4 @@ const  DeleteUser = (props) =>{
     return <Button  disabled={disable} color="danger" onClick={()=>{handleDelete(props.row)}}>{disable?'Deleting':'Delete'}</Button>
 }
 
-export default DeleteUser;
+export { DeleteUser };

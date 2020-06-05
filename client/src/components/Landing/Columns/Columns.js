@@ -1,8 +1,7 @@
-import EditPrompt from '../EditPrompt/EditPrompt';
-import DeletePrompt from '../DeletePrompt/DeletePrompt';
+import {EditPrompt,DeletePrompt} from 'components';
 import React from 'react';
 
-const getColumns = (userType,data,setData) =>{
+const Columns = (userType,data,setData) =>{
     const columns = [
         {
         Header: 'Deviceeui',
@@ -103,4 +102,4 @@ const getColumns = (userType,data,setData) =>{
     return columns;
 }
 
-export default getColumns;
+export  { Columns };

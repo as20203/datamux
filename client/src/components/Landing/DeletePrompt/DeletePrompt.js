@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 import {Alert} from 'reactstrap';
 import axios from 'instance';
-const ModalExampleCloseIcon = (props) => {
+const DeletePrompt = (props) => {
     const [open,setOpen] = useState(false);
     const [deleteMessage,setDeleteMessage] = useState("");
     const [disable,setDisable] = useState(false);
@@ -49,4 +49,4 @@ const ModalExampleCloseIcon = (props) => {
     )
 }
 
-export default ModalExampleCloseIcon
+export  { DeletePrompt };

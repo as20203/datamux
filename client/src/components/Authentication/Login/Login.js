@@ -1,11 +1,10 @@
 import React,{useState} from 'react';
 import './Login.css'
 import { Button,Form,Alert} from 'reactstrap';
-import InputFormGroup from 'components/Generic/Form/InputFormGroup/InputFormGroup';
-import Loader from 'components/Generic/Loader/Loader';
+import {InputFormGroup,Loader} from 'components';
 import axios from 'axios';
 import history from 'MyHistory';
-import useForm from 'CustomHooks/useForm';
+import { useForm } from 'CustomHooks';
 
 
 const Login=(props)=>{
@@ -70,4 +69,4 @@ const Login=(props)=>{
     )
 }
 
-export default Login;
+export { Login };

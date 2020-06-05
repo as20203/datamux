@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import {Icon,Menu, Segment, Sidebar,Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
-import Landing from 'components/Landing/Landing';
-import DeviceUI from 'components/DeviceUI/SingleDevice/DeviceUI';
-import MultipleDeviceUI from 'components/DeviceUI/BulkDevices/BulkDevices';
-import NestedLinks from '../NestedLinks/NestedLinks';
+import { Landing, SingleDeviceUI, MultipleDevices, NestedLinks } from 'components';
 import './UserDashboard.css';
 
 
@@ -67,8 +64,8 @@ const UserDashboard=(props)=>{
                 <Segment basic>
                     <Switch>
                         <Route exact path="/dashboard/landingpage" render={(p)=><Landing {...p} user={props.user} />} />
-                        <Route exact path="/dashboard/newdevice" component={DeviceUI} />
-                        <Route exact path="/dashboard/bulkdevices" component={MultipleDeviceUI} />
+                        <Route exact path="/dashboard/newdevice" component={SingleDeviceUI} />
+                        <Route exact path="/dashboard/bulkdevices" component={MultipleDevices} />
                     </Switch>
                 </Segment>
             </Sidebar.Pusher>
@@ -77,4 +74,4 @@ const UserDashboard=(props)=>{
     )
 }
 
-export default UserDashboard;
+export { UserDashboard };

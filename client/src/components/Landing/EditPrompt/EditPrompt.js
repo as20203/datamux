@@ -3,12 +3,9 @@ import './EditPrompt.css';
 import { Container , Alert, Form} from 'reactstrap';
 import { Button,  Modal, Header } from 'semantic-ui-react';
 import axios from 'instance';
-import {deviceTypes} from 'utils/Devices';
-import Endpoint from 'components/Generic/Endpoint/Endpoint';
-import InputFormGroup from 'components/Generic/Form/InputFormGroup/InputFormGroup';
-import OptionFormGroup from 'components/Generic/Form/OptionFormGroup/OptionFormGroup';
-import CheckBoxFormGroup from 'components/Generic/Form/CheckBoxFormGroup/CheckBoxFormGroup';
-import useForm           from 'CustomHooks/useForm';
+import {deviceTypes} from 'utils';
+import {Endpoint,InputFormGroup,OptionFormGroup,CheckBoxFormGroup} from 'components';
+import {useForm}  from 'CustomHooks';
 
 const EditPrompt = (props) => {
     const [open,setOpen]               = useState(false);
@@ -121,4 +118,4 @@ const EditPrompt = (props) => {
     </Modal>
     )
 }
-export default EditPrompt;
+export  { EditPrompt };

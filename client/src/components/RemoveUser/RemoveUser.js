@@ -1,10 +1,9 @@
 import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import ReactTable from 'react-table';
-import DeleteUser from './DeleteUser/DeleteUser';
-import Loading from 'components/Generic/Loader/Loader';
+import {Loader,DeleteUser} from 'components';
 
-const AdminLanding =()=>{
+const RemoveUser =()=>{
   const [data,setData] = useState([]);
   const [loading,setLoading] = useState(true);
   const userStyle={padding:'8px 16px',maxWidth:'100%',minHeight:'100vh',display:loading?'flex':'',justifyContent:'center',alignItems:'center'}
@@ -52,7 +51,7 @@ const AdminLanding =()=>{
   return(
       <React.Fragment>  
         <div style={userStyle}>
-          {loading?<Loading />:                  
+          {loading?<Loader />:                  
             <ReactTable
             data={data}
             columns={columns}
@@ -69,5 +68,5 @@ const AdminLanding =()=>{
     </React.Fragment>    
   )
 }
-export default AdminLanding;
+export { RemoveUser };
   

@@ -2,8 +2,8 @@ import React,{useState} from 'react'
 import { Button,Form,Container, Alert} from 'reactstrap'
 import './Signup.css'
 import axios from 'axios';
-import useForm from 'CustomHooks/useForm';
-import InputFormGroup from 'components/Generic/Form/InputFormGroup/InputFormGroup';
+import {useForm} from 'CustomHooks';
+import {InputFormGroup} from 'components';
 
 const Signup=()=>{
   const [signup,clearSignup,handleSignup] = useForm({username:'',password:'',email:'',userType:"user"});
@@ -43,4 +43,4 @@ const onSubmit = (e) =>{
   }
 
 
-export default Signup;
+export { Signup };

@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react';
-import Columns from './Columns/Columns';
 import ReactTable from 'react-table';
-import Loader from 'components/Generic/Loader/Loader';
+import {Loader,Columns} from 'components';
 import axios from 'instance';
 
 const Landing = (props)=>{
@@ -50,5 +49,5 @@ const Landing = (props)=>{
     ) 
 }
 
-export default Landing;
+export { Landing };
 

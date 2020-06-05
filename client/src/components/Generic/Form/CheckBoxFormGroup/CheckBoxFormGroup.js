@@ -14,4 +14,4 @@ const CheckBoxFormGroup = (props) =>{
 }
 
 
-export default CheckBoxFormGroup;
+export { CheckBoxFormGroup };
