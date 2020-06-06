@@ -1,4 +1,4 @@
-import {EditPrompt} from 'components';
+import {ThingsBoardEditPrompt} from 'components';
 import React from 'react';
 
 const ThingsBoardColumns = (userType,data,setData,check,toggleCheck,setDevicesMessage) =>{
@@ -24,10 +24,8 @@ const ThingsBoardColumns = (userType,data,setData,check,toggleCheck,setDevicesMe
           e.persist()
           setDevicesMessage('');
           setData(data=>{ 
-               
                 const updatedData  = [...data];
                 updatedData[props.index] = {...updatedData[props.index],checked:e.target.checked};
-
                 return updatedData;
         })}}  
         checked={props.original.checked}></input>},
@@ -114,7 +112,7 @@ const ThingsBoardColumns = (userType,data,setData,check,toggleCheck,setDevicesMe
         userType==="admin"?{ 
           Header:'Edit',
           sortable:false,
-          Cell: row =>  <EditPrompt data={data} setData={setData}  rowData={row.original} />,
+          Cell: row =>  <ThingsBoardEditPrompt rowChecked={row.original.checked} setData={setData} rowIndex={row.index}  data={data}  rowData={row.original} />,
           width:100,
           style:{
               textAlign:"center",

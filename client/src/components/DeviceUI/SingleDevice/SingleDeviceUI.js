@@ -27,7 +27,7 @@ const SingleDeviceUI = ()=>{
   const onSubmit = async(e) =>{
     e.preventDefault();
       if(newDevice.endpoint.length>0){
-        if(newDevice.AccessToken.length===10 &&  /((([A-Z]|\d){2}-){7})([A-Z]|\d){2}/.test(newDevice.deviceUI)){
+        if(/((([A-Z]|\d){2}-){7})([A-Z]|\d){2}/.test(newDevice.deviceUI)){
           setDisable(true);
           const endPointDest = newDevice.endpoint.map(endpoint=> endpoint.endPointDest.trim()).join("|").trim();
           const endpointType = newDevice.endpoint.map(endpoint=> endpoint.endpointType.trim()).join("|").trim();
@@ -56,7 +56,7 @@ const SingleDeviceUI = ()=>{
           })
         }else{
           if(isMounted.current){
-            setMessage('Correct DeviceUI and AccessToken');
+            setMessage('Correct DeviceUI');
             setColor("danger")
             setDisable(false);
           }
@@ -83,9 +83,8 @@ const SingleDeviceUI = ()=>{
                   placeholder="Enter your Device UI"   />
 
                   <InputFormGroup Label="Access Token"
-                                pattern="(?=.*\d)((?=.*[a-z])|(?=.*[A-Z])).{10}" required={true}
+                                required={true}
                                 value={newDevice.AccessToken}  onChange={(e)=>{setMessage("");newDeviceHandler(e)}} 
-                                title="Length should be 10 characters with atleast one digit and upper or lowercase letter"
                                 type="text" name="AccessToken"  placeholder="Enter Access Token" />
                   
                   <InputFormGroup Label="Customer" required={true} value={newDevice.customer} 

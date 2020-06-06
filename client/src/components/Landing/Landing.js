@@ -37,12 +37,7 @@ const Landing = (props)=>{
             showPaginationTop={true}
             minRows={8} 
             className="-striped -highlight"
-            defaultFilterMethod= {(filter, row) =>row[filter.id].toLowerCase().includes(filter.value.toLowerCase())}   
-            defaultSorted={[
-              {
-                id: "Endpointtype",
-              }
-            ]}      
+            defaultFilterMethod= {(filter, row) =>row[filter.id].toLowerCase().includes(filter.value.toLowerCase())}      
           />}
           </div>
       </React.Fragment>     

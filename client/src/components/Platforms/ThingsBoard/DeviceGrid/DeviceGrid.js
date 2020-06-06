@@ -17,11 +17,7 @@ const DeviceGrid = (props) =>{
                 minRows={8} 
                 className="-striped -highlight"
                 defaultFilterMethod= {(filter, row) =>row[filter.id].toLowerCase().includes(filter.value.toLowerCase())}   
-                defaultSorted={[
-                    {
-                    id: "Endpointtype",
-                    }
-                ]}      
+               
                 />:null}
             </div>
     </React.Fragment>     

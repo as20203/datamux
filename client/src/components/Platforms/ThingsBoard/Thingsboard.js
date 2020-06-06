@@ -60,7 +60,7 @@ const ThingsBoard = (props) =>{
                             try{
                                 const credentials = await axios.get(`/device/${device.id.id}/credentials`)
                                 const updatedRecord= {
-                                    Deviceeui:device.name,Devicetype:device.type,Endpointtype:'HTTP',Customer:e.target.value,
+                                    Deviceeui:device.name,Devicetype:device.type,Endpointtype:'THINGSBOARD',Customer:e.target.value,
                                     Endpointdest:`https://data.talkpool.io/api/v1/${credentials.data.credentialsId}/telemetry`,
                                     AccessToken:credentials.data.credentialsId, InclRadio:true,RawData:false,checked:false
                                 }
