@@ -1,13 +1,15 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, useContext} from 'react';
 import ReactTable from 'react-table';
 import {Loader,Columns} from 'components';
 import axios from 'instance';
+import { authContext } from 'services';
 
 const Landing = (props)=>{
     const [data,setData] = useState([]);
     const [loading,setLoading] = useState(true);
+    const [auth] = useContext(authContext)
    
-    const columns = Columns(props.user.userType,data,setData);
+    const columns = Columns(auth.user.userType,data,setData);
     const LandingStyle={padding:'8px 16px',maxWidth:'100%',minHeight:'100vh',display:loading?'flex':'',justifyContent:'center',alignItems:'center'}
     
     useEffect(()=>{

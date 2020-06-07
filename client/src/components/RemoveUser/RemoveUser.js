@@ -2,6 +2,7 @@ import React,{useState, useEffect} from 'react';
 import axios from 'axios';
 import ReactTable from 'react-table';
 import {Loader,DeleteUser} from 'components';
+import history from 'MyHistory';
 
 const RemoveUser =()=>{
   const [data,setData] = useState([]);
@@ -43,7 +44,7 @@ const RemoveUser =()=>{
       setLoading(false);
     })
     .catch(err=>{
-      console.log(err);
+      history.push('/')
     })
   },[])
 

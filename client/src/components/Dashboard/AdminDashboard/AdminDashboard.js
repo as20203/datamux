@@ -100,13 +100,13 @@ const AdminDashboard=(props)=>{
             <Sidebar.Pusher >
                 
                     <Switch>
-                        <Route exact path="/dashboard/landingpage" render={(p)=><Landing {...p} user={props.user} />} />
+                        <Route exact path="/dashboard/landingpage" render={(p)=><Landing {...p}  />} />
                         <Route exact path="/dashboard/newdevice" component={SingleDeviceUI} />
                         <Route exact path="/dashboard/newuser" component={Signup} />
                         <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
                         <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
                         <Route exact path="/dashboard/bulkdevices" component={MultipleDevices} />
-                        <Route exact path="/dashboard/thingsboard" render={(p)=><ThingsBoard {...p} user={props.user} />} />
+                        <Route exact path="/dashboard/thingsboard" render={(p)=><ThingsBoard {...p}  />} />
                     </Switch>
                 
             </Sidebar.Pusher>

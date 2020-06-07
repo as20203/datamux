@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import 'semantic-ui-css/semantic.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'react-table/react-table.css'
+import 'react-table/react-table.css';
 
 import App from './App';
 import * as serviceWorker from './serviceWorker';

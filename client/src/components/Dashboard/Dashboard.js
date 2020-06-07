@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import './Dashboard.css';
 import {AdminDashboard,UserDashboard} from 'components';
+import { authContext } from 'services';
+// import {Redirect} from 'react-router-dom';
 const Dashboard = (props)=>{ 
+  const [auth,dispatch] = useContext(authContext)
   const logoutHandler = () =>{
     localStorage.clear();
     sessionStorage.clear(); 
-    props.setUser(null);
+    dispatch({type:'notauthenticated',isAuthenticated:false,user:{}}); 
   };
-
- 
-  const {user} = props;
-  if(user && user.userType === "admin") {
-    return <AdminDashboard user={user} logoutHandler={logoutHandler} />
+  if(auth.user && auth.user.userType === "admin") {
+    return <AdminDashboard  logoutHandler={logoutHandler} />
   } 
-  else if(user && user.userType === "user") {
-    return <UserDashboard user={user} logoutHandler={logoutHandler}/>
+  else if(auth.user && auth.user.userType === "user") {
+    return <UserDashboard    logoutHandler={logoutHandler}/>
   }
   return null;  
 }

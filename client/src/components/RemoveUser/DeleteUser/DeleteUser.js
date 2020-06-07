@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import {Button} from 'reactstrap';
 import axios from 'axios';
+import history from 'MyHistory';
+
 const  DeleteUser = (props) =>{
     const [disable,setDisable] = useState(false);
     const handleDelete = (row) =>{
@@ -16,6 +18,7 @@ const  DeleteUser = (props) =>{
           })
           .catch(error=>{
               setDisable(false);
+              history.replace('/');
           })
       }
     return <Button  disabled={disable} color="danger" onClick={()=>{handleDelete(props.row)}}>{disable?'Deleting':'Delete'}</Button>

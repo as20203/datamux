@@ -175,8 +175,11 @@ router.post("/api/reset-password",checkAuth,async(req,res)=>{
                         
                     })
                    
+                }else{
+                    return res.status(406).json({
+                        message:"Auth Failed. Invalid Old Password."
+                    });
                 }
-                
             })
         }
 

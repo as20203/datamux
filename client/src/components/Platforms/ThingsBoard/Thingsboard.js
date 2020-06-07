@@ -131,7 +131,7 @@ const ThingsBoard = (props) =>{
                     {devices.length>1?<SemanticUIButton disabled={disable} color={'blue'} onClick={exportCSV} type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?"Generating....":"Generate CSV"}</SemanticUIButton>:null}
                     <div style={{display:'flex',justifyContent:'center',flexDirection:'column',alignItems:devicesMessage?'center':deviceLoader?'center':'flex-start',minHeight:'100vh'}}>
                         {devicesMessage?<Alert color="info">{devicesMessage}</Alert>:null}
-                        {deviceLoader?<Loader />: <DeviceGrid check={check} setCheck={toggleCheck} user={props.user} data={devices} setData={setDevices} setDevicesMessage={setDevicesMessage} />}
+                        {deviceLoader?<Loader />: <DeviceGrid check={check} setCheck={toggleCheck} data={devices} setData={setDevices} setDevicesMessage={setDevicesMessage} />}
                     </div>
             </div>}
         </div>
