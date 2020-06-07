@@ -27,7 +27,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
                     }
                 }else{
                     dispatch({type:'notauthenticated',user:{},isAuthenticated:false})
-                    setAuthRuote(false);
                     localStorage.clear();
                     sessionStorage.clear(); 
                     history.push('/')
@@ -35,7 +34,6 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             
             }catch(error){
                 dispatch({type:'notauthenticated',user:{},isAuthenticated:false})
-                setAuthRuote(false);
                 localStorage.clear();
                 sessionStorage.clear(); 
                 history.push('/')
