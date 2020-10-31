@@ -3,7 +3,7 @@ import {Icon,Menu, Segment, Sidebar, Accordion } from 'semantic-ui-react';
 import {Link,Switch,Route} from 'react-router-dom';
 import { Landing, SingleDeviceUI, MultipleDevices,
         ThingsBoard, Signup, ResetPassword, RemoveUser,
-        NestedLinks } from 'components';
+        NestedLinks , NetworkServer,Sensepool } from 'components';
 import './AdminDashboard.css';
 
 
@@ -28,6 +28,7 @@ const AdminDashboard=(props)=>{
         <div className='admin-dashboard-main'>
             <Sidebar.Pushable style={{overflowX:window.matchMedia("(max-width: 500px)").matches?'scroll':'visible'}} as={Segment} className='admin-sidebar-pushable' >
             <Sidebar
+                style={{ width: '180px' }}
                 as={Menu}
                 animation='uncover'
                 icon='labeled'
@@ -88,6 +89,22 @@ const AdminDashboard=(props)=>{
                         />
                     </Accordion.Content>
 
+                     <Accordion.Title style={{color:'white',textAlign:'justify'}} active={activeIndex === 4} index={4} onClick={handleClick}>
+                            <Icon name='dropdown' />
+                            Device Provisioning
+                    </Accordion.Title>
+
+                    <Accordion.Content active={activeIndex === 4}>
+                    <NestedLinks 
+                    setNestedActiveIndex={setNestedActiveIndex}
+                    nestedActiveIndex={nestedActiveIndex}
+                            links={[
+                                {index:6,to:'/dashboard/networkserver',name:'user plus',title:'Network Server'},
+                                {index:7,to:'/dashboard/sensepool',name:'user plus',title:'Sensepool'},
+                            ]}
+                        />
+                    </Accordion.Content>
+
 
                 </Menu.Item>
                 
@@ -97,7 +114,7 @@ const AdminDashboard=(props)=>{
                 </Menu.Item>
             </Sidebar>
 
-            <Sidebar.Pusher >
+            <Sidebar.Pusher style={{ padding: window.matchMedia("(max-width: 500px)").matches? '0px 60px':'0px 30px' }} >
                 
                     <Switch>
                         <Route exact path="/dashboard/landingpage" render={(p)=><Landing {...p}  />} />
@@ -106,7 +123,9 @@ const AdminDashboard=(props)=>{
                         <Route exact path="/dashboard/resetpassword" component={ResetPassword} />
                         <Route exact path="/dashboard/deleteuser" component={RemoveUser} />
                         <Route exact path="/dashboard/bulkdevices" component={MultipleDevices} />
-                        <Route exact path="/dashboard/thingsboard" render={(p)=><ThingsBoard {...p}  />} />
+                        <Route exact path="/dashboard/sensepool" component={Sensepool} />
+                        <Route exact path="/dashboard/networkserver" component={NetworkServer} />
+                        <Route exact path="/dashboard/thingsboard" render={ props =><ThingsBoard {...props}  />} />
                     </Switch>
                 
             </Sidebar.Pusher>

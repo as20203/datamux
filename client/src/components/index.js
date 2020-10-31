@@ -1,4 +1,5 @@
 export * from './Authentication';
+export * from './AdminConsoleVisualization';
 export * from './Dashboard';
 export * from './Generic';
 export * from './Landing';

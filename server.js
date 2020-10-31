@@ -16,9 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 //Routes
 const authRoutes = require("./backend/routes/auth");
+const proxyRoute = require('./backend/routes/proxy');
 
 app.use(authRoutes);
-
+app.use(proxyRoute);
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
   app.use(express.static(path.join(__dirname, 'client/build')));

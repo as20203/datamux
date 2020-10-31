@@ -14,17 +14,17 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             try{  
                 const token = localStorage.getItem("Token");
                 if(token){
-                const verifyToken = await  axios.post("/api/verify-token")
-                if(verifyToken){
-                        dispatch({type:'authenticated',user:verifyToken.data.user,isAuthenticated:true})
-                        setAuthRuote(true);
-                        const currentPath = history.location.pathname;
-                        if(currentPath==='/'){
-                            history.push("/dashboard")
-                        }else{
-                            history.push(currentPath);
-                        }    
-                    }
+                    const verifyToken = await  axios.post("/api/verify-token")
+                    if(verifyToken){
+                            dispatch({type:'authenticated',user:verifyToken.data.user,isAuthenticated:true})
+                            setAuthRuote(true);
+                            const currentPath = history.location.pathname;
+                            if(currentPath==='/'){
+                                history.push("/dashboard")
+                            }else{
+                                history.push(currentPath);
+                            }    
+                        }
                 }else{
                     dispatch({type:'notauthenticated',user:{},isAuthenticated:false})
                     localStorage.clear();

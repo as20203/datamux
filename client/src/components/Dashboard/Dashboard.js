@@ -2,8 +2,8 @@ import React, { useContext } from 'react';
 import './Dashboard.css';
 import {AdminDashboard,UserDashboard} from 'components';
 import { authContext } from 'services';
-// import {Redirect} from 'react-router-dom';
-const Dashboard = (props)=>{ 
+
+const Dashboard = ()=>{ 
   const [auth,dispatch] = useContext(authContext)
   const logoutHandler = () =>{
     localStorage.clear();

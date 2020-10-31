@@ -29,17 +29,22 @@ const ThingsBoard = (props) =>{
         .then(result=>{
             const token = result.data.token;
             sessionStorage.setItem('ThingsBoardAccessToken',token);
-            axios.get('/customers',{params: {limit: '1000'},headers: {"Content-Type": "application/json"}})
+            axios.get('/customers',{params: {pageSize: 36, page: 1 },headers: {"Content-Type": "application/json"}})
             .then(users=>{
+                console.log(users);
                 const customers = users.data.data.map(user=>{return ({key:user.name,value:user.id.id})});
                 if(isMounted.current){
                     setData(customers);
                     setLoading(false);
                 }
             })
+            .catch( error => {
+                console.log(error.response);
+                setLoading(false);
+            });
         })
         .catch(err=>{
-            console.log(err);
+            setLoading(false);
         })
         return (()=>{
             isMounted.current = false;

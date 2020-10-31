@@ -1,22 +1,18 @@
-
-
 .admin-dashboard-main .admin-sidebar-pushable {
-    min-height: 100vh;
-    margin:0px;
-    width: 100%;
+  min-height: 100vh;
+  margin: 0px;
+  width: 100%;
 }
 
-.admin-dashboard-main .pusher{
-    width: 89.655%;
-   
+.admin-dashboard-main .pusher {
+  width: 89.655%;
 }
-
-
 
 .admin-dashboard-main .ui.inverted.menu {
-    background-color: #06bcfb;
-    background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
+  background-color: #06bcfb;
+  background-image: linear-gradient(315deg, #06bcfb 0%, #4884ee 74%);
 }
 
-
-
+.admin-dashboard-main .ui.uncover.sidebar {
+  z-index: 3;
+}
