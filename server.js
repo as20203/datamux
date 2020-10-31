@@ -8,7 +8,7 @@ const app = express();
 
 //Connect to a database
 const url = process.env.DATABASEURL || "mongodb://localhost/commData";
-mongoose.connect(url,{ useNewUrlParser: true,useCreateIndex: true, });
+mongoose.connect(url,{ useNewUrlParser: true,useCreateIndex: true, useUnifiedTopology: true });
 
 seedDB();
 app.use(bodyParser.json());
