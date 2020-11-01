@@ -20,48 +20,43 @@ const ThingsBoard = (props) =>{
     const [devicesMessage,setDevicesMessage]  = useState('');
     let isMounted  = useRef(true);
 
-    useEffect(()=>{
-        const credentials = {
-            "username" :"muhammad.adil@talkpool.com",
-            "password" : "TrackerWEB12!@#"
-         }
-        axios.post("/auth/login",credentials,{headers: {"Content-Type": "application/json"}})
-        .then(result=>{
-            const token = result.data.token;
+    const getCustomers = async () => {
+        try {
+            const credentials = {
+                "username" :"muhammad.adil@talkpool.com",
+                "password" : "TrackerWEB12!@#"
+            }
+            const { data: { token }} = await axios.post("/auth/login",credentials,{headers: {"Content-Type": "application/json"}})
             sessionStorage.setItem('ThingsBoardAccessToken',token);
-            axios.get('/customers',{params: {pageSize: 36, page: 1 },headers: {"Content-Type": "application/json"}})
-            .then(users=>{
-                console.log(users);
-                const customers = users.data.data.map(user=>{return ({key:user.name,value:user.id.id})});
-                if(isMounted.current){
-                    setData(customers);
-                    setLoading(false);
-                }
-            })
-            .catch( error => {
-                console.log(error.response);
+            const { data: { data: customers }} = await axios.get('/customers',{params: {pageSize: 1000, page: 0 },headers: {"Content-Type": "application/json"}})
+             if(isMounted.current && token){
+                const updatedCustomers = customers.map(user=>{return ({key:user.name,value:user.id.id})});
+                setData(updatedCustomers);
                 setLoading(false);
-            });
-        })
-        .catch(err=>{
+            }
+        } catch {
             setLoading(false);
-        })
+        }
+    }
+
+    useEffect(()=>{
+        getCustomers();
         return (()=>{
             isMounted.current = false;
           })
     },[isMounted])
 
-    const updateDevices = (e)=>{
-        setDeviceLoader(true);
-        setDevicesMessage('');
-        const customer = data.filter(customer=>customer.key===e.target.value)[0].value;
-        axios.get(`customer/${customer}/devices`,{params: {limit: '1000'},headers: {"Content-Type": "application/json"}})
-        .then(async devices=>{
-            let customerDevices = [];
-            if(isMounted){
-                await Promise.all(
-                    devices.data.data.map(async device=>{
-                        if(isMounted.current){
+    const updateDevices = async (e)=>{
+        try {
+            setDeviceLoader(true);
+            setDevicesMessage('');
+            const customer = data.filter(customer=>customer.key===e.target.value)[0].value;
+            const { data : { data: devices }}  = await axios.get(`customer/${customer}/devices`,{params: {pageSize: 1000, page: 0 },headers: {"Content-Type": "application/json"}});
+            if(isMounted && devices){
+                const customerDevices = await Promise.allSettled(
+                    devices.map(async device=>{
+                        return new Promise(async (resolve, reject) => {
+                            if(isMounted.current){
                             try{
                                 const credentials = await axios.get(`/device/${device.id.id}/credentials`)
                                 const updatedRecord= {
@@ -69,26 +64,31 @@ const ThingsBoard = (props) =>{
                                     Endpointdest:`https://data.talkpool.io/api/v1/${credentials.data.credentialsId}/telemetry`,
                                     AccessToken:credentials.data.credentialsId, InclRadio:true,RawData:false,checked:false
                                 }
-                                customerDevices.push(updatedRecord);
-                            }catch(error){
-                                console.log(isMounted.current);
+                                resolve(updatedRecord)
+                            }catch (error) {
+                                reject(error);
                             } 
-                        }
+                            } else {
+                                reject('component is not mounted');
+                            }
+                        })
                     })
                 )
-                .then(()=>{
-                    if(isMounted.current){
-                        if(customerDevices.length<1){
-                            setDevicesMessage('No device found')
-                        }
-                        setDevices(customerDevices);
-                        setDeviceLoader(false);
+                if(isMounted.current){
+                    if(customerDevices.length<1){
+                        setDevicesMessage('No device found')
                     }
-                })
-           }
-            
-          
-        }) 
+                    const updatedCustomerDevices = customerDevices.filter(device => device.status === 'fulfilled').map(device => {
+                        return device.value;
+                    })
+                    setDevices(updatedCustomerDevices);
+                    setDeviceLoader(false);
+                }
+                
+            }
+        } catch {
+            setDeviceLoader(false);
+        }
     }
 
     const exportCSV = () =>{
