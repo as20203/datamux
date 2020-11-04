@@ -11,7 +11,7 @@ const DeviceGrid = (props) =>{
         <React.Fragment> 
             <div style={LandingStyle}>
                 
-                {props.data.length>1?
+                {props.data.length> 0 ?
                 <ReactTable
                 data={props.data}
                 columns={columns}

@@ -3,14 +3,13 @@ import { OptionFormGroup, Loader, DeviceGrid} from 'components';
 import {Button,Form,Collapse,Alert} from 'reactstrap'
 import {thingsboardInstance as axios} from 'platform-instance';
 import './Thingsboard.css';
-import {useForm} from 'CustomHooks';
 import{Button as SemanticUIButton} from 'semantic-ui-react';
 import Papa from 'papaparse';
 
 
-const ThingsBoard = (props) =>{
-    const [Customer,,handleCustomerChange] = useForm({customer:'',id:''});
-    const [data,setData] = useState([]);
+const ThingsBoard = () =>{
+    const [customers,setCustomers] = useState([]);
+    const [entityGroups, setEntityGroups] = useState([]);
     const [collapse,setCollapse] = useState(false);
     const [devices,setDevices] = useState([]);
     const [check,toggleCheck] = useState(false);
@@ -23,15 +22,15 @@ const ThingsBoard = (props) =>{
     const getCustomers = async () => {
         try {
             const credentials = {
-                "username" :"muhammad.adil@talkpool.com",
-                "password" : "TrackerWEB12!@#"
+                'username' :'muhammad.adil@talkpool.com',
+                'password' : 'TrackerWEB12!@#'
             }
             const { data: { token }} = await axios.post("/auth/login",credentials,{headers: {"Content-Type": "application/json"}})
             sessionStorage.setItem('ThingsBoardAccessToken',token);
             const { data: { data: customers }} = await axios.get('/customers',{params: {pageSize: 1000, page: 0 },headers: {"Content-Type": "application/json"}})
              if(isMounted.current && token){
-                const updatedCustomers = customers.map(user=>{return ({key:user.name,value:user.id.id})});
-                setData(updatedCustomers);
+                const updatedCustomers = customers.map(user=>{return ({key:user.id.id,value: user.name})});
+                setCustomers(updatedCustomers);
                 setLoading(false);
             }
         } catch {
@@ -46,23 +45,49 @@ const ThingsBoard = (props) =>{
           })
     },[isMounted])
 
-    const updateDevices = async (e)=>{
+    const handleCustomerChange = async (e)=>{
         try {
-            setDeviceLoader(true);
+            e.persist();
+            setEntityGroups([]);
+            setDevices([]);
             setDevicesMessage('');
-            const customer = data.filter(customer=>customer.key===e.target.value)[0].value;
-            const { data : { data: devices }}  = await axios.get(`customer/${customer}/devices`,{params: {pageSize: 1000, page: 0 },headers: {"Content-Type": "application/json"}});
+            toggleCheck(false)
+            const selectedIndex = e.target.options.selectedIndex;
+            const customerId = e.target.options[selectedIndex].getAttribute('data-key');
+            const customer = e.target.value;
+            const { data : entityGroups } = await axios.get(`/entityGroups/CUSTOMER/${customerId}/DEVICE`);
+            if (isMounted && setEntityGroups) {
+                const updatedEntityGroups = entityGroups.map(user=>{return ({ key: user.id.id , value: user.name, customer })});
+                setEntityGroups(updatedEntityGroups);
+            }
+        } catch {
+            setDeviceLoader(false);
+        }
+    }
+
+    const handleEntityGroupChange = async e => {
+        try {
+            e.persist()
+            setDeviceLoader(true);
+            setDevices([]);
+            setDevicesMessage('');
+            toggleCheck(false)
+            const selectedIndex = e.target.options.selectedIndex;
+            const entityGroupId = e.target.options[selectedIndex].getAttribute('data-key');
+            const customerId = e.target.options[selectedIndex].getAttribute('customer-key');
+
+            const { data : { data: devices }}  = await axios.get(`entityGroup/${entityGroupId}/devices`,{params: {pageSize: 1000, page: 0 },headers: {"Content-Type": "application/json"}});
             if(isMounted && devices){
                 const customerDevices = await Promise.allSettled(
                     devices.map(async device=>{
                         return new Promise(async (resolve, reject) => {
                             if(isMounted.current){
                             try{
-                                const credentials = await axios.get(`/device/${device.id.id}/credentials`)
+                                const { data: { credentialsId }} = await axios.get(`/device/${device.id.id}/credentials`)
                                 const updatedRecord= {
-                                    Deviceeui:device.name,Devicetype:device.type,Endpointtype:'THINGSBOARD',Customer:e.target.value,
-                                    Endpointdest:`https://data.talkpool.io/api/v1/${credentials.data.credentialsId}/telemetry`,
-                                    AccessToken:credentials.data.credentialsId, InclRadio:true,RawData:false,checked:false
+                                    Deviceeui:device.name,Devicetype:device.type,Endpointtype:'THINGSBOARD',Customer: customerId,
+                                    Endpointdest:`https://data.talkpool.io/api/v1/${credentialsId}/telemetry`,
+                                    AccessToken:credentialsId, InclRadio:true,RawData:false,checked:false
                                 }
                                 resolve(updatedRecord)
                             }catch (error) {
@@ -75,16 +100,15 @@ const ThingsBoard = (props) =>{
                     })
                 )
                 if(isMounted.current){
-                    if(customerDevices.length<1){
-                        setDevicesMessage('No device found')
-                    }
                     const updatedCustomerDevices = customerDevices.filter(device => device.status === 'fulfilled').map(device => {
                         return device.value;
                     })
+                     if(updatedCustomerDevices.length < 1){
+                        setDevicesMessage('No device found')
+                    }
                     setDevices(updatedCustomerDevices);
                     setDeviceLoader(false);
                 }
-                
             }
         } catch {
             setDeviceLoader(false);
@@ -129,11 +153,14 @@ const ThingsBoard = (props) =>{
                     <Collapse isOpen={collapse}>
                         <Form  className='single-device-form'>
                             <OptionFormGroup Label="Select Customer" 
-                            name='customer'  id={Customer.id} type="select"
-                            onChange={(e)=>{handleCustomerChange(e);setDevices([]);toggleCheck(false);setDevicesMessage('');updateDevices(e)}} options={data.map(customer=>customer.key)} required={true}  />
+                            name='customer'  id='customer' type="select"
+                            onChange={e=>handleCustomerChange(e)} options={customers} required={true}  />
+                            {Array.isArray(entityGroups) && entityGroups.length > 0 && <OptionFormGroup Label="Select Entity Group" 
+                            name='entityGroup'  id='entityGroup' type="select"
+                            onChange={e => handleEntityGroupChange(e)} options={entityGroups}  />}
                         </Form>
                     </Collapse>
-                    {devices.length>1?<SemanticUIButton disabled={disable} color={'blue'} onClick={exportCSV} type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?"Generating....":"Generate CSV"}</SemanticUIButton>:null}
+                    {devices.length> 0?<SemanticUIButton disabled={disable} color={'blue'} onClick={exportCSV} type='submit' style={{ margin: '5px auto',display:'block' }}>{disable?"Generating....":"Generate CSV"}</SemanticUIButton>:null}
                     <div style={{display:'flex',justifyContent:'center',flexDirection:'column',alignItems:devicesMessage?'center':deviceLoader?'center':'flex-start',minHeight:'100vh'}}>
                         {devicesMessage?<Alert color="info">{devicesMessage}</Alert>:null}
                         {deviceLoader?<Loader />: <DeviceGrid check={check} setCheck={toggleCheck} data={devices} setData={setDevices} setDevicesMessage={setDevicesMessage} />}
