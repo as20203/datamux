@@ -17,12 +17,12 @@ const EditForm = (props) => {
                         <Header textAlign={"center"} as='h1'>Edit Device:- {props.editDevice.deviceUI}</Header>
                         {props.message?<Alert color="success">{props.message}</Alert>:null}
                         <InputFormGroup Label="Access Token"
-                                required={true}
+                               
                                 value={props.editDevice.AccessToken}  onChange={props.editDeviceHandler} 
                                 type="text" name="AccessToken"  placeholder="Enter Access Token" />
 
                         <InputFormGroup Label="Customer" 
-                            required={true} 
+                            
                             value={props.editDevice.customer} 
                             onChange={props.editDeviceHandler}
                             type="text" name="customer"  placeholder="Enter Customer Name"/>

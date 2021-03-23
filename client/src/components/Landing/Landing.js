@@ -18,7 +18,7 @@ const Landing = (props)=>{
         .then(commData=>{
           if(isMounted){
             setLoading(false);
-            setData(commData.data);
+            if (Array.isArray(commData.data)) setData(commData.data);
           }
         })
         .catch(err=>{

@@ -1,4 +1,5 @@
 import {EditPrompt,DeletePrompt} from 'components';
+import { format } from 'date-fns';
 import React from 'react';
 
 const Columns = (userType,data,setData) =>{
@@ -76,6 +77,16 @@ const Columns = (userType,data,setData) =>{
           filterable: true,
           style:{
               
+              textAlign:"center"
+          }
+        },
+        {
+          Header: "Last Updated on",
+          id: 'lastUpdatedOn',
+          accessor: row => format(new Date(row.LastUpdatedOn), 'MM/dd/yyyy HH:mm:ss'),
+          width:200,
+          filterable: true,
+          style:{    
               textAlign:"center"
           }
         },
