@@ -83,7 +83,7 @@ const Columns = (userType,data,setData) =>{
         {
           Header: "Last Updated on",
           id: 'lastUpdatedOn',
-          accessor: row => format(new Date(row.LastUpdatedOn), 'MM/dd/yyyy HH:mm:ss'),
+          accessor: row => row.LastUpdatedOn ? format(new Date(row.LastUpdatedOn), 'MM/dd/yyyy HH:mm:ss') : '',
           width:200,
           filterable: true,
           style:{    
