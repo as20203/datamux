@@ -10,7 +10,6 @@ import './AdminDashboard.css';
 const AdminDashboard=(props)=>{
     const [activeIndex,setActiveindex] = useState(parseInt(sessionStorage.getItem('activeIndex')));
     const [nestedActiveIndex, setNestedActiveIndex] = useState(parseInt(sessionStorage.getItem('nestedActiveIndex')));
-
     const handleClick = (_,titleProps) => {
         setActiveindex(prevIndex=>{
             const {index,active} = titleProps

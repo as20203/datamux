@@ -1,9 +1,39 @@
-import {EditPrompt,DeletePrompt} from 'components';
-import { format } from 'date-fns';
+import{ Button } from 'semantic-ui-react';
+import {EditPrompt,DeletePrompt, OptionFormGroup, CommandField, CommandValueField } from 'components';
 import React from 'react';
 
-const Columns = (userType,data,setData) =>{
+const Columns = (userType,data,setData, check, toggleCheck, sendCommand) =>{
     const columns = [
+        {
+          sortable:false,
+          resizable:false,
+          Header: (<input type="checkbox" 
+          onChange={(e)=>toggleCheck(check=>{
+              const checkAll = !check;
+              setData(data=>{
+                  const updatedData = [...data].map(device=>{return({...device,checked:checkAll})});
+                  return updatedData;
+              })
+              return checkAll
+          })} 
+          checked={check}/>),
+          width:80,
+          Cell:props=>{return <input type='checkbox'  
+          onChange={(e)=>{
+            e.persist()
+            setData(data=>{ 
+                  const updatedData  = [...data];
+                   const foundIndex = updatedData.findIndex(({ Deviceeui }) => Deviceeui  === props.original.Deviceeui);
+                   console.log(foundIndex);
+                   if (foundIndex !== -1) 
+                    updatedData[foundIndex] = {...updatedData[foundIndex],checked:e.target.checked};
+                  return updatedData;
+          })}}  
+          checked={props.original.checked}></input>},
+          style:{
+              textAlign:"center"
+          },
+        },
         {
         Header: 'Deviceeui',
         accessor: 'Deviceeui',
@@ -71,6 +101,56 @@ const Columns = (userType,data,setData) =>{
           }
         },
         {
+          Header: "Command",
+          accessor: 'command',
+          width:100,
+          Cell: props =>  <CommandField setData={setData} original={props.original} />,
+          style:{
+              textAlign:"center"
+          },
+        },
+        {
+          Header: "Value",
+          accessor: 'value',
+          width:80,
+          
+          Cell: (props) => <CommandValueField setData={setData} original={props.original} />,
+          style:{
+              textAlign:"center"
+          },
+        },
+         {
+          Header: "Server",
+          accessor: 'server',
+          width:120,
+          Cell: (props) => <OptionFormGroup  
+          value={props.original.server}
+          onChange={(e)=>{
+            e.persist()
+            setData(data=>{ 
+                  const updatedData  = [...data];
+                   const foundIndex = updatedData.findIndex(({ Deviceeui }) => Deviceeui  === props.original.Deviceeui);
+                   if (foundIndex !== -1) 
+                      updatedData[foundIndex] = {...updatedData[foundIndex],server:e.target.value};
+                  return updatedData;
+          })}}   
+          marginBottom='0px' Label="" 
+          required={true}   
+          type="select" name="Server" options={['netmore', 'talkpoolNS']} />,
+          style:{
+              textAlign:"center"
+          },
+        },
+          userType==="admin"?{ 
+          Header:'Send Command',
+          sortable:false,
+          Cell: row =>  <Button style={{ width: '100%'}} onClick={ () => sendCommand(row.original) } > Send Command </Button>,
+          width:150,
+          style:{
+              textAlign:"center",
+           },
+        }:{show:false},
+        {
           Header: "Customer",
           accessor: 'Customer',
           width:120,
@@ -80,16 +160,7 @@ const Columns = (userType,data,setData) =>{
               textAlign:"center"
           }
         },
-        {
-          Header: "Last Updated on",
-          id: 'lastUpdatedOn',
-          accessor: row => row.LastUpdatedOn ? format(new Date(row.LastUpdatedOn), 'MM/dd/yyyy HH:mm:ss') : '',
-          width:200,
-          filterable: true,
-          style:{    
-              textAlign:"center"
-          }
-        },
+       
         userType==="admin"?{ 
           Header:'Delete',
           sortable:false,

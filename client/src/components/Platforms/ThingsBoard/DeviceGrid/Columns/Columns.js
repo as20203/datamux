@@ -24,9 +24,9 @@ const ThingsBoardColumns = (userType,data,setData,check,toggleCheck,setDevicesMe
           e.persist()
           setDevicesMessage('');
           setData(data=>{ 
-                const updatedData  = [...data];
-                updatedData[props.index] = {...updatedData[props.index],checked:e.target.checked};
-                return updatedData;
+              const updatedData  = [...data];
+              updatedData[props.index] = {...updatedData[props.index],checked:e.target.checked};
+              return updatedData;
         })}}  
         checked={props.original.checked}></input>},
         style:{
