@@ -26,6 +26,7 @@ const ThingsBoardEditPrompt = props => {
 
   useEffect(() => {
     const setEndpoint = () => {
+      console.log(props.rowData);
       const endpointType = props.rowData.Endpointtype.split('|');
       const endpointDest = props.rowData.Endpointdest.split('|');
       const endpoint = [];

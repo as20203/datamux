@@ -87,7 +87,7 @@ const ThingsBoard = () => {
       const selectedIndex = e.target.options.selectedIndex;
       const entityGroupId = e.target.options[selectedIndex].getAttribute('data-key');
       const customerId = e.target.options[selectedIndex].getAttribute('customer-key');
-
+      console.log(customerId);
       const {
         data: { data: devices }
       } = await axios.get(`entityGroup/${entityGroupId}/devices`, {

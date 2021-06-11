@@ -4,7 +4,7 @@ import { FormGroup, Label, Input } from 'reactstrap';
 const OptionFormGroup = props => {
   const options = props.options.map((option, index) => (
     <option
-      customer-key={option.customer || ''}
+      customer-key={option.value || ''}
       value={option}
       data-key={option.key || index}
       key={index}
