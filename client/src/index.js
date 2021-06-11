@@ -9,13 +9,16 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import axios from 'axios';
 
-axios.interceptors.request.use(config=>{
-    const token = localStorage.getItem("Token");
-    if(token){
-        config.headers.Authorization = `Bearer ${token}`;
+axios.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('Token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
-} ,error => Promise.reject(error))
+  },
+  error => Promise.reject(error)
+);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

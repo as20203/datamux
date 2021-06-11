@@ -1,1 +1,1 @@
-export  * from './OptionFormGroup';
+export * from './OptionFormGroup';
