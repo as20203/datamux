@@ -1,10 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC, FormEvent } from 'react';
 import './EditPrompt.css';
 import axios from 'instance';
 import { EditForm } from 'components';
 import { useForm } from 'CustomHooks';
+import { Device, DeviceEndpoint, EditDevice, ComponentHandler } from '@types';
 
-const EditPrompt = props => {
+interface EditPromptProps {
+  rowData: Device;
+  setData: ComponentHandler<Device[]>;
+}
+const initialDevice: EditDevice = {
+  deviceUI: '',
+  deviceType: '',
+  AccessToken: '',
+  endpoint: [],
+  InclRadio: false,
+  RawData: false,
+  customer: ''
+};
+const EditPrompt: FC<EditPromptProps> = props => {
   const [disable, setDisable] = useState(false);
   const [message, setMessage] = useState('');
   const [open, setOpen] = useState(false);
@@ -16,18 +30,10 @@ const EditPrompt = props => {
     handleEndpointChange,
     addEndpoint,
     removeEndpoint
-  ] = useForm({
-    deviceUI: '',
-    deviceType: '',
-    AccessToken: '',
-    endpoint: [],
-    InclRadio: false,
-    RawData: false,
-    customer: ''
-  });
+  ] = useForm(initialDevice);
 
   useEffect(() => {
-    const setEndpoint = () => {
+    const setEndpoint = (): DeviceEndpoint[] => {
       const endpointType = props.rowData.Endpointtype.split('|');
       const endpointDest = props.rowData.Endpointdest.split('|');
       const endpoint = [];
@@ -48,8 +54,8 @@ const EditPrompt = props => {
     updateDevice(newDevice);
   }, [props, updateDevice]);
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (editDevice.endpoint.length > 0) {
       setDisable(true);
       const endPointDest = editDevice.endpoint
@@ -74,7 +80,7 @@ const EditPrompt = props => {
       try {
         const { data } = await axios.put(updateEndpoint, updatedDevice);
         props.setData(devices => {
-          const updatedDevices = JSON.parse(JSON.stringify(devices));
+          const updatedDevices: Device[] = JSON.parse(JSON.stringify(devices));
           const deviceIndex = updatedDevices.findIndex(
             ({ Deviceeui }) => Deviceeui === updatedDevice.Deviceeui
           );

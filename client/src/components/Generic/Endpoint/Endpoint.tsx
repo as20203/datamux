@@ -2,12 +2,10 @@ import React, { FC } from 'react';
 import { Button } from '@material-ui/core';
 import { endpointTypes } from 'utils';
 import { InputFormGroup, OptionFormGroup } from 'components';
-interface Endpoint {
-  endpointType: string;
-  endPointDest: string;
-}
+import { DeviceEndpoint } from '@types';
+
 interface EndpointProps {
-  endpoints: Endpoint[];
+  endpoints: DeviceEndpoint[];
   optionsLabel: string;
   required: boolean;
   optionsName: string;
@@ -16,12 +14,12 @@ interface EndpointProps {
   inputType: string;
   optionsPlaceholder: string;
   inputPlaceholder: string;
-  addEndpoint: (endpoint: Endpoint[]) => void;
-  removeEndpoint: (endpoint: Endpoint[]) => void;
+  addEndpoint: (endpoint: DeviceEndpoint[]) => void;
+  removeEndpoint: (endpoint: DeviceEndpoint[]) => void;
   handleChange: (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    endpoint: Endpoint[]
+    endpoint: DeviceEndpoint[]
   ) => void;
 }
 const Endpoint: FC<EndpointProps> = ({

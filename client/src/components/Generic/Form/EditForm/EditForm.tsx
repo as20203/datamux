@@ -1,20 +1,13 @@
-import React, { FC, FormEventHandler, ChangeEvent } from 'react';
-import { Endpoint, InputFormGroup, OptionFormGroup, CheckBoxFormGroup } from 'components';
+import React, { FC, FormEventHandler, ChangeEvent, Dispatch, SetStateAction } from 'react';
+import { InputFormGroup, OptionFormGroup, CheckBoxFormGroup, Endpoint } from 'components';
 import { Container, Button, Typography } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Modal } from 'semantic-ui-react';
 import { deviceTypes } from 'utils';
-import { ComponentHandler } from '@types';
-interface EditDevice {
-  deviceUI: string;
-  deviceType: string;
-  AccessToken: string;
-  endpoint: never[];
-  InclRadio: boolean;
-  RawData: boolean;
-  customer: string;
-}
+import { ComponentHandler, DeviceEndpoint, EditDevice } from '@types';
+
 interface EditFormProps {
+  updateDevice: Dispatch<SetStateAction<EditDevice>>;
   setOpen: ComponentHandler<boolean>;
   disable: boolean;
   open: boolean;
@@ -23,12 +16,12 @@ interface EditFormProps {
   editDevice: EditDevice;
   editDeviceHandler: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   checkBoxHandler: (event: ChangeEvent<HTMLInputElement>) => void;
-  addEndpoint: (endpoint: Endpoint[]) => void;
-  removeEndpoint: (endpoint: Endpoint[]) => void;
+  addEndpoint: (endpoint: DeviceEndpoint[]) => void;
+  removeEndpoint: (endpoint: DeviceEndpoint[]) => void;
   handleEndpointChange: (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number,
-    endpoint: Endpoint[]
+    endpoint: DeviceEndpoint[]
   ) => void;
 }
 const EditForm: FC<EditFormProps> = ({
