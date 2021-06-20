@@ -1,23 +1,40 @@
-import { Container, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import React, { useState, useEffect, useRef } from 'react';
-import Papa from 'papaparse';
+import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
+import { Container, Button, FormGroup, InputLabel } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { Color } from '@types';
+import { ParseResult, parse } from 'papaparse';
 import axios from 'instance';
+interface ErrorDevices {
+  deviceeui: string;
+  error: string;
+}
+
+interface CSVData {
+  Deviceeui: string;
+  Devicetype: string;
+  Endpointtype: string;
+  Endpointdest: string;
+  InclRadio: string;
+  RawData: string;
+  AccessToken: string;
+  Customer: string;
+}
 
 const MultipleDevices = () => {
   const [message, setMessage] = useState('');
   const [completedMessage, setCompletedMessage] = useState('');
   const [uploadMessage, setUploadMessage] = useState('');
-  const [csvFile, setcsvFile] = useState(null);
-  const [csvData, setcsvData] = useState([]);
+  const [csvFile, setcsvFile] = useState<File | null>(null);
+  const [csvData, setcsvData] = useState<CSVData[]>([]);
   const [disable, setDisable] = useState(false);
   const [uploadDisplay, setUploadDisplay] = useState(false);
-  const [color, setColor] = useState('');
-  const [errorDevices, setErrorDevices] = useState([]);
-  const [deviceEuiError, setDeviceEuiError] = useState([]);
+  const [color, setColor] = useState<Color | undefined>();
+  const [errorDevices, setErrorDevices] = useState<ErrorDevices[]>([]);
+  const [deviceEuiError, setDeviceEuiError] = useState<CSVData[]>([]);
   let isMounted = useRef(true);
 
-  const handleFileChange = event => {
-    setcsvFile(event.target.files[0]);
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.currentTarget.files) setcsvFile(event.currentTarget.files[0]);
     setUploadDisplay(true);
     setErrorDevices([]);
   };
@@ -28,10 +45,10 @@ const MultipleDevices = () => {
     };
   }, [isMounted]);
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setDisable(true);
-    let errorDevices = [];
+    let errorDevices: ErrorDevices[] = [];
     await Promise.all(
       csvData.map(async record => {
         const updatedRecord = {
@@ -48,7 +65,7 @@ const MultipleDevices = () => {
             await axios.post('/devices/add', updatedRecord);
           }
         } catch (error) {
-          errorDevices.push({ Deviceeui: record.Deviceeui, Error: error.response });
+          errorDevices.push({ deviceeui: record.Deviceeui, error: error.response });
         }
       })
     ).then(() => {
@@ -60,7 +77,7 @@ const MultipleDevices = () => {
       } else {
         if (isMounted.current) {
           setErrorDevices(errorDevices);
-          setColor('danger');
+          setColor('error');
           setCompletedMessage(
             `Following ${errorDevices.length} Devices had Errors and remaining were added: -\n  `
           );
@@ -74,13 +91,13 @@ const MultipleDevices = () => {
     if (!csvFile) {
       return;
     }
-    Papa.parse(csvFile, {
+    parse<CSVData>(csvFile, {
       complete: updateData,
       header: true
     });
   };
 
-  const updateData = result => {
+  const updateData = (result: ParseResult<CSVData>) => {
     let data = result.data;
     const validCSV = data.every(
       item =>
@@ -106,15 +123,15 @@ const MultipleDevices = () => {
         setUploadMessage('File upload successful');
       } else {
         setUploadMessage('Error:- Fix Deviceeui of below devices and reselect and upload');
-        setColor('danger');
+        setColor('error');
         setDeviceEuiError(errorData);
       }
     }
   };
   return (
     <Container>
-      <Form style={{ margin: '15px auto', width: '70%' }} onSubmit={onSubmit}>
-        <FormGroup inline={true}>
+      <form style={{ margin: '15px auto', width: '70%' }} onSubmit={onSubmit}>
+        <FormGroup>
           {completedMessage ? <Alert color={color}>{completedMessage}</Alert> : null}
 
           {errorDevices.length > 0 ? (
@@ -128,37 +145,33 @@ const MultipleDevices = () => {
               }}
             >
               {errorDevices.map((errorDevice, index) => {
-                return <li key={index}>{errorDevice.Error.data}</li>;
+                return <li key={index}>{errorDevice.error}</li>;
               })}
             </ul>
           ) : null}
 
-          <Label for='exampleDevice'>Select CSV File</Label>
-          <Alert
-            style={{ display: 'flex', flexWrap: 'wrap', wordBreak: 'break-all' }}
-            color='primary'
-          >
+          <InputLabel>Select CSV File</InputLabel>
+          <Alert style={{ display: 'flex', flexWrap: 'wrap', wordBreak: 'break-all' }} color='info'>
             Header Format:-
             Deviceeui,Devicetype,Endpointtype,Endpointdest,InclRadio,RawData,AccessToken,Customer
           </Alert>
           <div style={{ display: 'inline' }}>
-            <Input
+            <input
               required={true}
               style={{ display: 'inline', width: '25%' }}
               type='file'
               accept={'.csv'}
-              onChange={handleFileChange}
-              onClick={e => {
-                e.target.value = null;
+              onChange={event => handleFileChange(event)}
+              onClick={event => {
+                if (event.currentTarget) event.currentTarget.value = '';
                 setErrorDevices([]);
                 setCompletedMessage('');
                 setUploadMessage('');
                 setMessage('');
                 setDeviceEuiError([]);
               }}
-              placeholder={null}
             />
-            {message ? <Alert color='danger'>{message}</Alert> : null}
+            {message ? <Alert color='error'>{message}</Alert> : null}
 
             {uploadDisplay ? <Button onClick={importCSV}> Upload now!</Button> : null}
             {uploadMessage ? (
@@ -194,7 +207,7 @@ const MultipleDevices = () => {
             {disable ? 'Submitting' : 'Submit'}
           </Button>
         ) : null}
-      </Form>
+      </form>
     </Container>
   );
 };

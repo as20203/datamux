@@ -43,7 +43,7 @@ const ThingsBoard = () => {
         setCustomers(updatedCustomers);
         setLoading(false);
       }
-    } catch {
+    } catch (error) {
       setLoading(false);
     }
   };
@@ -72,7 +72,7 @@ const ThingsBoard = () => {
         });
         setEntityGroups(updatedEntityGroups);
       }
-    } catch {
+    } catch (error) {
       setDeviceLoader(false);
     }
   };
@@ -87,7 +87,6 @@ const ThingsBoard = () => {
       const selectedIndex = e.target.options.selectedIndex;
       const entityGroupId = e.target.options[selectedIndex].getAttribute('data-key');
       const customerId = e.target.options[selectedIndex].getAttribute('customer-key');
-      console.log(customerId);
       const {
         data: { data: devices }
       } = await axios.get(`entityGroup/${entityGroupId}/devices`, {
@@ -137,7 +136,7 @@ const ThingsBoard = () => {
           setDeviceLoader(false);
         }
       }
-    } catch {
+    } catch (error) {
       setDeviceLoader(false);
     }
   };

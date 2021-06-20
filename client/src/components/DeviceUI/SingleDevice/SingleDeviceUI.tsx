@@ -1,10 +1,11 @@
 import './SingleDeviceUI.css';
-import { Container, Collapse, Form, Alert, Button } from 'reactstrap';
-import { Button as SemanticButton } from 'semantic-ui-react';
+import React, { useState, useRef, useEffect, FormEvent } from 'react';
+import { Container, Collapse, Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 import axios from 'instance';
-import React, { useState, useRef, useEffect } from 'react';
 import { InputFormGroup, OptionFormGroup, CheckBoxFormGroup, Endpoint } from 'components';
 import { deviceTypes } from 'utils';
+import { Color } from '@types';
 import { useForm } from 'CustomHooks';
 
 const SingleDeviceUI = () => {
@@ -22,13 +23,13 @@ const SingleDeviceUI = () => {
     customer: '',
     AccessToken: Math.random().toString(32).substr(2, 10).toUpperCase(),
     endpoint: [{ endpointType: '', endPointDest: '' }],
-    InclRadio: '',
-    RawData: ''
+    InclRadio: false,
+    RawData: false
   });
   const [collapse, setCollapse] = useState(false);
   const [disable, setDisable] = useState(false);
   const [message, setMessage] = useState('');
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState<Color | undefined>();
   let isMounted = useRef(true);
 
   useEffect(() => {
@@ -37,8 +38,8 @@ const SingleDeviceUI = () => {
     };
   }, [isMounted]);
 
-  const onSubmit = async e => {
-    e.preventDefault();
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (newDevice.endpoint.length > 0) {
       if (/((([A-Z]|\d){2}-){7})([A-Z]|\d){2}/.test(newDevice.deviceUI)) {
         setDisable(true);
@@ -68,8 +69,8 @@ const SingleDeviceUI = () => {
                 deviceUI: '',
                 deviceType: '',
                 endpoint: [{ endpointType: '', endPointDest: '' }],
-                InclRadio: '',
-                RawData: '',
+                InclRadio: false,
+                RawData: false,
                 customer: '',
                 AccessToken: Math.random().toString(32).substr(2, 10).toUpperCase()
               };
@@ -82,21 +83,21 @@ const SingleDeviceUI = () => {
           .catch(err => {
             if (isMounted.current) {
               setMessage(`Cannot Add Device:-   ${err.response.data ? err.response.data : ''}`);
-              setColor('danger');
+              setColor('error');
               setDisable(false);
             }
           });
       } else {
         if (isMounted.current) {
           setMessage('Correct DeviceUI');
-          setColor('danger');
+          setColor('error');
           setDisable(false);
         }
       }
     } else {
       if (isMounted.current) {
         setMessage('Set Atleast One Endpoint');
-        setColor('danger');
+        setColor('error');
         setDisable(false);
       }
     }
@@ -108,11 +109,11 @@ const SingleDeviceUI = () => {
         <Button color='primary' onClick={() => setCollapse(collapse => !collapse)}>
           Add
         </Button>
-        <Collapse isOpen={collapse}>
-          <Form className='single-device-form' onSubmit={onSubmit}>
+        <Collapse in={collapse}>
+          <form className='single-device-form' onSubmit={onSubmit}>
             {message ? <Alert color={color}>{message}</Alert> : null}
             <InputFormGroup
-              Label='Device UI'
+              label='Device UI'
               pattern='((([A-Z]|\d){2}-){7})([A-Z]|\d){2}'
               required={true}
               value={newDevice.deviceUI}
@@ -127,7 +128,7 @@ const SingleDeviceUI = () => {
             />
 
             <InputFormGroup
-              Label='Access Token'
+              label='Access Token'
               required={true}
               value={newDevice.AccessToken}
               onChange={e => {
@@ -140,7 +141,7 @@ const SingleDeviceUI = () => {
             />
 
             <InputFormGroup
-              Label='Customer'
+              label='Customer'
               required={true}
               value={newDevice.customer}
               onChange={e => {
@@ -153,14 +154,13 @@ const SingleDeviceUI = () => {
             />
 
             <OptionFormGroup
-              Label='Select Device Type'
+              label='Select Device Type'
               value={newDevice.deviceType}
               required={true}
               onChange={e => {
                 setMessage('');
                 newDeviceHandler(e);
               }}
-              type='select'
               name='deviceType'
               options={deviceTypes}
             />
@@ -168,42 +168,41 @@ const SingleDeviceUI = () => {
             <Endpoint
               addEndpoint={e => addEndpoint(newDevice.endpoint)}
               removeEndpoint={e => removeEndpoint(newDevice.endpoint)}
-              endpoint={newDevice.endpoint}
-              OptionsLabel='Select Endpoint Type'
-              InputLabel='Select Endpoint Destination'
+              endpoints={newDevice.endpoint}
+              optionsLabel='Select Endpoint Type'
+              inputLabel='Select Endpoint Destination'
               required={true}
               handleChange={handleEndpointChange}
               inputType='text'
-              optionType='select'
-              InputPlaceholer='Select Endpoint Destination'
-              OptionsPlaceholder='Select Endpoint Type'
-              OptionsName='endpointType'
-              InputName='endPointDest'
+              inputPlaceholder='Select Endpoint Destination'
+              optionsPlaceholder='Select Endpoint Type'
+              optionsName='endpointType'
+              inputName='endPointDest'
             />
 
             <CheckBoxFormGroup
               checked={newDevice.InclRadio}
-              Label='InclRadio'
+              label='InclRadio'
               checkBoxHandler={checkBoxHandler}
               name='InclRadio'
               type='checkbox'
             />
             <CheckBoxFormGroup
               checked={newDevice.RawData}
-              Label='RawData'
+              label='RawData'
               checkBoxHandler={checkBoxHandler}
               name='RawData'
               type='checkbox'
             />
-            <SemanticButton
+            <Button
               disabled={disable}
-              color={'blue'}
+              color={'primary'}
               type='submit'
               style={{ margin: '5px auto', display: 'block' }}
             >
               {disable ? 'Submitting' : 'Submit'}
-            </SemanticButton>
-          </Form>
+            </Button>
+          </form>
         </Collapse>
       </Container>
     </div>

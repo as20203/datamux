@@ -26,7 +26,6 @@ const SendCommandPrompt = props => {
         Command: Number(sendCommandForm.Command)
       });
       setDisable(false);
-      console.log(result);
     } catch (error) {
       setDisable(false);
     }
@@ -50,7 +49,7 @@ const SendCommandPrompt = props => {
           };
         return updatedData;
       });
-    } catch {}
+    } catch (error) {}
   };
 
   useEffect(() => {

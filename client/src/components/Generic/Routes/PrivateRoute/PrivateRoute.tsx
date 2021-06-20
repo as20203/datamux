@@ -1,10 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import React, { ReactNode, FC, useContext, useEffect, useState } from 'react';
+import { Route, RouteComponentProps } from 'react-router-dom';
+import { StaticContext } from 'react-router';
 import { authContext } from 'services/auth';
 import axios from 'axios';
 import history from 'MyHistory';
-
-const PrivateRoute = ({ component: Component, ...rest }) => {
+interface PrivateRouteProps {
+  component: FC<
+    RouteComponentProps<
+      {
+        [x: string]: string | undefined;
+      },
+      StaticContext,
+      unknown
+    >
+  >;
+  path: string;
+}
+const PrivateRoute: FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
   const [, dispatch] = useContext(authContext);
   const [authRoute, setAuthRuote] = useState(false);
 
@@ -15,7 +27,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         if (token) {
           const verifyToken = await axios.post('/api/verify-token');
           if (verifyToken) {
-            dispatch({ type: 'authenticated', user: verifyToken.data.user, isAuthenticated: true });
+            dispatch({ type: 'authenticated', user: verifyToken.data.user, value: true });
             setAuthRuote(true);
             const currentPath = history.location.pathname;
             if (currentPath === '/') {
@@ -25,13 +37,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             }
           }
         } else {
-          dispatch({ type: 'notauthenticated', user: {}, isAuthenticated: false });
+          dispatch({ type: 'notauthenticated', user: null, value: false });
           localStorage.clear();
           sessionStorage.clear();
           history.push('/');
         }
       } catch (error) {
-        dispatch({ type: 'notauthenticated', user: {}, isAuthenticated: false });
+        dispatch({ type: 'notauthenticated', user: null, value: false });
         localStorage.clear();
         sessionStorage.clear();
         history.push('/');

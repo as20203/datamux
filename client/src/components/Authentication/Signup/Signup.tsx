@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import { Button, Form, Container, Alert } from 'reactstrap';
+import React, { useState, FormEvent } from 'react';
+import { Container, Typography, Button } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+
 import './Signup.css';
 import axios from 'axios';
 import { useForm } from 'CustomHooks';
 import { InputFormGroup } from 'components';
-
+type MaterialUiAlter = 'error' | 'info' | 'success' | 'warning';
 const Signup = () => {
   const [signup, clearSignup, handleSignup] = useForm({
     username: '',
@@ -14,10 +16,10 @@ const Signup = () => {
   });
   const [message, setMessage] = useState('');
   const [disable, setDisable] = useState(false);
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState<MaterialUiAlter>('info');
 
-  const onSubmit = e => {
-    e.preventDefault();
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     setDisable(true);
     axios
       .post('/api/register', signup)
@@ -36,7 +38,7 @@ const Signup = () => {
       })
       .catch(err => {
         const message = err.response.data.message;
-        setColor('danger');
+        setColor('error');
         setMessage(message);
         setDisable(false);
       });
@@ -44,13 +46,14 @@ const Signup = () => {
 
   return (
     <Container style={{ margin: '200px auto' }}>
-      <h1 align='center' as='h1'>
+      <Typography align='center' variant={'h1'}>
         Signup
-      </h1>
-      <Form style={{ margin: '5px auto', width: '50%' }} onSubmit={onSubmit}>
+      </Typography>
+      <form style={{ margin: '5px auto', width: '50%' }} onSubmit={onSubmit}>
         {message ? <Alert color={color}>{message}</Alert> : null}
         <InputFormGroup
-          Label='Username:'
+          id='username'
+          label='Username:'
           value={signup.username}
           required={true}
           onChange={e => {
@@ -62,24 +65,26 @@ const Signup = () => {
           placeholder='Enter your username'
         />
         <InputFormGroup
-          Label='Password:'
+          id='password'
+          label='Password:'
           value={signup.password}
           required={true}
-          onChange={e => {
+          onChange={event => {
             setMessage('');
-            handleSignup(e);
+            handleSignup(event);
           }}
           type='password'
           name='password'
           placeholder='Enter your password'
         />
         <InputFormGroup
-          Label='Email:'
+          id='email'
+          label='Email:'
           value={signup.email}
           required={true}
-          onChange={e => {
+          onChange={event => {
             setMessage('');
-            handleSignup(e);
+            handleSignup(event);
           }}
           type='email'
           name='email'
@@ -88,7 +93,7 @@ const Signup = () => {
         <Button disabled={disable} type='submit' style={{ margin: '5px auto', display: 'block' }}>
           {disable ? 'Submitting' : 'Submit'}
         </Button>
-      </Form>
+      </form>
     </Container>
   );
 };

@@ -21,8 +21,8 @@ const EditPrompt = props => {
     deviceType: '',
     AccessToken: '',
     endpoint: [],
-    InclRadio: '',
-    RawData: '',
+    InclRadio: false,
+    RawData: false,
     customer: ''
   });
 
