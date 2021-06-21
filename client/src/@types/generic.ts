@@ -21,7 +21,7 @@ export interface CommandDevice {
   DeviceEui: string;
   value: string;
   Command: string;
-  Server: string;
+  Server: 'netmore' | 'talkpoolNS' | '';
   AccessToken: string;
   Devicetype: string;
 }

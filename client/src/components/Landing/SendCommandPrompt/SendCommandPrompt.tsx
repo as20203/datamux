@@ -3,7 +3,7 @@ import './SendCommandPrompt.css';
 import axios from 'instance';
 import { SendCommandForm } from 'components';
 import { useForm } from 'CustomHooks';
-import { ComponentHandler, Device } from '@types';
+import { CommandDevice, ComponentHandler, Device } from '@types';
 
 interface SendCommandPromptProps {
   setData: ComponentHandler<Device[]>;
@@ -13,7 +13,7 @@ const SendCommandPrompt: FC<SendCommandPromptProps> = props => {
   const [disable, setDisable] = useState(false);
   const [message] = useState('');
   const [open, setOpen] = useState(false);
-  const [sendCommandForm, updateSendCommandForm, sendCommandFormHandler] = useForm({
+  const [sendCommandForm, updateSendCommandForm, sendCommandFormHandler] = useForm<CommandDevice>({
     DeviceEui: '',
     value: '',
     Command: '',
