@@ -1,19 +1,11 @@
-import React, { ChangeEvent, MouseEventHandler } from 'react';
+import React, { ChangeEvent, MouseEventHandler, MouseEvent } from 'react';
 import { InputFormGroup, OptionFormGroup } from 'components';
 import { Container, Typography, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { Modal } from 'semantic-ui-react';
 import { commandServerTypes } from 'utils';
-import { ComponentHandler } from '@types';
+import { ComponentHandler, CommandDevice } from '@types';
 
-interface CommandDevice {
-  DeviceEui: string;
-  value: string;
-  Command: string;
-  Server: string;
-  AccessToken: string;
-  Devicetype: string;
-}
 interface SendCommandFormProps {
   setOpen: ComponentHandler<boolean>;
   updateSendCommandForm: ComponentHandler<CommandDevice>;
@@ -23,7 +15,7 @@ interface SendCommandFormProps {
   message: string;
   sendCommandFormHandler: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   onSubmit: MouseEventHandler<HTMLButtonElement>;
-  saveForBulk: MouseEventHandler<HTMLButtonElement>;
+  saveForBulk: (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
 }
 const SendCommandForm = ({
   setOpen,

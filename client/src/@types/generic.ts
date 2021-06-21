@@ -11,7 +11,21 @@ export interface Device {
   RawData: boolean;
   AccessToken: string;
   Customer: string;
+  checked: boolean;
+  value: string;
+  Command: string;
+  Server: string;
 }
+
+export interface CommandDevice {
+  DeviceEui: string;
+  value: string;
+  Command: string;
+  Server: string;
+  AccessToken: string;
+  Devicetype: string;
+}
+
 export interface DeviceEndpoint {
   endpointType: string;
   endPointDest: string;

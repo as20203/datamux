@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC, FormEvent, MouseEvent } from 'react';
 import './SendCommandPrompt.css';
 import axios from 'instance';
 import { SendCommandForm } from 'components';
 import { useForm } from 'CustomHooks';
+import { ComponentHandler, CommandDevice, Device } from '@types';
 
-const SendCommandPrompt = props => {
+interface SendCommandPromptProps {
+  setData: ComponentHandler<Device[]>;
+  rowData: Device;
+}
+const SendCommandPrompt: FC<SendCommandPromptProps> = props => {
   const [disable, setDisable] = useState(false);
   const [message] = useState('');
   const [open, setOpen] = useState(false);
@@ -17,11 +22,11 @@ const SendCommandPrompt = props => {
     Devicetype: ''
   });
 
-  const onSubmit = async e => {
+  const onSubmit = async (event: FormEvent<HTMLButtonElement>) => {
     try {
-      e.preventDefault();
+      event.preventDefault();
       setDisable(true);
-      const result = await axios.post(`/devices/downlink`, {
+      await axios.post(`/devices/downlink`, {
         ...sendCommandForm,
         Command: Number(sendCommandForm.Command)
       });
@@ -30,9 +35,9 @@ const SendCommandPrompt = props => {
       setDisable(false);
     }
   };
-  const saveForBulk = async e => {
+  const saveForBulk = (event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     try {
-      e.preventDefault();
+      event.preventDefault();
       const { Server, value, Command } = sendCommandForm;
       props.setData(data => {
         const updatedData = [...data];
