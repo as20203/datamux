@@ -3,7 +3,7 @@ import './SendCommandPrompt.css';
 import axios from 'instance';
 import { SendCommandForm } from 'components';
 import { useForm } from 'CustomHooks';
-import { ComponentHandler, CommandDevice, Device } from '@types';
+import { ComponentHandler, Device } from '@types';
 
 interface SendCommandPromptProps {
   setData: ComponentHandler<Device[]>;
