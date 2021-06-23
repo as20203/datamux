@@ -1,7 +1,14 @@
 import React, { SyntheticEvent, useState, useContext, FormEvent } from 'react';
-import './Login.css';
 import { Loader, InputFormGroup } from 'components';
 import { Typography } from '@material-ui/core';
+import {
+  LoginButton,
+  LoginContainer,
+  LoginMain,
+  LoginImage,
+  LoginImageContainer,
+  LoginForm
+} from './elements';
 import axios from 'axios';
 import history from 'MyHistory';
 import { useForm } from 'CustomHooks';
@@ -14,10 +21,7 @@ const Login = () => {
   const [loading, setLoading] = useState(true);
   const [, dispatch] = useContext(authContext);
   const styles = {
-    input: { border: 'none', borderBottom: '1px solid #ced4da', boxShadow: 'none' },
-    loginContainer: { display: loading ? 'none' : 'flex' },
-    loginImage: { display: window.matchMedia('(max-width: 850px)').matches ? 'none' : 'flex' },
-    loginForm: { width: window.matchMedia('(max-width: 350px)').matches ? '300px' : '350px' }
+    input: { border: 'none', borderBottom: '1px solid #ced4da', boxShadow: 'none' }
   };
   const handleImageLoad = (e: SyntheticEvent<HTMLImageElement, Event>) => {
     e.preventDefault();
@@ -42,20 +46,23 @@ const Login = () => {
       });
   };
   return (
-    <div className='login-main'>
+    <LoginMain>
       {loading ? <Loader /> : null}
-      <div className='login-container' style={styles.loginContainer}>
-        <div className='login-image' style={styles.loginImage}>
-          <img
+      <LoginContainer loading={loading}>
+        <LoginImageContainer display={window.matchMedia('(max-width: 850px)').matches}>
+          <LoginImage
             onLoad={handleImageLoad}
             src='https://www.researchgate.net/profile/Khurshid_Aliev/publication/323258913/figure/fig5/AS:631607719391275@1527598423702/LoRa-star-network-architecture.png'
             alt='hello'
           />
-        </div>
+        </LoginImageContainer>
         {!loading ? (
-          <form className='form-main' style={styles.loginForm} onSubmit={onSubmit}>
+          <LoginForm
+            width={window.matchMedia('(max-width: 350px)').matches ? 300 : 350}
+            onSubmit={onSubmit}
+          >
             <Typography
-              variant={'h1'}
+              variant={'h4'}
               align={window.matchMedia('(max-width: 500px)').matches ? 'center' : 'left'}
             >
               Login Now
@@ -94,18 +101,19 @@ const Login = () => {
               id='password'
               placeholder='Enter your password'
             />
-            <button
+            <LoginButton
+              textColor='white'
+              variant='contained'
               disabled={disable}
-              color='primary'
+              backgroundColor={'#007bff'}
               type='submit'
-              style={{ margin: '5px auto', display: 'block' }}
             >
               {disable ? 'Submitting' : 'Submit'}
-            </button>
-          </form>
+            </LoginButton>
+          </LoginForm>
         ) : null}
-      </div>
-    </div>
+      </LoginContainer>
+    </LoginMain>
   );
 };
 
