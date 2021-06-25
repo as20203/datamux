@@ -4,9 +4,8 @@ interface Endpoint {
   endpointType: string;
   endPointDest: string;
 }
-const useForm = <T,>(
-  formValues: T
-): [
+
+type UseForm<T> = [
   T,
   Dispatch<React.SetStateAction<T>>,
   (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void,
@@ -14,7 +13,8 @@ const useForm = <T,>(
   (event: ChangeEvent<HTMLInputElement>, index: number, endpoint: Endpoint[]) => void,
   (endpoint: Endpoint[]) => void,
   (endpoint: Endpoint[]) => void
-] => {
+];
+const useForm = <T,>(formValues: T): UseForm<T> => {
   const [state, setState] = useState(formValues);
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     event.persist();

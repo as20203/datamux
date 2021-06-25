@@ -62,6 +62,7 @@ const Login = () => {
             onSubmit={onSubmit}
           >
             <Typography
+              style={{ marginBottom: '15px' }}
               variant={'h4'}
               align={window.matchMedia('(max-width: 500px)').matches ? 'center' : 'left'}
             >
