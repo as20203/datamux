@@ -70,24 +70,32 @@ const EditPrompt = props => {
         RawData: editDevice.RawData,
         AccessToken: editDevice.AccessToken
       };
-      const updateEndpoint = '/devices/update/' + editDevice.deviceUI;
-      try {
-        const { data } = await axios.put(updateEndpoint, updatedDevice);
-        props.setData(devices => {
-          const updatedDevices = JSON.parse(JSON.stringify(devices));
-          const deviceIndex = updatedDevices.findIndex(
-            ({ Deviceeui }) => Deviceeui === updatedDevice.Deviceeui
-          );
-          if (deviceIndex !== -1) updatedDevices[deviceIndex] = data;
-          return updatedDevices;
+      const deleteEndpoint = '/devices/delete/' + editDevice.deviceUI;
+      axios
+        .delete(deleteEndpoint)
+        .then(() => {
+          const index = props.data.findIndex(d => d.Deviceeui === editDevice.deviceUI);
+          const updatedDevices = [...props.data];
+          updatedDevices.splice(index, 1);
+          axios
+            .post('/devices/add', updatedDevice)
+            .then(res => {
+              updatedDevices.push(updatedDevice);
+              setOpen(open => !open);
+              setDisable(false);
+              props.setData(updatedDevices);
+            })
+            .catch(err => {
+              setMessage('Cannot Create Device');
+              setOpen(open => !open);
+              setDisable(false);
+            });
+        })
+        .catch(err => {
+          setMessage('Cannot Delete Device');
+          setOpen(open => !open);
+          setDisable(false);
         });
-        setOpen(open => !open);
-        setDisable(false);
-      } catch (error) {
-        setMessage('Cannot Update Device');
-        setOpen(open => !open);
-        setDisable(false);
-      }
     } else {
       setMessage('Select Atleast One Endpoint');
       setOpen(open => !open);
