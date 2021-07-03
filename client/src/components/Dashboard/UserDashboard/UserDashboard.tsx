@@ -107,3 +107,10 @@
 // };
 
 // export { UserDashboard };
+import React, { FC } from 'react';
+interface UserDashBoardProps {
+  logoutHandler: () => void;
+}
+export const UserDashboard: FC<UserDashBoardProps> = () => {
+  return <h1> This will be new admin dashboard</h1>;
+};

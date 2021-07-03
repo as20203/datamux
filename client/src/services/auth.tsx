@@ -12,12 +12,12 @@ interface AuthContextAction {
 
 const initialState: AuthContext = { isAuthenticated: false, user: null };
 
-const authReducer = (state: AuthContext, action: AuthContextAction) => {
-  switch (action.type) {
+const authReducer = (state: AuthContext, { type, value, user }: AuthContextAction) => {
+  switch (type) {
     case 'authenticated':
-      return { isAuthenticated: action.value, user: action.user };
+      return { isAuthenticated: value, user };
     case 'notauthenticated':
-      return { isAuthenticated: action.value, user: action.user };
+      return { isAuthenticated: value, user };
     default:
       return state;
   }

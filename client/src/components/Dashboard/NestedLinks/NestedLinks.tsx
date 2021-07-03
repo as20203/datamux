@@ -31,3 +31,10 @@
 // };
 
 // export { NestedLinks };
+import React, { FC } from 'react';
+interface NestedLinksDashboard {
+  logoutHandler: () => void;
+}
+export const NestedLinks: FC<NestedLinksDashboard> = () => {
+  return <h1> This will be new admin dashboard</h1>;
+};

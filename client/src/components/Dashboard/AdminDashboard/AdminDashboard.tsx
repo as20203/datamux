@@ -212,3 +212,10 @@
 // };
 
 // export { AdminDashboard };
+import React, { FC } from 'react';
+interface AdminDashBoardProps {
+  logoutHandler: () => void;
+}
+export const AdminDashboard: FC<AdminDashBoardProps> = () => {
+  return <h1> This will be new admin dashboard</h1>;
+};

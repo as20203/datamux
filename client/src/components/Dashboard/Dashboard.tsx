@@ -8,7 +8,7 @@ const Dashboard = () => {
   const logoutHandler = () => {
     localStorage.clear();
     sessionStorage.clear();
-    dispatch({ type: 'notauthenticated', isAuthenticated: false, user: {} });
+    dispatch({ type: 'notauthenticated', value: false, user: {} });
   };
   if (auth.user && auth.user.userType === 'admin') {
     return <AdminDashboard logoutHandler={logoutHandler} />;
