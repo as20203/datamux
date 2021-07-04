@@ -212,10 +212,49 @@
 // };
 
 // export { AdminDashboard };
-import React, { FC } from 'react';
+import { NestedLinks } from 'components';
+import React, { FC, useState } from 'react';
+import { Add, Remove, Replay, Devices, Archive, ExpandMore, ExpandLess } from '@material-ui/icons';
+import { DashboardContainer, DashboardList, DashboardListElement, IconElement } from '../elements';
 interface AdminDashBoardProps {
   logoutHandler: () => void;
 }
 export const AdminDashboard: FC<AdminDashBoardProps> = () => {
-  return <h1> This will be new admin dashboard</h1>;
+  const [open, setOpen] = useState(false);
+  return (
+    <DashboardContainer>
+      <DashboardList display='flex' flexDirection='column' padding={10} listStyleType='none'>
+        <DashboardListElement to='#' display='flex' padding={15}>
+          {' '}
+          View Devices
+        </DashboardListElement>
+        <NestedLinks
+          mainText='Add Devices'
+          collapseElements={[
+            { muiIcon: <Add />, navigation: '#', text: 'Add Single Device' },
+            { muiIcon: <Remove />, navigation: '#', text: 'Add Multiple Devices' }
+          ]}
+        />
+        <NestedLinks
+          mainText='Set Users'
+          collapseElements={[
+            { muiIcon: <Add />, navigation: '#', text: 'Add New User' },
+            { muiIcon: <Add />, navigation: '#', text: 'Remove User' },
+            { muiIcon: <Replay />, navigation: '#', text: 'Reset Password' }
+          ]}
+        />
+        <NestedLinks
+          mainText='Generate CSV'
+          collapseElements={[{ muiIcon: <Archive />, navigation: '#', text: 'Thingsboard' }]}
+        />
+        <NestedLinks
+          mainText='Device Provisioning'
+          collapseElements={[
+            { muiIcon: <Devices />, navigation: '#', text: 'Network Server' },
+            { muiIcon: <Devices />, navigation: '#', text: 'Sensepool' }
+          ]}
+        />
+      </DashboardList>
+    </DashboardContainer>
+  );
 };
