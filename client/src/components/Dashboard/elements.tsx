@@ -55,6 +55,8 @@ interface DashboardListElementProps {
   hoverBackground?: string;
   fontSize?: number;
   height?: number;
+  active?: boolean;
+  activeBackground?: string;
 }
 export const DashboardListElement = withStyles<string, {}, DashboardListElementProps>({
   root: {
@@ -63,12 +65,15 @@ export const DashboardListElement = withStyles<string, {}, DashboardListElementP
     display: ({ display }) => display || 'initial',
     padding: ({ padding }) => (padding ? `${padding}px` : 'none'),
     justifyContent: ({ justifyContent }) => justifyContent || 'flex-start',
+    background: ({ active, activeBackground }) =>
+      active && activeBackground ? activeBackground : 'initial',
     color: 'white',
     textDecoration: 'none',
     '&:hover': {
       color: 'white',
       textDecoration: 'none',
-      background: ({ hoverBackground }) => hoverBackground || '#4d4b50'
+      background: ({ hoverBackground, active, activeBackground }) =>
+        active && activeBackground ? activeBackground : hoverBackground || '#4d4b50'
     }
   }
 })(({ classes, ...other }: WithStyles & LinkProps & React.RefAttributes<HTMLAnchorElement>) => (

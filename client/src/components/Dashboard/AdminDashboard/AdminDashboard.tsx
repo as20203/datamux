@@ -213,45 +213,75 @@
 
 // export { AdminDashboard };
 import { NestedLinks } from 'components';
-import React, { FC, useState } from 'react';
-import { Add, Remove, Replay, Devices, Archive, ExpandMore, ExpandLess } from '@material-ui/icons';
-import { DashboardContainer, DashboardList, DashboardListElement, IconElement } from '../elements';
+import React, { FC, useEffect, useState } from 'react';
+import { Add, Remove, Replay, Devices, Archive } from '@material-ui/icons';
+import history from 'MyHistory';
+
+import { DashboardContainer, DashboardList, DashboardListElement } from '../elements';
 interface AdminDashBoardProps {
   logoutHandler: () => void;
 }
 export const AdminDashboard: FC<AdminDashBoardProps> = () => {
-  const [open, setOpen] = useState(false);
+  const [dashboardLink, setDashboardLink] = useState(history.location.pathname);
+  useEffect(() => {
+    const { pathname } = history.location;
+    setDashboardLink(pathname);
+  }, [history.location.pathname]);
   return (
     <DashboardContainer>
       <DashboardList display='flex' flexDirection='column' padding={10} listStyleType='none'>
-        <DashboardListElement to='#' display='flex' padding={15}>
+        <DashboardListElement
+          active={dashboardLink === '/dashboard/view-devices'}
+          activeBackground='#34414e'
+          to='/dashboard/view-devices'
+          display='flex'
+          padding={15}
+        >
           {' '}
           View Devices
         </DashboardListElement>
         <NestedLinks
+          dashboardLink={dashboardLink}
           mainText='Add Devices'
           collapseElements={[
-            { muiIcon: <Add />, navigation: '#', text: 'Add Single Device' },
-            { muiIcon: <Remove />, navigation: '#', text: 'Add Multiple Devices' }
+            { muiIcon: <Add />, navigation: '/dashboard/add-device', text: 'Add Single Device' },
+            {
+              muiIcon: <Remove />,
+              navigation: '/dashboard/add-devices',
+              text: 'Add Multiple Devices'
+            }
           ]}
         />
         <NestedLinks
+          dashboardLink={dashboardLink}
           mainText='Set Users'
           collapseElements={[
-            { muiIcon: <Add />, navigation: '#', text: 'Add New User' },
-            { muiIcon: <Add />, navigation: '#', text: 'Remove User' },
-            { muiIcon: <Replay />, navigation: '#', text: 'Reset Password' }
+            { muiIcon: <Add />, navigation: '/dashboard/add-user', text: 'Add New User' },
+            { muiIcon: <Add />, navigation: '/dashboard/remove-user', text: 'Remove User' },
+            { muiIcon: <Replay />, navigation: '/dashboard/reset-password', text: 'Reset Password' }
           ]}
         />
         <NestedLinks
+          dashboardLink={dashboardLink}
           mainText='Generate CSV'
-          collapseElements={[{ muiIcon: <Archive />, navigation: '#', text: 'Thingsboard' }]}
+          collapseElements={[
+            {
+              muiIcon: <Archive />,
+              navigation: '/dashboard/devices/generate-csv',
+              text: 'Thingsboard'
+            }
+          ]}
         />
         <NestedLinks
+          dashboardLink={dashboardLink}
           mainText='Device Provisioning'
           collapseElements={[
-            { muiIcon: <Devices />, navigation: '#', text: 'Network Server' },
-            { muiIcon: <Devices />, navigation: '#', text: 'Sensepool' }
+            {
+              muiIcon: <Devices />,
+              navigation: '/dashboard/devices/network-server',
+              text: 'Network Server'
+            },
+            { muiIcon: <Devices />, navigation: '/dashboard/devices/sensepool', text: 'Sensepool' }
           ]}
         />
       </DashboardList>

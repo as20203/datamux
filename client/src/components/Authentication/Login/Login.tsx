@@ -36,7 +36,7 @@ const Login = () => {
         dispatch({ type: 'authenticated', value: true, user: result.data.user });
         localStorage.setItem('Token', result.data.token);
         axios.put('/api/last-login').then(_ => {
-          history.replace('/dashboard');
+          history.replace('/dashboard/view-devices');
         });
       })
       .catch(err => {
